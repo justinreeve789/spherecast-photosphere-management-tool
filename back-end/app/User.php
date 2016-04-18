@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
@@ -30,4 +29,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = ['password', 'remember_token'];
 
 	protected $table = 'users';
+
+	public function sites()
+	{
+		return $this->belongsToMany('App\Site', 'users_sites', 'user_id', 'site_id');
+	}
 }

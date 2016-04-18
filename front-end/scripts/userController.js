@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('authApp')
+		.module('spherecastApp')
 		.controller('UserController', UserController);
 
 	function UserController($http) {

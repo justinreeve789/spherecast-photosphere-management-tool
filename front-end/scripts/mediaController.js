@@ -1,0 +1,31 @@
+(function() {
+
+	'use strict';
+
+	angular
+		.module('spherecastApp')
+		.controller('MediaController', MediaController);
+
+	function MediaController($http) {
+
+		var vm = this;
+
+		vm.media;
+		vm.error;
+
+		vm.getMedia = function() {
+
+			// This request will hit the index method in the AuthenticateController
+			// on the Laravel side and will return the list of users
+			$http.get('api/media/list').success(function(items) {
+				vm.items = items;
+			}).error(function(error) {
+				vm.error = error;
+			});
+		}
+
+		vm.getMedia();
+
+	}
+	
+})();

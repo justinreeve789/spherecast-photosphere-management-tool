@@ -11,10 +11,18 @@
 |
 */
 
-Route::get('/', function()
-{
-    return view('index');
-});
+Route::get('/', ['uses' => 'MediaController@showMediaGrid']);
+
+Route::get('/site', ['uses' => 'MediaController@getCurrentSite']);
+Route::get('/list', ['uses' => 'MediaController@showMediaGrid']);
+Route::get('/upload', ['uses' => 'MediaController@showUpload']);
+Route::post('/upload', ['uses' => 'MediaController@processUpload']);
+Route::get('/media/list', ['uses' => 'MediaController@getMedia']);
+Route::get('/media/{code}', ['uses' => 'MediaController@downloadMedia']);
+Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
+Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnail']);
+Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);
+Route::get('/{code}', ['uses' => 'MediaController@viewMedia']);
 
 Route::group(['prefix' => ''], function()
 {

@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('authApp', ['ui.router', 'satellizer'])
+		.module('spherecastApp', ['ui.router', 'satellizer'])
 		.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
 			// Satellizer configuration that specifies which API
@@ -11,17 +11,17 @@
 			$authProvider.loginUrl = '/api/auth/local';
 
 			$authProvider.google({
-				clientId: '829633846470-sapkpemllj6fh7k4vud0r10c0do4g81u.apps.googleusercontent.com',
+				clientId: '812052042695-v4en26h82f35421l3lnhrfjvu8hrmu54.apps.googleusercontent.com',
 				url: '/api/auth/google'
 			});
 
 			$authProvider.facebook({
 //				requiredUrlParams: ['appId'],
-				clientId: '1731105733813404',
+				clientId: '990909701004112',
 				url: '/api/auth/facebook'
 			});
 
-			// Redirect to the auth state if any other states are requested other than users
+			// Redirect to the auth state if any other states are requested.
 			$urlRouterProvider.otherwise('/login');
 
 			$stateProvider
@@ -29,6 +29,11 @@
 					url: '/login',
 					templateUrl: '../views/authView.html',
 					controller: 'AuthController as auth'
+				})
+				.state('spheres', {
+					url: '/spheres',
+					templateUrl: '../views/gridView.html',
+					controller: 'MediaController as media',
 				})
 				.state('users', {
 					url: '/users',

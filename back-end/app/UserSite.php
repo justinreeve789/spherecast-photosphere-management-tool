@@ -1,0 +1,11 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class UserSite extends Model
+{
+	protected $guarded = [];
+	protected $table = 'users_sites';
+}

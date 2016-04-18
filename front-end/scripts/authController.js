@@ -3,11 +3,11 @@
 	'use strict';
 
 	angular
-		.module('authApp')
+		.module('spherecastApp')
 		.controller('AuthController', AuthController);
 
 	angular
-		.module('authApp')
+		.module('spherecastApp')
 		.controller('AuthSocial', function($scope, $auth) {
 
 	});
@@ -25,8 +25,8 @@
 			// Use Satellizer's $auth service to login
 			$auth.login(credentials).then(function(data) {
 
-				// If login is successful, redirect to the users state
-				$state.go('users');
+				// If login is successful, redirect to the spheres state
+				$state.go('spheres');
 			}, function(error) {
 				console.log(error);
 			});
