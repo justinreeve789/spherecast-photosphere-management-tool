@@ -56,7 +56,10 @@
 
     <!-- Application Scripts -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/authController.js"></script>
-    <script src="scripts/userController.js"></script>
-    <script src="scripts/mediaController.js"></script>
+    <script src="scripts/controllers/authController.js"></script>
+    <script src="scripts/controllers/userController.js"></script>
+    <script src="scripts/controllers/mediaController.js"></script>
+    <script src="scripts/controllers/fileController.js"></script>
+    <script src="scripts/directives/fileDirective.js"></script>
+    <script src="scripts/services/fileService.js"></script>
 </html>

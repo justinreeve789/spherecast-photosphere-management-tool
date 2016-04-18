@@ -35,6 +35,11 @@
 					templateUrl: '../views/gridView.html',
 					controller: 'MediaController as media',
 				})
+				.state('upload', {
+					url: '/upload',
+					templateUrl: '../views/uploadView.html',
+					controller: 'FileController as file'
+				})
 				.state('users', {
 					url: '/users',
 					templateUrl: '../views/userView.html',

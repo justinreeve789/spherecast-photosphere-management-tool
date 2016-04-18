@@ -20,8 +20,58 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['getMedia', 'showUpload', 'processUpload']]);
+        $this->middleware('jwt.auth', ['except' => ['downloadThumbnail', 'getMedia', 'showUpload', 'processUpload']]);
     }
+
+	/**
+	 * Retrive the authenticated user.
+	 */
+	public function getUser()
+	{
+		try
+		{
+			$token = JWTAuth::getToken();
+			if ($token)
+			{
+				if ($user = JWTAuth::parseToken()->authenticate())
+					return $user;
+			}
+		}
+		catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e)
+		{
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieve the authenticated user from the token.
+	 */
+	public function getAuthenticatedUserDetails()
+	{
+	    try {
+	
+			$token = JWTAuth::parseToken();
+	        if (! $user = $token->authenticate()) {
+	            return response()->json(['user_not_found'], 404);
+	        }
+	
+	    } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+	
+	        return response()->json(['token_expired'], $e->getStatusCode());
+	
+	    } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+	
+	        return response()->json(['token_invalid'], $e->getStatusCode());
+	
+	    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+	
+	        return response()->json(['token_absent'], $e->getStatusCode());
+	
+	    }
+	
+	    // the token is valid and we have found the user via the sub claim
+	    return response()->json(compact('user'));
+	}
 
 	/**
 	 * Return the current site the user is on.
@@ -35,7 +85,7 @@ class MediaController extends Controller
 
 		$site_url = parse_url(\URL::to('/'));
 		$site_host = $site_url['host'];	// Will either be sphcst.com or {subdomain}.sphcst.com.
-
+		
 		if ($app_host == $site_host)
 		{
 			// Retrieve the base sphcst.com site.
@@ -84,7 +134,7 @@ class MediaController extends Controller
 		if ($site && $site->shared == false)
 		{
 			// The site is not in "shared" mode, so only show the user's own uploads.
-			$user = \Auth::user();
+			$user = $this->getUser();
 			if (isset($user) && isset($user->id))
 			{
 				$media = Media::where('site_id', $site->id)
@@ -245,18 +295,6 @@ class MediaController extends Controller
 	}
 
 	/**
-	 * Return the current user, or null if anonymous.
-	 */
-	public function getUser()
-	{
-		$user = \Session::get('login_user');
-		if (!$user)
-			return null;
-		else
-			return $user;
-	}
-
-	/**
 	 * Convert the file.
 	 */
 	protected function convertFile($temp_file)
@@ -304,8 +342,8 @@ class MediaController extends Controller
 			if (!file_exists($new_file))
 			{
 				// Delete all temporary files.
-//				$this->cleanTempFiles($temp_files);
-				echo 'FILE DID NOT WORK';
+				$this->cleanTempFiles($temp_files);
+//				echo 'FILE DID NOT WORK';
 
 				return null;
 			}
