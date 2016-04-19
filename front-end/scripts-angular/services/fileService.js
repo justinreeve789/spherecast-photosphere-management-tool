@@ -4,7 +4,7 @@ angular
 		this.uploadFileToUrl = function(file, uploadUrl)
 		{
 			var fd = new FormData();
-			fd.append('file', file);
+			fd.append('mediaFile', file);
 			$http.post(uploadUrl, fd,
 			{
 				transformRequest: angular.identity,
@@ -12,6 +12,10 @@ angular
 				{
 					'Content-Type': undefined
 				}
+			})
+			.progress(function(evt)
+			{
+				console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
 			})
 			.success(function(data)
 			{

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
     	<base href="/">
@@ -24,8 +24,9 @@
 		}
 		</style>
     </head>
-    <body ng-app="spherecastApp">
+    <body id="app">
 		<script>
+/*
 		  window.fbAsyncInit = function() {
 		    FB.init({
 		      appId      : '990909701004112',
@@ -41,25 +42,40 @@
 		     js.src = "//connect.facebook.net/en_US/sdk.js";
 		     fjs.parentNode.insertBefore(js, fjs);
 		   }(document, 'script', 'facebook-jssdk'));
+*/
 		</script>
 
-        <div class="container">
-        	<div ui-view></div>
-        </div>        
-     
+		<div>
+
+			<media-grid :list="media"></media-grid>
+
+			<template id="media-grid">
+				<div class="media-item col-lg-2 col-md-3 col-sm-4 col-xs-6" v-for="item in list">
+					<div class="media-item-image">
+						<a href="{{ item.code }}" target="_blank">
+							<img v-bind:src="thumbPath(item.code)" alt="" />
+						</a>
+					</div>
+					<div class="media-item-info">
+						<div class="media-item-code">{{ item.code }}</div>
+						<div class="media-item-title">{{ item.title }}</div>
+						<div class="media-item-edit">
+							<a href="#">
+								<i class="fa fa-cog fa-2x"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</template>
+		</div>
+
+		<div style="clear: both;">
+			<pre>{{ $media | json }}</pre>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
+		<script src="node_modules/vue-resource/dist/vue-resource.js"></script>
+		<script src="scripts/app2.js"></script>
     </body>
-
-    <!-- Application Dependencies -->
-    <script src="node_modules/angular/angular.js"></script>
-    <script src="node_modules/angular-ui-router/build/angular-ui-router.js"></script>
-    <script src="node_modules/satellizer/satellizer.js"></script>
-
-    <!-- Application Scripts -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/authController.js"></script>
-    <script src="scripts/controllers/userController.js"></script>
-    <script src="scripts/controllers/mediaController.js"></script>
-    <script src="scripts/controllers/fileController.js"></script>
-    <script src="scripts/directives/fileDirective.js"></script>
-    <script src="scripts/services/fileService.js"></script>
 </html>

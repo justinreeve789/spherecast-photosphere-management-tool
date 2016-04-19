@@ -213,6 +213,11 @@ class MediaController extends Controller
 	{
 		$file = \Input::file('mediaFile');
 		$errors = [];
+		if (!$file)
+		{
+			$errors['message'] = 'File not found.';
+			return $errors;
+		}
 
 		// Make sure we have a site.
 		$site = $this->getCurrentSite();
@@ -230,6 +235,7 @@ class MediaController extends Controller
 		if ($file->getMimeType() != 'image/jpeg' && $file->getMimeType() != 'image/png')
 		{
 			$errors['message'] = 'Not a valid JPEG or PNG.';
+			return $errors;
 		}
 		else
 		{
