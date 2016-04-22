@@ -24,9 +24,8 @@
 		}
 		</style>
     </head>
-    <body id="app">
+    <body ng-app="spherecastApp">
 		<script>
-/*
 		  window.fbAsyncInit = function() {
 		    FB.init({
 		      appId      : '990909701004112',
@@ -42,42 +41,23 @@
 		     js.src = "//connect.facebook.net/en_US/sdk.js";
 		     fjs.parentNode.insertBefore(js, fjs);
 		   }(document, 'script', 'facebook-jssdk'));
-*/
 		</script>
 
-		<div class="container-fluid">
-			<media-grid></media-grid>
-		</div>
+       	<div ui-view></div>
+     
+   </body>
 
-		<template id="media-grid">
-			<div class="media-item col-lg-2 col-md-3 col-sm-4 col-xs-12" v-for="item in list">
-				<div class="media-item-image">
-					<a href="{{ item.code }}" target="_blank">
-						<img v-bind:src="thumbPath(item.code)" alt="" />
-					</a>
-				</div>
-				<div class="media-item-info">
-					<div class="media-item-code">{{ item.code }}</div>
-					<div class="media-item-title">{{ item.title }}</div>
-					<div class="media-item-edit">
-						<a href="#" @click="showRight = true">
-							<i class="fa fa-cog fa-2x"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</template>
+    <!-- Application Dependencies -->
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-ui-router/build/angular-ui-router.js"></script>
+    <script src="node_modules/satellizer/satellizer.js"></script>
 
-		<button @click="showRight = true">Button</button>
-
-		<div style="clear: both;">
-			<pre>{{ $media | json }}</pre>
-		</div>
-
-		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
-		<script src="node_modules/vue-resource/dist/vue-resource.js"></script>
-		<script src="node_modules/vue-strap/dist/vue-strap.js"></script>
-		<script src="scripts-vue/app3.js"></script>
-    </body>
+    <!-- Application Scripts -->
+    <script src="scripts-angular/app.js"></script>
+    <script src="scripts-angular/controllers/authController.js"></script>
+    <script src="scripts-angular/controllers/userController.js"></script>
+    <script src="scripts-angular/controllers/mediaController.js"></script>
+    <script src="scripts-angular/controllers/fileController.js"></script>
+    <script src="scripts-angular/directives/fileDirective.js"></script>
+    <script src="scripts-angular/services/fileService.js"></script>
 </html>

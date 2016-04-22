@@ -34,6 +34,6 @@ var vm = new Vue({
 	data: data,
 	components:
 	{
-//		'sidebar': sidebar,
+		'alert': alert,
 	}
 });
