@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
     	<base href="/">
@@ -43,11 +43,9 @@
 		   }(document, 'script', 'facebook-jssdk'));
 		</script>
 
-        <div class="container">
-        	<div ui-view></div>
-        </div>        
+       	<div ui-view></div>
      
-    </body>
+   </body>
 
     <!-- Application Dependencies -->
     <script src="node_modules/angular/angular.js"></script>
@@ -55,11 +53,11 @@
     <script src="node_modules/satellizer/satellizer.js"></script>
 
     <!-- Application Scripts -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/authController.js"></script>
-    <script src="scripts/controllers/userController.js"></script>
-    <script src="scripts/controllers/mediaController.js"></script>
-    <script src="scripts/controllers/fileController.js"></script>
-    <script src="scripts/directives/fileDirective.js"></script>
-    <script src="scripts/services/fileService.js"></script>
+    <script src="scripts-angular/app.js"></script>
+    <script src="scripts-angular/controllers/authController.js"></script>
+    <script src="scripts-angular/controllers/userController.js"></script>
+    <script src="scripts-angular/controllers/mediaController.js"></script>
+    <script src="scripts-angular/controllers/fileController.js"></script>
+    <script src="scripts-angular/directives/fileDirective.js"></script>
+    <script src="scripts-angular/services/fileService.js"></script>
 </html>

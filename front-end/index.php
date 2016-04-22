@@ -45,29 +45,30 @@
 */
 		</script>
 
-		<div>
+		<div class="container-fluid">
+			<media-grid></media-grid>
+		</div>
 
-			<media-grid :list="media"></media-grid>
-
-			<template id="media-grid">
-				<div class="media-item col-lg-2 col-md-3 col-sm-4 col-xs-6" v-for="item in list">
-					<div class="media-item-image">
-						<a href="{{ item.code }}" target="_blank">
-							<img v-bind:src="thumbPath(item.code)" alt="" />
+		<template id="media-grid">
+			<div class="media-item col-lg-2 col-md-3 col-sm-4 col-xs-12" v-for="item in list">
+				<div class="media-item-image">
+					<a href="{{ item.code }}" target="_blank">
+						<img v-bind:src="thumbPath(item.code)" alt="" />
+					</a>
+				</div>
+				<div class="media-item-info">
+					<div class="media-item-code">{{ item.code }}</div>
+					<div class="media-item-title">{{ item.title }}</div>
+					<div class="media-item-edit">
+						<a href="#" @click="showRight = true">
+							<i class="fa fa-cog fa-2x"></i>
 						</a>
 					</div>
-					<div class="media-item-info">
-						<div class="media-item-code">{{ item.code }}</div>
-						<div class="media-item-title">{{ item.title }}</div>
-						<div class="media-item-edit">
-							<a href="#">
-								<i class="fa fa-cog fa-2x"></i>
-							</a>
-						</div>
-					</div>
 				</div>
-			</template>
-		</div>
+			</div>
+		</template>
+
+		<button @click="showRight = true">Button</button>
 
 		<div style="clear: both;">
 			<pre>{{ $media | json }}</pre>
@@ -76,6 +77,7 @@
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
 		<script src="node_modules/vue-resource/dist/vue-resource.js"></script>
-		<script src="scripts/app2.js"></script>
+		<script src="node_modules/vue-strap/dist/vue-strap.js"></script>
+		<script src="scripts-vue/app3.js"></script>
     </body>
 </html>

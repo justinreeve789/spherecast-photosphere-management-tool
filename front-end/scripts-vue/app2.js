@@ -1,3 +1,7 @@
+Vue.filter('jsonIt', function(value)
+{
+});
+
 var data = {
 	plans: [
 		{ name: 'Enterprise', price: 100 },
