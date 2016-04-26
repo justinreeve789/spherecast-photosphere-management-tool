@@ -12,6 +12,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     use Authenticatable, CanResetPassword;
 
 	protected $id;
+	protected $site_id;
+	protected $access_id;
 	protected $email;
 	protected $password;
 	protected $name;
@@ -30,8 +32,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	protected $table = 'users';
 
-	public function sites()
+	public function site()
 	{
-		return $this->belongsToMany('App\Site', 'users_sites', 'user_id', 'site_id');
+		return $this->belongsTo('App\Site', 'site_id', 'id');
 	}
 }

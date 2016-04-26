@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
 			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0],
 			['subdomain' => 'vrdemo', 'domain' => 'sphcst.com', 'title' => 'VR Demo', 'shared' => 1],
 			['subdomain' => '', 'domain' => 'avms.us', 'title' => 'AVMS', 'shared' => 1],
+			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 1],
 		);
 
 		foreach ($sites as $site)
@@ -39,7 +40,7 @@ class DatabaseSeeder extends Seeder
 	        ['name' => 'Holly Lloyd', 'email' => 'holly@scotch.io', 'password' => Hash::make('secret')],
 	        ['name' => 'Adnan Kukic', 'email' => 'adnan@scotch.io', 'password' => Hash::make('secret')],
         );
-            
+
         foreach ($users as $user)
         {
             $user = User::create($user);

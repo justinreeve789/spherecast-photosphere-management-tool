@@ -38,3 +38,68 @@ form#login-form
   color: #fff;
   background-color: #294786;
 }
+
+.background-dark
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 5;
+	background-color: #000000;
+	height: 100%;
+	opacity: 0.65;
+	width: 100%;
+}
+
+#edit-sphere-sidebar
+{
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	z-index: 100;
+	background-color: #f0f0f0;
+	border-left: solid 2px #c0c0c0;
+	height: 100%;
+	padding: 15px 20px;
+	width: 440px;
+}
+
+	#edit-sphere-sidebar.animated.ng-enter
+	{
+		-webkit-animation: slideInRight 3s;
+		-moz-animation: slideInRight 3s;
+		-ms-animation: slideInRight 3s;
+		animation: slideInRight 3s;
+	}
+
+	#edit-sphere-sidebar.animated.ng-leave
+	{
+		-webkit-animation: slideOutRight 3s;
+		-moz-animation: slideOutRight 3s;
+		-ms-animation: slideOutRight 3s;
+		animation: slideOutRight 3s;
+	}
+
+@media (max-width: 460px)
+{
+	#edit-sphere-sidebar
+	{
+		min-width: 0px;
+		width: 100%;
+	}
+}
+
+span.create-account
+{
+	margin-left: 15px;
+}
+
+	span.create-account a
+	{
+		text-decoration: underline;
+	}
+
+.form-error
+{
+	color: #d00000;
+}

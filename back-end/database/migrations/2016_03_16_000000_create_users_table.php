@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table)
         {
             $table->increments('id');
+			$table->integer('site_id')->default(1)->unsigned()->index();
+			$table->integer('access_id')->default(1)->unsigned()->index();
             $table->string('email', 255);
             $table->string('password', 64);
             $table->string('name');
@@ -23,7 +25,16 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-			$table->unique(['email', 'auth_provider']);
+			$table->unique(['email', 'site_id', 'auth_provider']);
+
+			// TODO: Instead of using a site_id foreign key, run a script that checks
+			// for orphaned user records and archives them.
+/*
+ 			$table->foreign('site_id')
+				->references('id')->on('sites')
+				->onDelete('cascade')
+				->onUpdate('cascade');
+*/
         });
     }
 

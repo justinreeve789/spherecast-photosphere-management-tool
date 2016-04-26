@@ -1,0 +1,29 @@
+<div id="login" class="col-sm-4 col-sm-offset-4">
+	<div class="well">
+		<h3>Create an account</h3>
+		<form id="login-form">
+			<div class="form-group">
+		    	<input type="text" class="form-control" placeholder="Name" ng-model="auth.name">
+		    	<span class="form-error">{{ auth.error.error_name }}</span>
+		  	</div>
+			<div class="form-group">
+		    	<input type="email" class="form-control" placeholder="Email" ng-model="auth.email">
+		    	<span class="form-error">{{ auth.error.error_email }}</span>
+		  	</div>
+		  	<div class="form-group">
+		    	<input type="password" class="form-control" placeholder="Password" ng-model="auth.password">
+		    	<span class="form-error">{{ auth.error.error_password }}</span>
+		  	</div>
+		  	<div class="form-group">
+		    	<input type="password" class="form-control" placeholder="Verify password" ng-model="auth.verifypassword">
+		    	<span class="form-error">{{ auth.error.error_verifypassword }}</span>
+		  	</div>
+
+			<p class="form-error">{{ auth.error.error_general }}</p>
+
+		  	<button class="btn btn-primary" ng-click="auth.signup()">Sign up</button>
+		  	<a class="btn btn-danger" href="/login">Cancel</a>
+		</form>
+
+	</div>
+</div>

@@ -49,7 +49,9 @@ angular
 ]);
 */
 
-spherecastApp.controller('MediaController', ['$scope', '$http', '$routeParams', '$upload', function($scope, $http, $routeParams, $upload)
+angular
+	.module('spherecastApp')
+	.controller('MediaController', ['$scope', '$http', '$routeParams', '$upload', function($scope, $http, $routeParams, $upload)
 {
 	$scope.$watch('files', function()
 	{

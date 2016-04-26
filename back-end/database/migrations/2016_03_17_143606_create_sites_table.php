@@ -20,7 +20,8 @@ class CreateSitesTable extends Migration
             $table->string('title', 64)->nullable();
             $table->integer('created_by')->unsigned()->index();
             $table->boolean('shared')->default(true);	// If a site is shared, all users will see the same media. Otherwise, they only see their own media.
-            $table->timestamps();
+            $table->boolean('allow_signups')->default(true);
+			$table->timestamps();
         });
     }
 

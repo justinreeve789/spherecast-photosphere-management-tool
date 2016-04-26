@@ -8,20 +8,22 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Hash;
+use App\Site;
 use App\User;
+use App\UserSite;
 use Config;
 use GuzzleHttp;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 class AuthenticateController extends Controller
 {
-
     public function __construct()
     {
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['authenticateLocal', 'authenticateGoogle', 'authenticateFacebook']]);
+        $this->middleware('jwt.auth', ['except' => ['createLocalUser', 'authenticateLocal', 'authenticateGoogle', 'authenticateFacebook']]);
     }
 
     /**
@@ -36,6 +38,80 @@ class AuthenticateController extends Controller
 
         return $users;
     }
+
+	/**
+	 * Return a JWT.
+	 * TODO: Take into account if a site is allowing new signups.
+	 *
+	 * @return Response
+	 */
+	public function createLocalUser(Request $request)
+	{
+		$credentials = $request->only('name', 'email', 'password', 'verifypassword');
+		$email = strtolower(trim($credentials['email']));
+		$name = trim($credentials['name']);
+		$password = $credentials['password'];
+		$verifypassword = $credentials['verifypassword'];
+
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Invalid site.'], 401);
+
+		// Make sure all the fields are present.
+		if ($name == '')
+			return response()->json(['error_name' => 'Please enter a name.'], 401);
+
+		if ($email == '')
+			return response()->json(['error_email' => 'Please enter an email.'], 401);
+
+		if ($password == '')
+			return response()->json(['error_password' => 'Please enter a password.'], 401);
+
+		if ($verifypassword == '')
+			return response()->json(['error_verifypassword' => 'Please verify your password.'], 401);
+
+		// Make sure the passwords match.
+		if ($credentials['password'] != $credentials['verifypassword'])
+			return response()->json(['error_verifypassword' => 'The passwords you entered don\'t match.'], 401);
+
+		// Make sure the password is complex enough: 1 number, 1 letter, 8 or more characters.
+//		if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,64}$/', $password))
+//			return response()->json(['error_verifypassword' => 'Your password is not strong enough. It must have at least 1 number, 1 letter, and 8 or more characters.']);
+
+		// Make sure the email is valid.
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
+			return response()->json(['error_email' => 'Please enter a valid email address.'], 401);
+
+		// Make sure the account doesn't already exist. Force to lowercase, even though
+		// technically emails are case-sensitive.
+		$user = User::where('email', $email)->where('site_id', $site->id)->where('auth_provider', 'local')->first();
+		if ($user)
+			return response()->json(['error_email' => 'This email already belongs to a registered account.'], 401);
+
+		if (!$user)
+		{
+			// No user found, create account.
+			$new = new User;
+			$new->site_id = Site::current()->id;
+			$new->name = $name;
+			$new->email = $email;
+			$new->password = Hash::make($password);
+			$new->auth_provider = 'local';
+			$new->remember_token = '';
+			$new->save();
+
+			$user = $new;
+		}
+
+		if ($user)
+		{
+			// Return the token.
+			$token = JWTAuth::fromUser($user);
+			return response()->json(['token' => $token]);
+		}
+		else
+			return response()->json(['error_general' => 'Something went wrong! Your account was not created.'], 401);
+	}
 
     /**
      * Return a JWT
@@ -56,7 +132,11 @@ class AuthenticateController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 */
-		$user = User::where('email', $credentials['email'])->first();
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Site not found.'], 401);
+
+		$user = User::where('email', $credentials['email'])->where('site_id', $site->id)->where('auth_provider', 'local')->first();
 		if (!$user || !password_verify($credentials['password'], $user->password))
 		{
 			return response()->json(['error' => 'invalid_credentials'], 401);
@@ -100,6 +180,7 @@ class AuthenticateController extends Controller
 		{
 			// No user found, create account.
 			$new = new \App\User;
+			$new->site_id = Site::current()->id;
 			$new->name= $profile['name'];
 			$new->email = $profile['email'];
 			$new->password = '{}';
@@ -121,6 +202,10 @@ class AuthenticateController extends Controller
 
 	public function authenticateFacebook(Request $request, $provider = 'facebook')
 	{
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Site not found.'], 401);
+
 		$secret_config = 'custom.' . $provider . '_secret';
         $params = [
             'code' => $request->input('code'),
@@ -157,6 +242,7 @@ class AuthenticateController extends Controller
 		{
 			// No user found, create account.
 			$new = new \App\User;
+			$new->site_id = Site::current()->id;
 			$new->name = $profile['name'];
 			$new->email = $profile['email'];
 			$new->password = '{}';

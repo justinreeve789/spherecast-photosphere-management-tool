@@ -1,4 +1,6 @@
-<div id="media-grid" ng-if="media.items">
+<edit-sphere ng-if="pageEditing" item="currentItem"></edit-sphere>
+		
+<div id="media-grid" ng-if="media.items" class="animated fadeIn">
 	<div class="col-lg-2 col-md-3 col-sm-6 col-xs-6" ng-repeat="item in media.items">
 		<div class="media-item">
 			<div class="media-item-image">
@@ -10,15 +12,14 @@
 				<div class="media-item-code">{{ item.code }}</div>
 				<div class="media-item-title">{{ item.title }}</div>
 				<div class="media-item-edit">
-					<a href="#">
-						<i class="fa fa-cog fa-2x"></i>
-					</a>
+					<button ng-click="edit(item)" item="item" class="edit btn btn-md btn-default">Edit</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="alert alert-danger" ng-if="user.error">
-		<strong>There was an error: </strong> {{user.error.error}}
-		<br>Please go back and login again
+		<strong>There was an error: </strong> {{user.error.error}}<br />
+		Please go back and login again.
 	</div>
 </div>
+

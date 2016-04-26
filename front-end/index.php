@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" type="text/css" />
+		<link rel="stylesheet" href="assets/css/bootstrap-switch.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/media.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
@@ -43,21 +45,41 @@
 		   }(document, 'script', 'facebook-jssdk'));
 		</script>
 
-       	<div ui-view></div>
-     
+		<div ui-view></div>
+<!--
+		<media-edit-directive></media-edit-directive>
+
+	    <div modal="showModal" close="cancel()">
+	      <div class="modal-header">
+	          <h4>Modal Dialog</h4>
+	      </div>
+	      <div class="modal-body">
+	          <p>Example paragraph with some text.</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button class="btn btn-success" ng-click="ok()">Okay</button>
+	        <button class="btn" ng-click="cancel()">Cancel</button>
+	      </div>
+	    </div>
+-->
    </body>
 
     <!-- Application Dependencies -->
     <script src="node_modules/angular/angular.js"></script>
-    <script src="node_modules/angular-ui-router/build/angular-ui-router.js"></script>
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
     <script src="node_modules/satellizer/satellizer.js"></script>
+    <script src="assets/js/angular-ui-bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-switch.min.js"></script>
 
     <!-- Application Scripts -->
     <script src="scripts-angular/app.js"></script>
     <script src="scripts-angular/controllers/authController.js"></script>
     <script src="scripts-angular/controllers/userController.js"></script>
     <script src="scripts-angular/controllers/mediaController.js"></script>
-    <script src="scripts-angular/controllers/fileController.js"></script>
+
+    <script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
     <script src="scripts-angular/directives/fileDirective.js"></script>
+    <script src="scripts-angular/directives/editDirective.js"></script>
     <script src="scripts-angular/services/fileService.js"></script>
 </html>
