@@ -33,9 +33,10 @@ var app = angular
 			})
 			.state('logout', {
 				url: '/logout',
-				controller: function($auth, $location)
+				controller: function($scope, $rootScope, $auth, $location)
 				{
-					localStorage.removeItem('satellizer_token');
+					$auth.removeToken();
+					delete $rootScope.authToken;
 					$location.path('/login');
 				},
 			})
@@ -56,4 +57,15 @@ var app = angular
 			});
 
 		$locationProvider.html5Mode(true);
-	});
+	})
+	.run(['$rootScope', '$location', '$auth', '$state', function($rootScope, $location, $auth, $state)
+	{
+		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
+		{
+			// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
+			if (!$auth.isAuthenticated() && $state.current.name != '' && $state.current.name != 'signup' && $state.current.name != 'auth' && $state.current.name != 'logout' && $state.current.name != 'upload')
+			{
+				$location.path('/logout');
+			}
+		});
+	}]);

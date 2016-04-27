@@ -10,7 +10,7 @@ angular
 		{
 			console.log($scope.currentItem);
 		},
-		templateUrl: '/views/editView.html',
+		templateUrl: '/partials/editmedia.html',
 		replace: false,
 		scope: true,
 	}

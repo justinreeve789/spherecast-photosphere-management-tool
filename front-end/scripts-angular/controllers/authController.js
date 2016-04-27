@@ -11,7 +11,7 @@
 		.controller('AuthSocial', function($scope, $auth) {
 	});
 
-	function AuthController($scope, $http, $auth, $state) {
+	function AuthController($scope, $rootScope, $http, $auth, $state) {
 		var vm = this;
 
 		vm.login = function() {
@@ -22,11 +22,13 @@
 			}
 
 			// Use Satellizer's $auth service to login.
-			$auth.login(credentials).then(function(data) {
-
-				// If login is successful, retrieve the user object, and redirect to the /spheres state.
+			$auth.login(credentials).then(function(data)
+			{
+				// Authentication successful, so redirect to /spheres.
+				$rootScope.authToken = $auth.getToken();
 				$state.go('spheres');
-			}, function(error) {
+			}, function(error)
+			{
 				console.log(error);
 			});
 		}
@@ -34,7 +36,8 @@
 		$scope.authenticateSocial = function(provider) {
 			$auth.authenticate(provider).then(function(data)
 			{
-				// Authentication successful, so go to /spheres.
+				// Authentication successful, so redirect to /spheres.
+				$rootScope.authToken = $auth.getToken();
 				$state.go('spheres');
 			}).catch(function(error)
 			{

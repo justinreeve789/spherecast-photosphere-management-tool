@@ -9,7 +9,7 @@
 	    <meta name="description" content="">
 	    <meta name="author" content="">
 	    <meta property="og:site_name" content="Spherecast" />
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />

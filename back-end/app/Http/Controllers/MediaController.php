@@ -604,4 +604,20 @@ class MediaController extends Controller
 		if ($media)
 			return \Response::view('viewer', ['media' => $media]);
 	}
+
+	/**
+	 * Retrieve the media for a given IP address. This can give users a preview of the media associated
+	 * with a certain IP address, which later importMediaByIP() can assign to their accounts.
+	 */
+	public function getMediaByIP($ip, $limit = 20)
+	{
+	}
+
+	/**
+	 * Create a media record and copy (not move) the file from the old sphcst.com uploads, and assign
+	 * it to a specific site and user.
+	 */
+	public function importMediaFromOld($old_media_id, $site_id, $user_id)
+	{
+	}
 }

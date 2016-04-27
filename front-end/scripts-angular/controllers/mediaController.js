@@ -4,7 +4,7 @@ angular
 	.module('spherecastApp')
 	.controller('MediaController', MediaController);
 
-function MediaController($scope, $http) {
+function MediaController($scope, $rootScope, $http) {
 
 	var vm = this;
 
