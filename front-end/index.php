@@ -72,6 +72,7 @@
     <script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
     <script src="assets/js/angular-ui-bootstrap-modal.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
+    <script src="assets/js/ng-infinite-scroll.min.js"></script>
 
     <!-- Application Scripts -->
     <script src="scripts-angular/app.js"></script>

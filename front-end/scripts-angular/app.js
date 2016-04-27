@@ -67,5 +67,8 @@ var app = angular
 			{
 				$location.path('/logout');
 			}
+
+			// Everything's good. Store the token in the root scope.
+			$rootScope.authToken = $auth.getToken();
 		});
 	}]);
