@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 		DB::table('access')->delete();
 
 		$sites = array(
-			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0],
+			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0, 'force_login' => false],
 			['subdomain' => 'vrdemo', 'domain' => 'sphcst.com', 'title' => 'VR Demo', 'shared' => 1],
 			['subdomain' => '', 'domain' => 'avms.us', 'title' => 'AVMS', 'shared' => 1],
 			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 1],

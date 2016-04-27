@@ -1,5 +1,19 @@
-<button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*">
-	Upload File
-</button>
-File:
-<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+<ng-include src="'/views/headerView.html'"></ng-include>
+
+<div id="upload" class="col-sm-4 col-sm-offset-4">
+	<div class="well">
+		<p>Upload a photo sphere or panorama:</p>
+		<button class="btn btn-lg btn-primary" type="file" ngf-select="upload($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'">
+			Upload File
+		</button>
+
+		<br /><br />
+
+		<p>Or paste a direct URL to a photo sphere:</p>
+
+		<form id="url-form">
+			<input type="text" id="mediaUrl" ng-model="mediaUrl" />
+			<button class="btn btn-success">Submit</button>
+		</form>
+	</div>
+</div>

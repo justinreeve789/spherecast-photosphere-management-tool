@@ -66,9 +66,10 @@
 
     <!-- Application Dependencies -->
     <script src="node_modules/angular/angular.js"></script>
-    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="node_modules/angular-animate/angular-animate.min.js"></script>
-    <script src="node_modules/satellizer/satellizer.js"></script>
+    <script src="node_modules/satellizer/satellizer.min.js"></script>
+    <script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
     <script src="assets/js/angular-ui-bootstrap-modal.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
 
@@ -77,6 +78,7 @@
     <script src="scripts-angular/controllers/authController.js"></script>
     <script src="scripts-angular/controllers/userController.js"></script>
     <script src="scripts-angular/controllers/mediaController.js"></script>
+    <script src="scripts-angular/controllers/fileController.js"></script>
 
     <script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
     <script src="scripts-angular/directives/fileDirective.js"></script>

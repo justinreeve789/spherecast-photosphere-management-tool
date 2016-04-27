@@ -1,5 +1,5 @@
 var app = angular
-	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate'])
+	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload'])
 	.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
 		// Satellizer configuration that specifies which API
@@ -47,7 +47,7 @@ var app = angular
 			.state('upload', {
 				url: '/upload',
 				templateUrl: '../views/uploadView.html',
-				controller: 'MultiFileController as singleFile',
+				controller: 'SingleFileController as file',
 			})
 			.state('users', {
 				url: '/users',
