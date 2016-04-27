@@ -44,7 +44,7 @@ form#login-form
 	position: fixed;
 	top: 0px;
 	left: 0px;
-	z-index: 5;
+	z-index: 1001;
 	background-color: #000000;
 	height: 100%;
 	opacity: 0.65;
@@ -56,7 +56,7 @@ form#login-form
 	position: fixed;
 	top: 0px;
 	right: 0px;
-	z-index: 100;
+	z-index: 1002;
 	background-color: #f0f0f0;
 	border-left: solid 2px #c0c0c0;
 	height: 100%;

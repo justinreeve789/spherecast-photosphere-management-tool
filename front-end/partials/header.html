@@ -12,16 +12,16 @@
 		</div>
 		<div class="navbar-collapse collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
-				<li>
+				<li ng-if="authToken">
 					<a href="/spheres">Manage</a>
 				</li>
 				<li>
 					<a href="/upload">Upload</a>
 				</li>
-				<li ng-show="authToken">
+				<li ng-if="authToken">
 					<a href="/logout">Logout</a>
 				</li>
-				<li ng-show="!authToken">
+				<li ng-if="!authToken">
 					<a href="/login">Login</a>
 				</li>
 			</ul>

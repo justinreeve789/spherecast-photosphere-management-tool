@@ -17,8 +17,8 @@ var app = angular
 			url: '/api/auth/facebook'
 		});
 
-		// Redirect to the auth state if any other states are requested.
-		$urlRouterProvider.otherwise('/login');
+		// Redirect to the upload state if any other states are requested.
+		$urlRouterProvider.otherwise('upload');
 
 		$stateProvider
 			.state('auth', {
@@ -49,11 +49,6 @@ var app = angular
 				url: '/upload',
 				templateUrl: '../views/uploadView.html',
 				controller: 'SingleFileController as file',
-			})
-			.state('users', {
-				url: '/users',
-				templateUrl: '../views/userView.html',
-				controller: 'UserController as user',
 			});
 
 		$locationProvider.html5Mode(true);
