@@ -20,7 +20,7 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['downloadThumbnail', 'showUpload', 'processUpload']]);
+        $this->middleware('jwt.auth', ['except' => ['downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
     }
 
 	/**
@@ -163,6 +163,112 @@ class MediaController extends Controller
 	}
 
 	/**
+	 * Import image from URL.
+	 * TODO: Allow a "url" parameter to be manually specified to retrieve the file, but not on the "free" subscription.
+	 */
+	public function importFile($url = null)
+	{
+		$temp_files = [];
+
+		// Make sure we have a site.
+		$site = Site::current();
+		if (!$site)
+			return null;
+
+		// Make sure we have a user. Set $userId to 0 if anonymous.
+		$user = $this->getUser();
+		if ($user)
+			$user_id = $user->id;
+		else
+			$user_id = 0;
+
+		if ($url == null)
+			$url = \Input::get('url');
+
+		if ($url != null && $url != '')
+		{
+			$url_path = parse_url($url, PHP_URL_PATH);
+
+			// If there's no path, create a filename based on the date and time.
+			if (!$url_path)
+				$url_filename = date('Ymd') . '_' . date('Hi') . '_' . uniqid();
+			else
+				$url_filename = pathinfo($url_path, PATHINFO_FILENAME);
+			$url_extension = pathinfo($url_path, PATHINFO_EXTENSION);
+			$extensions = ['jpg', 'jpeg', 'png'];
+
+			// TODO: Use cURL to grab just the headers of the URL first, to determine the Content-Type.
+			// Either this, or download the file and use exif_imagetype().
+			$temp_filename = 'tmp_' . uniqid() . '_' . date('YmdHis');
+			if ($url_extension && in_array(strtolower($url_extension), $extensions))
+				$temp_extension = $url_extension;
+			else
+				$temp_extension = 'jpg';	// Note: This might not be a JPEG, but we're just naming it this anyway.
+			$temp_file = \Config::get('custom.tmp_path') . '/' . $temp_filename . '.' . $temp_extension;
+			$temp_files[] = $temp_file;
+
+			file_put_contents($temp_file, fopen($url, 'r'));
+			if (!file_exists($temp_file))
+			{
+				$errors['message'] = 'File could not be retrieved from URL.';
+				return $errors;
+			}
+
+			$imagetype = exif_imagetype($temp_file);
+			if (!$imagetype)
+			{
+				$errors['nessage'] = 'Not a valid image.';
+				return $errors;
+			}
+			else
+			{
+				// Convert the file.
+				$file_item = $this->convertFile($temp_file);
+				if ($file_item !== null)
+				{
+					// Create a short code for the media item, checking that the code isn't already being used.
+					$code = '';
+					$chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+
+					do
+					{
+						$media = null;
+						for ($i = 0; $i < 5; $i++)
+						{
+							$code .= $chars[rand(0, strlen($chars) - 1)];
+						}
+						$media = Media::where('code', $code)->first();
+					}
+					while ($media !== null);
+
+					// Create the media record, and link it to the file.
+					$media = new Media;
+					$media->code = $code;
+					$media->site_id = $site->id;
+					$media->user_id = $user_id;
+					$media->original_filename = $url_filename;
+					$media->original_extension = $url_extension;
+					$media->ip = \Request::getClientIp(true);
+					$media->save();
+
+					if (isset($media->id))
+					{
+						$media_file = new MediaFile;
+						$media_file->media_id = $media->id;
+						$media_file->file_id = $file_item->id;
+						$media_file->position = 0;
+						$media_file->save();
+
+						$media = Media::where('media.id', $media->id)->first();
+						return $media;
+					}
+				}
+			}
+		}
+		return;
+	}
+
+	/**
 	 * Upload files and initiate conversion process.
 	 */
 	public function processUpload()
@@ -246,14 +352,15 @@ class MediaController extends Controller
 						$media_file->save();
 
 						$media = Media::where('media.id', $media->id)->first();
-//						return $media;
-						return \Redirect::to('/' . $media->code);
+						return $media;
+//						return \Redirect::to('/' . $media->code);
 //						header('location: http://manage.sphcst.com/api/' . $media->code);
 					}
 				}
 			}
 		}
-		return \Redirect::to('/upload');
+//		return \Redirect::to('/upload');
+		return;
 	}
 
 	/**

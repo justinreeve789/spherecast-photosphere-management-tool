@@ -19,6 +19,7 @@ Route::get('/site', ['uses' => 'MediaController@getCurrentSite']);
 Route::get('/list', ['uses' => 'MediaController@showMediaGrid']);
 Route::get('/upload', ['uses' => 'MediaController@showUpload']);
 Route::post('/upload', ['uses' => 'MediaController@processUpload']);
+Route::get('/import', ['uses' => 'MediaController@importFile']);
 Route::get('/media/list', ['uses' => 'MediaController@getMedia']);
 Route::get('/media/{code}', ['uses' => 'MediaController@downloadMedia']);
 Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
