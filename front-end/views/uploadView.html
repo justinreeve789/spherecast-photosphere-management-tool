@@ -1,19 +1,31 @@
 <ng-include src="'/partials/header.html'"></ng-include>
 
 <div id="upload" class="col-sm-6 col-sm-offset-4">
-	<div class="well">
-		<p>Upload a photo sphere or panorama:</p>
+	<div class="well text-center">
+		<p class="lead upload-text">Upload a photo sphere or panorama:</p>
 		<button class="btn btn-lg btn-primary" type="file" ngf-select="upload($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'">
 			Upload File
 		</button>
 
 		<br /><br />
 
-		<p>Or paste a direct URL to a photo sphere:</p>
+		<p class="lead import-text">Or paste a direct URL to a photo sphere:</p>
 
 		<form id="url-form">
-			<input type="text" id="mediaUrl" ng-model="mediaUrl" />
+			<input type="text" id="url" ng-model="url" />
 			<button class="btn btn-success">Submit</button>
 		</form>
+
+		<div class="instructions">
+			<p class="text-left">
+				Note: Direct links to G+ pages aren't supported. The URL must directly link to a .jpg. Example: http://viewer.spherecast.org/photosphere.jpg
+			</p>
+			<p class="text-left">
+				Tip: You can also load this as http://viewer.spherecast.org/upload?url={enter_url_here}
+			</p>
+			<p class="text-left">
+				Need help finding photospheres to import or upload? Look on Google Images.
+			</p>
+		</div>
 	</div>
 </div>
