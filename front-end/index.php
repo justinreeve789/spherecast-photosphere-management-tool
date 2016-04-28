@@ -73,6 +73,11 @@
     <script src="assets/js/angular-ui-bootstrap-modal.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
     <script src="assets/js/ng-infinite-scroll.min.js"></script>
+	<script src="assets/js/three.r69.min.js"></script>
+	<script src="assets/js/StereoEffect.js"></script>
+	<script src="assets/js/DeviceOrientationControlsVR.js"></script>
+	<script src="assets/js/OrbitControls.js"></script>
+    <script src="assets/js/viewer.min.js"></script>
 
     <!-- Application Scripts -->
     <script src="scripts-angular/app.js"></script>
@@ -85,5 +90,4 @@
     <script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
     <script src="scripts-angular/directives/fileDirective.js"></script>
     <script src="scripts-angular/directives/editDirective.js"></script>
-    <script src="scripts-angular/services/fileService.js"></script>
 </html>

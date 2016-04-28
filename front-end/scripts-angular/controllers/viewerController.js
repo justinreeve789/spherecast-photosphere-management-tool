@@ -16,7 +16,6 @@ angular
 	}
 
 	// Check that the path passed corresponds to a shortname on the site.
-	var noMedia = true;
 	if (typeof $stateParams.code !== undefined)
 	{
 		var code = $stateParams.code;
@@ -27,8 +26,7 @@ angular
 			{
 				if (typeof item !== 'undefined' && item != '')
 				{
-					console.log('change');
-					noMedia = false;
+					// View the directive.
 				}
 				else
 				{
@@ -43,10 +41,5 @@ angular
 		{
 			$state.go('upload');
 		}
-	}
-
-	console.log(noMedia);
-	if (noMedia == true)
-	{
 	}
 }]);

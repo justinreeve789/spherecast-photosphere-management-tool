@@ -1,0 +1,35 @@
+        <div
+          id="webglContainer"
+          class="embedded-viewer" 
+          ng-webgl
+          ng-if="projectLoaded"
+        >
+	        <div id="viewer-toolbar">
+				<div id="togglemode">
+				    <input id="togglemode-checkbox" name="togglemode-checkbox" ng-Model="vrMode" type="checkbox" />
+				    <label class="togglemode-label" for="togglemode-checkbox">
+				        <span class="togglemode-icon"></span>
+				    </label>
+				</div>
+
+				<a id="viewer-share" ng-click="toggleShareBlock()"></a>
+
+				<a id="viewer-fullscreen" ng-click="toggleFullscreen()"></a>
+
+				<div id="share" ng-hide="showShareBlock">
+					<a class="close" ng-click="toggleShareBlock()"></a>
+
+					<label for="url">URL</label>
+					<input id="share-url" name="share-url" type="text" value="http://demo.spherecast.org/{{ activeProject.shortname }}" readonly="readonly" ng-click="selectShareText($event)" />
+
+					<label for="embed">Embed</label>
+					<textarea id="share-embed" name="share-embed" readonly="readonly" ng-click="selectShareText($event)" >&lt;iframe src="http://demo.spherecast.org/{{ activeProject.shortname }}" width="640" height="320" frameborder="0" allowfullscreen /&gt;</textarea>
+				</div>
+			</div>
+        </div>
+
+        <div id="viewer-hidden" style="display: none;">
+        	<input ng-Model="session" type="text" />
+        	<input ng-Model="activeScene" type="text" />
+        </div>
+        
