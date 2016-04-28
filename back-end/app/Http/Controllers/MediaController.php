@@ -20,7 +20,7 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
+        $this->middleware('jwt.auth', ['except' => ['getMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
     }
 
 	/**
@@ -74,12 +74,28 @@ class MediaController extends Controller
 	}
 
 	/**
+	 * Return a specific media object. Don't return anything if the site isn't correct.
+	 *
+	 * @param int $id
+	 */
+	public function getMedia($code)
+	{
+		$site = Site::current();
+		if ($site)
+		{
+			$media = Media::where('code', $code)->where('site_id', $site->id)->first();
+			return $media;
+		}
+		return;
+	}
+
+	/**
 	 * Return the media for the current site.
 	 *
 	 * @param int $limit
 	 * @param int $skip
 	 */
-	public function getMedia($limit = 50, $skip = 0, $force_only_show_current_user = false)
+	public function getMediaForSite($limit = 50, $skip = 0, $force_only_show_current_user = false)
 	{
 		$media = [];
 
@@ -207,9 +223,29 @@ class MediaController extends Controller
 			$temp_file = \Config::get('custom.tmp_path') . '/' . $temp_filename . '.' . $temp_extension;
 			$temp_files[] = $temp_file;
 
-			file_put_contents($temp_file, fopen($url, 'r'));
-			if (!file_exists($temp_file))
+			try
 			{
+//				set_time_limit(0);
+				$fp = fopen($temp_file, 'w+');
+				$ch = curl_init(str_replace(' ', '%20', $url));
+				curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+				curl_setopt($ch, CURLOPT_FILE, $fp);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_exec($ch);
+				curl_close($ch);
+				fclose($fp);
+//				file_put_contents($temp_file, fopen($url, 'r'));
+			}
+			catch (Exception $e)
+			{
+				$this->cleanTempFiles($temp_files);
+				$errors['message'] = 'File could not be downloaded from URL.';
+				return $errors;
+			}
+
+			if (!file_exists($temp_file) || filesize($temp_file) == 0)
+			{
+				$this->cleanTempFiles($temp_files);
 				$errors['message'] = 'File could not be retrieved from URL.';
 				return $errors;
 			}
@@ -217,6 +253,7 @@ class MediaController extends Controller
 			$imagetype = exif_imagetype($temp_file);
 			if (!$imagetype)
 			{
+				$this->cleanTempFiles($temp_files);
 				$errors['nessage'] = 'Not a valid image.';
 				return $errors;
 			}
@@ -265,7 +302,8 @@ class MediaController extends Controller
 				}
 			}
 		}
-		return;
+		$this->cleanTempFiles($temp_files);
+		return null;
 	}
 
 	/**

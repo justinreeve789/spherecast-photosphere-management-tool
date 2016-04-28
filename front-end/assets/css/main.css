@@ -103,3 +103,31 @@ span.create-account
 {
 	color: #d00000;
 }
+
+
+#upload div.upload-section
+{
+	margin-bottom: 40px;
+}
+
+#upload div.import-section
+{
+	margin-bottom: 30px;
+}
+
+div#upload-progress
+{
+	margin-top: 20px;
+}
+
+#upload .progress-bar
+{
+/*
+	background: rgb(30,87,153);
+	background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(125,185,232,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(125,185,232,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+	copy
+*/
+}

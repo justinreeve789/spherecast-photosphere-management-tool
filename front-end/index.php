@@ -80,6 +80,7 @@
     <script src="scripts-angular/controllers/userController.js"></script>
     <script src="scripts-angular/controllers/mediaController.js"></script>
     <script src="scripts-angular/controllers/fileController.js"></script>
+    <script src="scripts-angular/controllers/viewerController.js"></script>
 
     <script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
     <script src="scripts-angular/directives/fileDirective.js"></script>

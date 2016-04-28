@@ -18,7 +18,7 @@ var app = angular
 		});
 
 		// Redirect to the upload state if any other states are requested.
-		$urlRouterProvider.otherwise('upload');
+		$urlRouterProvider.otherwise('viewer');
 
 		$stateProvider
 			.state('auth', {
@@ -49,6 +49,11 @@ var app = angular
 				url: '/upload',
 				templateUrl: '../views/uploadView.html',
 				controller: 'SingleFileController as file',
+			})
+			.state('viewer', {
+				url: '/{code}',
+				templateUrl: '../views/viewerView.html',
+				controller: 'ViewerController as viewer',
 			});
 
 		$locationProvider.html5Mode(true);
