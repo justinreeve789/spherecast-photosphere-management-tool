@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         {
             $table->increments('id');
 			$table->integer('site_id')->default(1)->unsigned()->index();
-			$table->integer('access_id')->default(1)->unsigned()->index();
+			$table->integer('role_id')->default(1)->unsigned()->index();
             $table->string('email', 255);
             $table->string('password', 64);
             $table->string('name');
@@ -26,6 +26,11 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
 			$table->unique(['email', 'site_id', 'auth_provider']);
+
+			$table->foreign('site_id')
+				->references('id')->on('sites')
+				->onDelete('cascade')
+				->onUpdate('cascade');
 
 			// TODO: Instead of using a site_id foreign key, run a script that checks
 			// for orphaned user records and archives them.

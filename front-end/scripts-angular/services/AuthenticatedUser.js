@@ -1,6 +1,6 @@
 angular
 	.module('spherecastApp')
-	.service('AuthenticatedUser', ['$rootScope', '$http', function($rootScope, $http)
+	.service('AuthenticatedUser', ['$rootScope', '$http', '$auth', '$state', '$location', function($rootScope, $http, $auth, $state, $location)
 {
 	this.get = function()
 	{
@@ -21,4 +21,18 @@ angular
 			return localStorage.getItem('authenticated_user');
 		}
 	};
+
+	// Log out if the user is on a login-only state.
+	this.logoutIfInvalidState = function(currentState)
+	{
+		if (typeof currentState === 'undefined')
+			$location.path('/logout');
+
+		// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
+		// TODO: Retrieve the valid "public" states based on the site settings.
+		if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'upload' && currentState.name != 'viewer')
+		{
+			window.location = '/logout';
+		}
+	}
 }]);

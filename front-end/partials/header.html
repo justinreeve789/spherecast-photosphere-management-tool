@@ -13,17 +13,17 @@
 
 		<div class="navbar-collapse collapse" id="navbar" ng-class="!mainMenuCollapsed && 'in'" ng-click="mainMenuCollapse = true">
 			<ul class="nav navbar-nav navbar-right">
+				<li ng-class="{ active: $state.includes('spheres')}" ng-if="authToken">
+					<a ui-sref="spheres">Manage</a>
+				</li>
+				<li ng-class="{ active: $state.includes('upload')}">
+					<a ui-sref="upload">Upload</a>
+				</li>
 				<li ng-if="authToken">
-					<a href="/spheres">Manage</a>
+					<a ui-sref="logout">Logout</a>
 				</li>
-				<li>
-					<a href="/upload">Upload</a>
-				</li>
-				<li ng-if="authToken">
-					<a href="/logout">Logout</a>
-				</li>
-				<li ng-if="!authToken">
-					<a href="/login">Login</a>
+				<li ng-class="{ active: $state.includes('auth') || $state.includes('signup')}"ng-if="!authToken">
+					<a ui-sref="auth">Login</a>
 				</li>
 			</ul>
 		</div>

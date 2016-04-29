@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
 		DB::table('access')->delete();
 
 		$sites = array(
-			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0, 'force_login' => false],
+			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 			['subdomain' => 'vrdemo', 'domain' => 'sphcst.com', 'title' => 'VR Demo', 'shared' => 1],
 			['subdomain' => '', 'domain' => 'avms.us', 'title' => 'AVMS', 'shared' => 1],
-			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 1],
+			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 1, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 		);
 
 		foreach ($sites as $site)
@@ -44,17 +44,17 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $user)
         {
             $user = User::create($user);
-			UserSite::create(['site_id' => 1, 'user_id' => $user->id, 'access_id' => 1]);
+			UserSite::create(['site_id' => 1, 'user_id' => $user->id, 'role_id' => 2]);
         }
 
-		$accesses = array(
+		$subscriptions = array(
 			['name' => 'free', 'view_limit' => 50, 'search' => 0, 'edit_title' => 0, 'edit_description' => 0, 'edit_tags' => 0, 'multi_file_upload' => 0],
 			['name' => 'consumer'],
 		);
 
-		foreach ($accesses as $access)
+		foreach ($subscriptions as $subscription)
 		{
-			Access::create($access);
+			Access::create($subscription);
 		}
 		
         Model::reguard();

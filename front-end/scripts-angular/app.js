@@ -64,7 +64,11 @@ var app = angular
 	})
 	.run(['$rootScope', '$http', '$location', '$auth', '$state', 'SatellizerConfig', 'AuthenticatedUser', function($rootScope, $http, $location, $auth, $state, SatellizerConfig, AuthenticatedUser)
 	{
+		$rootScope.$state = $state;
 		$rootScope.mainMenuCollapsed = true;
+
+		// Log out if token is gone, both on first load and on state changes, and the user is on a login-only state.
+		AuthenticatedUser.logoutIfInvalidState($state.current);
 
 		// Retrieve the app ids for social logins and assign them to the Satellizer providers.
 		// TODO: Move this into a service, and call from here.
@@ -77,14 +81,10 @@ var app = angular
 			}
 		});
 
-		// Log out if token is gone.
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
-			// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
-			if (!$auth.isAuthenticated() && $state.current.name != '' && $state.current.name != 'signup' && $state.current.name != 'auth' && $state.current.name != 'logout' && $state.current.name != 'upload' && $state.current.name != 'viewer')
-			{
-				$location.path('/logout');
-			}
+			// Log out if user is accessing a state they shouldn't.
+			AuthenticatedUser.logoutIfInvalidState(toState);
 
 			// Everything's good. Store the token in the root scope.
 			$rootScope.authToken = $auth.getToken();

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Role;
 
 class Site extends Model
 {
@@ -25,6 +26,12 @@ class Site extends Model
 	public function providers()
 	{
 		return $this->hasMany('App\SiteProvider', 'site_id', 'id');
+	}
+
+	public function roles()
+	{
+		// Check that the site has the following roles defined: guest, user, and admin.
+		Role::where('site_id', $this->id)->first();
 	}
 
 	/**

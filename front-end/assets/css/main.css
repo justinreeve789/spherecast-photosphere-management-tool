@@ -108,11 +108,17 @@ span.create-account
 #upload div.upload-section
 {
 	margin-bottom: 40px;
+	margin-top: 10px;
 }
 
 #upload div.import-section
 {
-	margin-bottom: 30px;
+	margin-bottom: 40px;
+}
+
+#upload div.instructions
+{
+	background-color: #e6e6e6;
 }
 
 div#upload-progress, div#import-progress

@@ -15,7 +15,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	protected $id;
 	protected $site_id;
-	protected $access_id;
+	protected $role_id;
 	protected $email;
 	protected $password;
 	protected $name;
