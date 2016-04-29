@@ -149,11 +149,26 @@ class AuthenticateController extends Controller
 
 	public function authenticateGoogle(Request $request, $provider = 'google')
 	{
-		$secret_config = 'custom.' . $provider . '_secret';
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Site not found.'], 401);
+
+		foreach ($site->providers as $p)
+		{
+			if ($p->auth_provider == 'google')
+			{
+				$secret_config = $p->secret;
+				break;
+			}
+		}
+
+		if (!isset($secret_config))
+			return;
+
         $params = [
             'code' => $request->input('code'),
             'client_id' => $request->input('clientId'),
-            'client_secret' => Config::get($secret_config),
+            'client_secret' => $secret_config,
             'redirect_uri' => $request->input('redirectUri'),
             'grant_type' => 'authorization_code',
         ];
@@ -206,11 +221,22 @@ class AuthenticateController extends Controller
 		if (!$site)
 			return response()->json(['error_general' => 'Site not found.'], 401);
 
-		$secret_config = 'custom.' . $provider . '_secret';
+		foreach ($site->providers as $p)
+		{
+			if ($p->auth_provider == 'facebook')
+			{
+				$secret_config = $p->secret;
+				break;
+			}
+		}
+
+		if (!isset($secret_config))
+			return;
+
         $params = [
             'code' => $request->input('code'),
             'client_id' => $request->input('clientId'),
-            'client_secret' => Config::get($secret_config),
+            'client_secret' => $secret_config,
             'redirect_uri' => $request->input('redirectUri'),
             'grant_type' => 'authorization_code',
         ];

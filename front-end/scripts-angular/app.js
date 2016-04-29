@@ -1,5 +1,5 @@
 var app = angular
-	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload'])
+	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload', 'infinite-scroll'])
 	.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
 		// Satellizer configuration that specifies which API
@@ -7,13 +7,15 @@ var app = angular
 		$authProvider.loginUrl = '/api/auth/local';
 
 		$authProvider.google({
-			clientId: '812052042695-v4en26h82f35421l3lnhrfjvu8hrmu54.apps.googleusercontent.com',
+//			clientId: '812052042695-v4en26h82f35421l3lnhrfjvu8hrmu54.apps.googleusercontent.com',
+			clientId: '',
 			url: '/api/auth/google'
 		});
 
 		$authProvider.facebook({
 //			requiredUrlParams: ['appId'],
-			clientId: '990909701004112',
+//			clientId: '990909701004112',
+			clientId: '',
 			url: '/api/auth/facebook'
 		});
 
@@ -37,6 +39,7 @@ var app = angular
 				{
 					$auth.removeToken();
 					delete $rootScope.authToken;
+					localStorage.removeItem('authenticatedUser');
 					$location.path('/login');
 				},
 			})
@@ -58,17 +61,34 @@ var app = angular
 
 		$locationProvider.html5Mode(true);
 	})
-	.run(['$rootScope', '$location', '$auth', '$state', function($rootScope, $location, $auth, $state)
+	.run(['$rootScope', '$http', '$location', '$auth', '$state', 'SatellizerConfig', 'AuthenticatedUser', function($rootScope, $http, $location, $auth, $state, SatellizerConfig, AuthenticatedUser)
 	{
+		$rootScope.mainMenuCollapsed = true;
+
+		// Retrieve the app ids for social logins and assign them to the Satellizer providers.
+		// TODO: Move this into a service, and call from here.
+		$http.get('api/site').success(function(site)
+		{
+			for (var s = 0; s < site.providers.length; s++)
+			{
+				var provider = site.providers[s];
+				SatellizerConfig.providers[provider.auth_provider].clientId = provider.app_id;
+			}
+		});
+
+		// Log out if token is gone.
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
 			// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
-			if (!$auth.isAuthenticated() && $state.current.name != '' && $state.current.name != 'signup' && $state.current.name != 'auth' && $state.current.name != 'logout' && $state.current.name != 'upload')
+			if (!$auth.isAuthenticated() && $state.current.name != '' && $state.current.name != 'signup' && $state.current.name != 'auth' && $state.current.name != 'logout' && $state.current.name != 'upload' && $state.current.name != 'viewer')
 			{
 				$location.path('/logout');
 			}
 
 			// Everything's good. Store the token in the root scope.
 			$rootScope.authToken = $auth.getToken();
+
+			// If we don't already have a user object, retrieve the user.
+			AuthenticatedUser.get();
 		});
 	}]);

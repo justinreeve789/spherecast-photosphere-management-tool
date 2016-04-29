@@ -1,14 +1,14 @@
 <ng-include src="'/partials/header.html'"></ng-include>
 
-<div id="upload" class="col-sm-6 col-sm-offset-4">
+<div id="upload" class="col-sm-6 col-sm-offset-3">
 	<div class="well text-center">
 		<div class="upload-section">
 			<p class="lead upload-text">Upload a photo sphere or panorama:</p>
 			<button ng-hide="fileUploading" class="btn btn-lg btn-primary" type="file" ngf-select="upload($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'">
 				Upload File
 			</button>
-			<button ng-show="fileUploading" class="btn btn-lg btn-danger" ng-select="cancel($file)">
-				Cancel Upload
+			<button ng-show="fileUploading" class="btn btn-lg btn-danger" ng-click="cancel()">
+				Please Wait
 			</button>
 			<div id="upload-progress" ng-if="fileUploading" class="progress">
 				<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{ 'width': uploadProgressPercentage + '%' }">
@@ -19,10 +19,15 @@
 
 		<div class="import-section">
 			<p class="lead import-text">Or paste a direct URL to a photo sphere:</p>
-			<form id="url-form">
-				<input type="text" id="url" ng-model="url" />
-				<button class="btn btn-success">Submit</button>
+			<form id="import-form" class="form-inline" role="form">
+				<input class="form-control input-lg" type="text" id="url" ng-model="url" />
+				<button class="submit-button btn btn-lg btn-success" ng-click="import()">Submit</button>
 			</form>
+			<div id="import-progress" ng-if="fileImporting" class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{ 'width': importProgressPercentage + '%' }">
+					{{ importProgressString }}
+				</div>
+			</div>
 		</div>
 
 		<div class="instructions">

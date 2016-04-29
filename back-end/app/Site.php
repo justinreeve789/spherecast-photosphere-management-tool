@@ -22,6 +22,11 @@ class Site extends Model
 		return $this->hasMany('App\Media');
 	}
 
+	public function providers()
+	{
+		return $this->hasMany('App\SiteProvider', 'site_id', 'id');
+	}
+
 	/**
 	 * Return the current site the user is on.
 	 * Note that /Config::get('app.url') is considered the "root" site, and subdomains
@@ -39,7 +44,7 @@ class Site extends Model
 		{
 			// Retrieve the base sphcst.com site.
 			// A subdomain should still have "sphcst.com" as the domain.
-			$site = Site::where('subdomain', '')->where('domain', $site_host)->first();
+			$site = Site::with('providers')->where('subdomain', '')->where('domain', $site_host)->first();
 			return $site;
 		}
 		else
@@ -54,12 +59,12 @@ class Site extends Model
 			if (!isset($match[1]))
 			{
 				$subdomain = '';
-				$site = Site::where('subdomain', $subdomain)->where('domain', $site_host)->first();
+				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $site_host)->first();
 			}
 			else
 			{
 				$subdomain = $match[1];
-				$site = Site::where('subdomain', $subdomain)->where('domain', $app_host)->first();
+				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $app_host)->first();
 			}
 			return $site;
 		}

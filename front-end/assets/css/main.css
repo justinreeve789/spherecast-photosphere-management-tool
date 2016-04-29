@@ -115,7 +115,7 @@ span.create-account
 	margin-bottom: 30px;
 }
 
-div#upload-progress
+div#upload-progress, div#import-progress
 {
 	margin-top: 20px;
 }
@@ -130,4 +130,13 @@ div#upload-progress
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
 	copy
 */
+}
+
+
+@media (max-width: 825px)
+{
+	#import-form button.submit-button
+	{
+		margin-top: 20px;
+	}
 }

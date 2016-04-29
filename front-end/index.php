@@ -10,7 +10,7 @@
 	    <meta name="author" content="">
 	    <meta property="og:site_name" content="Spherecast" />
         <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" type="text/css" />
@@ -70,10 +70,8 @@
     <script src="node_modules/angular-animate/angular-animate.min.js"></script>
     <script src="node_modules/satellizer/satellizer.min.js"></script>
     <script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
-    <script src="assets/js/angular-ui-bootstrap-modal.js"></script>
+    <script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
-    <script src="assets/js/ng-infinite-scroll.min.js"></script>
-	<script src="assets/js/three.r69.min.js"></script>
 	<script src="assets/js/StereoEffect.js"></script>
 	<script src="assets/js/DeviceOrientationControlsVR.js"></script>
 	<script src="assets/js/OrbitControls.js"></script>
@@ -90,4 +88,6 @@
     <script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
     <script src="scripts-angular/directives/fileDirective.js"></script>
     <script src="scripts-angular/directives/editDirective.js"></script>
+
+	<script src="scripts-angular/services/AuthenticatedUser.js"></script>
 </html>

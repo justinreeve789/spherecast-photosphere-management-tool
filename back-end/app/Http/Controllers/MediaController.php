@@ -95,7 +95,7 @@ class MediaController extends Controller
 	 * @param int $limit
 	 * @param int $skip
 	 */
-	public function getMediaForSite($limit = 50, $skip = 0, $force_only_show_current_user = false)
+	public function getMediaForSite($limit = 60, $skip = 0, $force_only_show_current_user = false)
 	{
 		$media = [];
 
@@ -297,6 +297,8 @@ class MediaController extends Controller
 						$media_file->save();
 
 						$media = Media::where('media.id', $media->id)->first();
+
+						$this->cleanTempFiles($temp_files);
 						return $media;
 					}
 				}

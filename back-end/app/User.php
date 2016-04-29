@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\Access;
+use App\Site;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -35,5 +37,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function site()
 	{
 		return $this->belongsTo('App\Site', 'site_id', 'id');
+	}
+
+	public function access()
+	{
+		return $this->hasOne('App\Access', 'id', 'access_id');
 	}
 }

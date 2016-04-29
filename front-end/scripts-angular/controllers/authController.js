@@ -11,7 +11,14 @@
 		.controller('AuthSocial', function($scope, $auth) {
 	});
 
-	function AuthController($scope, $rootScope, $http, $auth, $state) {
+	function AuthController($scope, $rootScope, $http, $auth, $state, $location) {
+/*
+		// If the user is already logged in, log out.
+		if ($rootScope.authToken || localStorage.getItem('authenticated_user') != null)
+		{
+			$location.path('/logout');
+		}
+*/
 		var vm = this;
 
 		vm.login = function() {
