@@ -39,7 +39,8 @@ var app = angular
 				{
 					$auth.removeToken();
 					delete $rootScope.authToken;
-					localStorage.removeItem('authenticatedUser');
+					localStorage.removeItem('authenticated_user');
+					delete $rootScope.authenticatedUser;
 					$location.path('/login');
 				},
 			})

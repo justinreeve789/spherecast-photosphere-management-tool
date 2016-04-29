@@ -1,6 +1,6 @@
 angular
 	.module('spherecastApp')
-	.service('AuthenticatedUser', ['$http', function($http)
+	.service('AuthenticatedUser', ['$rootScope', '$http', function($rootScope, $http)
 {
 	this.get = function()
 	{
@@ -8,7 +8,8 @@ angular
 		{
 			$http.get('api/user').success(function(data)
 			{
-				localStorage.setItem('authenticated_user', data);
+				localStorage.setItem('authenticated_user', JSON.stringify(data));
+				$rootScope.authenticatedUser = data;
 				return data;
 			}).error(function(error)
 			{
