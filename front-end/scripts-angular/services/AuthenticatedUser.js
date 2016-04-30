@@ -22,6 +22,11 @@ angular
 		}
 	};
 
+	this.can = function(permission)
+	{
+		return true;
+	}
+
 	// Log out if the user is on a login-only state.
 	this.logoutIfInvalidState = function(currentState)
 	{
