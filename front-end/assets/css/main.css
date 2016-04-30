@@ -51,6 +51,24 @@ form#login-form
 	width: 100%;
 }
 
+#page-loader
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1500;
+	height: 100px;
+	margin-left: -50px;
+	margin-top: -50px;
+	text-align: center;
+	width: 100px;
+}
+
+	#page-loader i.fa-spinner
+	{
+		color: #d0d0d0;
+	}
+
 #edit-sphere-sidebar
 {
 	position: fixed;

@@ -46,6 +46,11 @@
 		</script>
 
 		<div ui-view></div>
+
+		<div id="page-loader" ng-show="!pageLoaded">
+			<i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+		</div>
 <!--
 		<media-edit-directive></media-edit-directive>
 

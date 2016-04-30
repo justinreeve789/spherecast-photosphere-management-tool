@@ -13,15 +13,19 @@ function MediaController($scope, $rootScope, $http) {
 
 	vm.getMedia = function() {
 
+		$rootScope.pageLoaded = false;
+
 		// This request will hit the index method in the AuthenticateController
 		// on the Laravel side and will return the list of users
 		$http.get('api/media/list').success(function(items) {
 			vm.items = items;
+			$rootScope.pageLoaded = true;
 		}).error(function(error) {
 			vm.error = error;
+			$rootScope.pageLoaded = true;
 		});
 	}
-
+	
 	vm.getMedia();
 
 	$scope.edit = function(item) {

@@ -65,6 +65,7 @@ var app = angular
 	.run(['$rootScope', '$http', '$location', '$auth', '$state', 'SatellizerConfig', 'AuthenticatedUser', function($rootScope, $http, $location, $auth, $state, SatellizerConfig, AuthenticatedUser)
 	{
 		$rootScope.$state = $state;
+		$rootScope.pageLoaded = true;
 		$rootScope.mainMenuCollapsed = true;
 
 		// Log out if token is gone, both on first load and on state changes, and the user is on a login-only state.
@@ -91,5 +92,7 @@ var app = angular
 
 			// If we don't already have a user object, retrieve the user.
 			AuthenticatedUser.get();
+
+			$rootScope.pageLoaded = true;
 		});
 	}]);
