@@ -13,6 +13,7 @@ class Site extends Model
 	protected $title;
 	protected $created_by;
 	protected $private;
+	protected $base_url;
 
 	protected $guarded = ['id'];
 

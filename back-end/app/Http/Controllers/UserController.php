@@ -12,6 +12,7 @@ use App\User;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Hash;
+use Mail;
 
 class UserController extends Controller
 {
@@ -134,5 +135,52 @@ class UserController extends Controller
 				return response()->json(['error_general' => 'Could not save changes.'], 401);
 		}
 		return response()->json(['error_general' => 'User account could not be retrieved.'], 401);
+	}
+
+	public function confirmResetPassword($email)
+	{
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Could not determine site.'], 401);
+	}
+
+	/**
+	 * Generate a random password and send it to the specific email.
+	 */
+	public function resetPassword($email)
+	{
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Could not determine site.'], 401);
+
+		$user = User::where('email', trim(strtolower($email)))
+					->where('site_id', $site->id)
+					->where('auth_provider', 'local')
+					->first();
+		if (!$user)
+			return response()->json(['error_email' => 'This email does not belong to a registered account.'], 401);
+
+		// Generate new password.
+		$password = $this->generatePassword();
+
+		$user->password = Hash::make($password);
+		if (!$user->save())
+			return response()->json(['error_general' => 'Could not reset password.'], 401);
+		else
+		{
+		}
+	}
+
+	protected function generatePassword($chars = 8)
+	{
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()!@#$%^&*()!@#$%^&*()';
+		$pass = array();
+		$alpha_length = strlen($alphabet) - 1;
+		for ($i = 0; $i < $chars; $i++)
+		{
+			$n = rand(0, $alpha_length);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass);
 	}
 }
