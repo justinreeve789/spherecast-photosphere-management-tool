@@ -6,6 +6,7 @@ angular
 	{
 		if (localStorage.getItem('authenticated_user') == null)
 		{
+			console.log('WHAT!?');
 			$http.get('api/user').success(function(data)
 			{
 				localStorage.setItem('authenticated_user', JSON.stringify(data));
@@ -21,6 +22,12 @@ angular
 			return JSON.parse(localStorage.getItem('authenticated_user'));
 		}
 	};
+
+	this.refresh = function()
+	{
+		localStorage.removeItem('authenticated_user');
+		$rootScope.authenticatedUser = this.get();
+	}
 
 	this.can = function(permission)
 	{

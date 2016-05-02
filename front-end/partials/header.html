@@ -19,7 +19,7 @@
 				<li ng-class="{ active: $state.includes('upload')}">
 					<a ui-sref="upload">Upload</a>
 				</li>
-				<li ng-class="{ active: $state.includes('auth') || $state.includes('signup')}"ng-if="!authToken">
+				<li ng-class="{ active: $state.includes('auth') || $state.includes('signup')}" ng-if="!authToken">
 					<a ui-sref="auth">Login</a>
 				</li>
 				<li class="dropdown dropdown-profile" ng-init="userMenuCollapsed = true" ng-class="!userMenuCollapsed && 'open'" ng-if="authToken">

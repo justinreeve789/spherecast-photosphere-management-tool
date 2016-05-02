@@ -12,7 +12,7 @@
 		vm.save = function()
 		{
 			vm.error = {};
-/*
+
 			if (vm.name != null && vm.name.trim() == '')
 			{
 				vm.error.error_name = 'Please enter a name.';
@@ -46,12 +46,11 @@
 				}
 				return;
 			}
-*/
+
 			$http.post('api/user/edit', { name: vm.name, email: vm.email, oldpassword: vm.oldpassword, newpassword: vm.newpassword, verifypassword: vm.verifypassword }).success(function(data)
 			{
 				vm.message = data;
-				AuthenticatedUser.get();
-				console.log(vm.message);
+				AuthenticatedUser.refresh();
 			}).error(function(error)
 			{
 				vm.error = error;

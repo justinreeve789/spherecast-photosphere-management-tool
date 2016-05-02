@@ -88,5 +88,16 @@
 				vm.error = error;
 			});
 		}
+
+		vm.resetPassword = function()
+		{
+			$http.post('api/user/resetpassword').success(function(data)
+			{
+				vm.message = data;
+			}).error(function(error)
+			{
+				vm.error = error';
+			});
+		}
 	}
 })();
