@@ -47,7 +47,7 @@ angular
 			{
 				$scope.uploadProgressString = 'Processing...';
 			}
-			console.log($scope.uploadProgressString);
+//			console.log($scope.uploadProgressString);
 		})
 	};
 
@@ -66,7 +66,7 @@ angular
 		var data = JSON.stringify({ url: $scope.url });
 		$http.post('/api/import', data).success(function(item)
 		{
-			console.log(item);
+//			console.log(item);
 			if (typeof item.code !== 'undefined')
 			{
 				var redirectUrl = '/' + item.code;
@@ -80,7 +80,7 @@ angular
 			}
 		}).error(function(error) {
 			vm.error = error;
-			console.log(vm.error);
+//			console.log(vm.error);
 			$scope.url = '';
 			$scope.importProgressPercentage = 100;
 			$scope.importProgressString = 'Failed!';

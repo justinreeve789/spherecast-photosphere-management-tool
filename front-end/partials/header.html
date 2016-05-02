@@ -19,11 +19,23 @@
 				<li ng-class="{ active: $state.includes('upload')}">
 					<a ui-sref="upload">Upload</a>
 				</li>
-				<li ng-if="authToken">
-					<a ui-sref="logout">Logout</a>
-				</li>
 				<li ng-class="{ active: $state.includes('auth') || $state.includes('signup')}"ng-if="!authToken">
 					<a ui-sref="auth">Login</a>
+				</li>
+				<li class="dropdown dropdown-profile" ng-init="userMenuCollapsed = true" ng-class="!userMenuCollapsed && 'open'" ng-if="authToken">
+					<a href="#" class="dropdown-toggle" ng-click="userMenuCollapsed = !userMenuCollapsed" data-toggle="dropdown">
+						<i class="fa fa-user"></i>
+						{{ authenticatedUser.name }}
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li align="center">
+							<a ui-sref="profile">Profile</a>
+						</li>
+						<li align="center">
+							<a ui-sref="logout">Logout</a>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</div>

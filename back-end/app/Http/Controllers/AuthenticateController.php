@@ -39,6 +39,7 @@ class AuthenticateController extends Controller
         return $users;
     }
 
+
 	/**
 	 * Return a JWT.
 	 * TODO: Take into account if a site is allowing new signups.
@@ -137,9 +138,14 @@ class AuthenticateController extends Controller
 			return response()->json(['error_general' => 'Site not found.'], 401);
 
 		$user = User::where('email', $credentials['email'])->where('site_id', $site->id)->where('auth_provider', 'local')->first();
-		if (!$user || !password_verify($credentials['password'], $user->password))
+		if (!$user)
 		{
-			return response()->json(['error' => 'invalid_credentials'], 401);
+			return response()->json(['error_email' => 'This email is not registered on the site'], 401);
+		}
+
+		if (!password_verify($credentials['password'], $user->password))
+		{
+			return response()->json(['error_password' => 'Password not correct'], 401);
 		}
 		$token = JWTAuth::fromUser($user);
 

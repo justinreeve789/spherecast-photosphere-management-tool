@@ -18,7 +18,7 @@ angular
 		}
 		else
 		{
-			return localStorage.getItem('authenticated_user');
+			return JSON.parse(localStorage.getItem('authenticated_user'));
 		}
 	};
 
@@ -35,7 +35,7 @@ angular
 
 		// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
 		// TODO: Retrieve the valid "public" states based on the site settings.
-		if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'upload' && currentState.name != 'viewer')
+		if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'passwordreset' && currentState.name != 'upload' && currentState.name != 'viewer')
 		{
 			window.location = '/logout';
 		}

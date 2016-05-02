@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('spherecastApp')
-  .directive('ngWebgl', function() {
+  .directive('spherecast-viewer', function() {
     return {
-      restrict: 'A',
+      restrict: 'EA',
       scope: false,
       link: function(scope, element, attrs) {
 
@@ -89,170 +89,11 @@ angular.module('spherecastApp')
 		var touchScreenEndY;
 		var touchScreenDrag;
 
-//		scope.$watch('activeProject', function(activeProject) {
-//		});
-
 		scope.$watch('showLoadingScreen', function(exp, listener)
 		{
 //			alert(scope.showLoadingScreen);
 			showLoadingScreen = scope.showLoadingScreen;
 		});
-
-		// Priority is optional, but can be used to only load assets of a single priority level.
-		scope.setPreloadAssetsForScene = function(newScene, priority)
-		{
-			scope.showLoadingScreen = true;
-			showLoadingScreen = true;
-//			scope.$apply();
-			scope.jumpToScene(newScene);
-			return;
-
-			var sceneId = newScene.id;
-
-			var assets = scope.activeProject.assets;
-			if (typeof assets.scenes[sceneId] !== 'undefined')
-			{
-				// Priority 1-5.
-				for (var l = 1; l <= 5; l++)
-				{
-					var priorityAssets = assets.priorities[l];
-					for (var p = 0; p < priorityAssets.length; p++)
-					{
-						// Check if the asset indicated in the priorities is in the current scene.
-						if (assets.scenes[sceneId].indexOf(priorityAssets[p]) > -1)
-						{
-							// Retrieve the media object.
-							var media = assets.media[priorityAssets[p]];
-							var mediaFile = scope.getMediaFile(media);
-							if (mediaFile !== null)
-							{
-								if (media.type == 'backgroundimage' || media.type == 'image')
-									preloadAssetsQueue.loadFile({ src: mediaFile.filepath, type: createjs.AbstractLoader.IMAGE });
-								else if (media.type == 'audio')
-									preloadAssetsQueue.loadFile({ src: mediaFile.filepath, type: createjs.AbstractLoader.SOUND });
-								else if (media.type == 'backgroundvideo' || media.type == 'video')
-									preloadAssetsQueue.loadFile({ src: mediaFile.filepath, type: createjs.AbstractLoader.VIDEO });
-							}
-						}
-					}
-				}
-				newSceneAfterPreload = newScene;
-				preloadAssetsQueue.on('complete', scope.completePreload, this);
-				preloadAssetsQueue.load();
-			}
-//			scope.jumpToScene(newSceneAfterPreload);
-		}
-
-		scope.completePreload = function(event)
-		{
-			scope.showLoadingScreen = false;
-			showLoadingScreen = false;
-			scope.jumpToScene(newSceneAfterPreload);
-		}
-
-		scope.setPreloadImagesForScene = function(sceneId)
-		{
-			preloadQueue.length = 0;
-			if (typeof scope.activeProject.jumpTargets !== 'undefined')
-			{
-				if (scope.activeProject.jumpTargets != null)
-				{
-					if (typeof scope.activeProject.jumpTargets[sceneId] !== 'undefined')
-					{
-						var targets = scope.activeProject.jumpTargets[sceneId];
-						for (var j = 0; j < targets.length; j++)
-						{
-							// TODO: Use the sceneId to index the scene objects like we're doing with the jump targets.
-							for (var s = 0; s < scope.activeProject.scenes.length; s++)
-							{
-								var scene = scope.activeProject.scenes[s];
-								if (scene.id == targets[j])
-								{
-									if (typeof scene.backgroundMedia !== 'undefined' && scene.backgroundMedia != null)
-									{
-										var media = scope.getMediaFile(scene.backgroundMedia);
-										if (preloadQueue.indexOf(media.filepath) === -1)
-											preloadQueue.push(media.filepath);
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-			scope.preloadImages();
-		}
-
-		scope.preloadImages = function()
-		{
-			if (preloadQueue.length > 0)
-			{
-				var image = new Image();
-				image.onload = function()
-				{
-					scope.preloadImages();
-				}
-				image.src = preloadQueue.pop();
-			}
-		}
-
-		// As the user moves to different scenes, the preload queue changes as necessary, to make sure
-		// the most relevant content is being loaded. We should try to stay one step ahead of the user's
-		// actions, so the next scenes' assets are being loaded while the user is in a scene.
-		scope.initializePreloadedAssets = function(sceneId, simImageAssets, simAudioAssets, simVideoAssets, simTotalAssets)
-		{
-			var preload = new createjs.LoadQueue();
-			preload.on('fileload', handleFileLoad);
-			preload.on('progress', handleOverallProgress);
-			preload.on('fileprogress', handleFileProgress);
-			preload.on('error', handleFileError);
-			preload.setMaxConnections(5);
-
-			function handleFileLoad()
-			{}
-
-			function handleOverallProgress()
-			{}
-
-			function handleFileProgress()
-			{}
-
-			function handleFileError()
-			{}
-		}
-
-		scope.checkPreloadedAssets = function(sceneId, simImageAssets, simAudioAssets, simVideoAssets, simTotalAssets)
-		{
-			if (preloadQueue.length > 0)
-			{
-				var nextAsset = preloadQueue.shift();
-				if (typeof sceneId !== 'undefined')
-				{
-					// TODO: Download different numbers of assets based on user's bandwidth.
-					if (typeof simImageAssets === 'undefined' || simImageAssets == null)
-						simImageAssets = 2;
-					if (typeof simAudioAssets === 'undefined' || simAudioAssets == null)
-						simAudioAssets = 1;
-					if (typeof simVideoAssets === 'undefined' || simVideoAssets == null)
-						simVideoAssets = 1;
-					if (typeof simTotalAssets === 'undefined' || simTotalAssets == null)
-						simTotalAssets = 3;
-
-					for (var i = 0; i < activeProject.assets.items.length; i++)
-					{
-						if (activeProject.assets.items[i].sceneId == sceneId)
-						{
-//							for (var m = 0; m < )
-						}
-					}
-				}
-			}
-		}
-
-		scope.preloadAsset = function(asset)
-		{
-		}
 
 		// If we're on a mobile device and require a tap to continue, we must have to present a
 		// "tap to continue" screen first, so we can initialize the audio and video players, and
@@ -402,13 +243,6 @@ angular.module('spherecastApp')
 			);
 //			controls.connect();
 			orbitControls.update();
-/*
-			deviceOrientationControls = new THREE.DeviceOrientationControls(camera);
-			deviceOrientationControls.connect(clock.getDelta());
-			deviceOrientationControls.update(clock.getDelta());
-			deviceOrientationControls.enabled = false;
-*/
-//			window.addEventListener('resizeCanvas', scope.onWindowResize, false);
 
 			// Continually update the camera orientation with a self-calling function.
 //			scope.getCompassDirection();
@@ -440,42 +274,17 @@ angular.module('spherecastApp')
 
 //			scope.scanHotspots();
 //			scope.executeActions();
-			setTimeout(function()
-			{
-				scope.scanHotspots();
-			}, 1);
+//			setTimeout(function()
+//			{
+//				scope.scanHotspots();
+//			}, 1);
 
-			setTimeout(function()
-			{
-				scope.executeActions();
-			}, 1);
-/*
-			setInterval(function()
-			{
-				if (processing_scanHotspots != true)
-				{
-					processing_scanHotspots = true;
-					scope.scanHotspots();
-				}
-			}, 25);
+//			setTimeout(function()
+//			{
+//				scope.executeActions();
+//			}, 1);
 
-			setInterval(function()
-			{
-				if (processing_executeActions != true)
-				{
-					processing_executeActions = true;
-					scope.executeActions();
-				}
-			}, 25);
-*/
 			scope.toggleMode();
-
-			if (typeof scope.activeProject.prefetchAssets !== 'undefined')
-			{
-				preloaderManifest = scope.activeProject.prefetchAssets.sceneManifest;
-				currentPreloadingScene = scope.activeProject.startScene;
-				scope.prefetch(currentPreloadingScene);
-			}
 
 			// TODO: Activate fullscreen on a screen click for mobile devices, and only on a single screen at
 			// the beginning of the spherecast. Because of how Angular works (/#/), we may actually not even
@@ -1472,12 +1281,6 @@ angular.module('spherecastApp')
 		var countdownTexture;
 		var countdownMaterial;
 		var countdownSpriteCanvasContext;
-
-		scope.prefetchMedia = function()
-		{
-		}
-
-
 
 		// Although we're using Howler.js for audio, we're still creating this fake audio player, so when the media is allowed
 		// via the screen press on mobile browsers, this can play and stop as normal.
@@ -4456,60 +4259,6 @@ angular.module('spherecastApp')
 		{
 			scope.toggleFullscreen();
 		});
-
-		// Start prefetching assets, beginning with the startScene. Note that on mobile browsers,
-		// we require a "click" event before this can happen. Only load one scene's assets at a
-		// time, then continue to the next scene in activeProject.prefetchAssets.sceneManifest.
-
-		// When prefetching assets, we should only buffer as much audio and video as we need for a playback,
-		// then open the scene. The media items can continue buffering as the user navigates the scene. This
-		// will speed up load times significantly for scenes with large audio and video files.
-		scope.prefetch = function(sceneid)
-		{
-			if (typeof preloaderManifest === 'undefined')
-			{
-				return;
-			}
-
-			var queue = new createjs.LoadQueue();
-
-			// Find the scene in the manifest.
-			for (var i = 0; i < preloaderManifest.length; i++)
-			{
-				var sceneAssets = preloaderManifest[i];
-				if (sceneAssets.sceneid != sceneid)
-				{
-					continue;
-				}
-				else
-				{
-					queue.addEventListener('fileprogress', function(event)
-					{
-//						(event);
-					});
-
-					queue.addEventListener('fileload', function(event)
-					{
-//						console.log(event);
-					});
-
-					queue.addEventListener('complete', function(event)
-					{
-//						console.log(event);
-					});
-
-					// Add the scene assets.
-					for (var a = 0; a < sceneAssets.length; a++)
-					{
-						queue.loadFile(sceneAssets[a].paths);
-					}
-					queue.load();
-
-					break;
-				}
-			}
-			return;
-		}
 
 		// Initialize the viewer.
 		scope.init();

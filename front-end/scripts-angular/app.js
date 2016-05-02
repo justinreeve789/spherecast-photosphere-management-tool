@@ -44,6 +44,16 @@ var app = angular
 					$location.path('/login');
 				},
 			})
+			.state('profile', {
+				url: '/profile',
+				templateUrl: '../views/profileEditView.html',
+				controller: 'ProfileController as profile',
+			})
+			.state('passwordreset', {
+				url: '/passwordreset',
+				templateUrl: '../views/passwordResetView.html',
+				controller: 'AuthController as auth',
+			})
 			.state('spheres', {
 				url: '/spheres',
 				templateUrl: '../views/gridView.html',
@@ -91,7 +101,9 @@ var app = angular
 			$rootScope.authToken = $auth.getToken();
 
 			// If we don't already have a user object, retrieve the user.
-			AuthenticatedUser.get();
+			$rootScope.authenticatedUser = AuthenticatedUser.get();
+			if ($rootScope.authenticatedUser)
+				$rootScope.displayName = $rootScope.authenticatedUser.name;
 
 			$rootScope.pageLoaded = true;
 		});

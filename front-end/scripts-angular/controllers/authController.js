@@ -6,12 +6,7 @@
 		.module('spherecastApp')
 		.controller('AuthController', AuthController);
 
-	angular
-		.module('spherecastApp')
-		.controller('AuthSocial', function($scope, $auth) {
-	});
-
-	function AuthController($scope, $rootScope, $http, $auth, $state, $location) {
+	function AuthController($scope, $rootScope, $http, $auth, $state, $location, AuthenticatedUser) {
 /*
 		// If the user is already logged in, log out.
 		if ($rootScope.authToken || localStorage.getItem('authenticated_user') != null)
@@ -26,7 +21,7 @@
 			var credentials = {
 				email: vm.email,
 				password: vm.password,
-			}
+			};
 
 			// Use Satellizer's $auth service to login.
 			$auth.login(credentials).then(function(data)
@@ -36,7 +31,8 @@
 				$state.go('spheres');
 			}, function(error)
 			{
-				console.log(error);
+				vm.error = error;
+//				console.log(vm.error);
 			});
 		}
 
@@ -48,7 +44,7 @@
 				$state.go('spheres');
 			}).catch(function(error)
 			{
-				console.log(error);
+//				console.log(error);
 			});
 		};
 
@@ -71,13 +67,14 @@
 						$state.go('spheres');
 					}, function(error)
 					{
-						console.log(error);
+						vm.error = error;
+//						console.log(error);
 					});
 				}
 			}).error(function(error)
 			{
-				console.log(error);
 				vm.error = error;
+//				console.log(error);
 			})
 		};
 
@@ -92,6 +89,4 @@
 			});
 		}
 	}
-
-
 })();

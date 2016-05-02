@@ -15,6 +15,7 @@ Route::get('/', ['uses' => 'MediaController@showMediaGrid']);
 
 Route::get('/user', ['uses' => 'UserController@getCurrentUser']);
 Route::post('/user', ['uses' => 'AuthenticateController@createLocalUser']);
+Route::post('/user/edit', ['uses' => 'UserController@saveUser']);
 Route::get('/site', ['uses' => 'SiteController@getCurrentSite']);
 Route::get('/list', ['uses' => 'MediaController@showMediaGrid']);
 Route::get('/upload', ['uses' => 'MediaController@showUpload']);
