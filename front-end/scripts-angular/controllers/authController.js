@@ -94,11 +94,13 @@
 
 		vm.resetPassword = function()
 		{
-			$http.post('api/user/resetpassword').success(function(data)
+			console.log('test');
+			$http.post('api/user/resetpassword', { email: vm.email }).success(function(data)
 			{
 				vm.message = data;
 			}).error(function(error)
 			{
+//				console.log(error);
 				vm.error = error;
 			});
 		}

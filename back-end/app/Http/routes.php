@@ -32,6 +32,8 @@ Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnai
 Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/{code}', ['uses' => 'MediaController@viewMedia']);
 
+Route::get('/mediaproject/{code}', ['uses' => 'ProjectController@getMediaProject']);
+
 Route::group(['prefix' => ''], function()
 {
 	Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);

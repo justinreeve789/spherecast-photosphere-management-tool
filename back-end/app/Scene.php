@@ -10,7 +10,11 @@ now, in your controller or wherever:
 
 $myStartEvents = yourModel::whereId(1)->startEvents();
  */
-class Scene extends Eloquent
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Scene extends Model
 {
 	protected $id;
 	protected $shortname;

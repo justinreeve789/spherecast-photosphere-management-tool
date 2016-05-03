@@ -154,8 +154,8 @@ class UserController extends Controller
 		// Make sure we have a user with the email.
 		$email = Input::get('email');
 		$email = trim(strtolower($email));
-		if ($email == '')
-			return response()->json(['error_email' => 'Please enter an email address.'], 401);
+		if ($email == null || $email == '')
+			return response()->json(['error_email' => 'Please enter a valid email address.'], 401);
 
 		$password_reset = PasswordReset::where('email', $email)->orderBy('created_at', 'desc')->first();
 //		if ($password_reset)
@@ -173,6 +173,22 @@ class UserController extends Controller
 		$password_reset->created_at = date('Y-m-d H:i:s');
 		$password_reset->timestamps = false;
 		if (!$password_reset->save())
+			return response()->json(['error_email' => 'An error occurred while generating the verification code. Please try again.'], 401);
+
+		// Email the confirmation URL.
+		$site_host = $site->url();
+		$params = [
+			'site_host' => $site_host,
+			'reset_url' => $site_host . '/passwordreset?token=' . $password_reset->token,
+		];
+
+		$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user)
+		{
+			$m->from('donotreply@' . $site_host, 'Do Not Reply');
+			$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
+		});
+
+		if (!$mail)
 			return response()->json(['error_email' => 'An error occurred in sending the confirmation email. Please try again.'], 401);
 	}
 
@@ -185,8 +201,8 @@ class UserController extends Controller
 		if (!$site)
 			return response()->json(['error_general' => 'Could not determine site.'], 401);
 
-		// Get the user for the token.
-		
+		// Get the user for the password token.
+		PasswordReset::where('token' => )
 
 		// Generate new password.
 		$password = $this->generatePassword();

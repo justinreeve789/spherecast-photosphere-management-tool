@@ -3,7 +3,11 @@
 // We need to eagerly collect nested relations: Project -> Scene -> Event -> Action.
 // See http://stackoverflow.com/questions/22701455/laravel-collection-eager-loading-based-on-nested-relation-field-value
 // See http://stackoverflow.com/questions/22868362/laravel-4-1-eager-loading-nested-relationships-with-constraints
-class Project extends Eloquent
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Project extends Model
 {
 	// protected $table = 'projects';				// Not necessary, since Laravel assumes a class named "Project" refers to the "projects" table.
 
