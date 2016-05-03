@@ -68,7 +68,7 @@ class ProjectController extends Controller
 		$backgroundMedia->filepath = '/';
 		$backgroundMedia->scaleX = '1.00';
 		$backgroundMedia->scaleY = '1.00';
-		$backgroundMedia->fileIdLow = 1;
+		$backgroundMedia->fileIdLow = $file->id;
 		$backgroundMedia->fileIdMedium = $file->id;
 		$backgroundMedia->fileIdHigh = $file->id;
 		$backgroundMedia->fileIdUltra = $file->id;
