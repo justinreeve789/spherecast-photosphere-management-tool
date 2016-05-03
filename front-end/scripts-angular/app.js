@@ -50,7 +50,7 @@ var app = angular
 				controller: 'ProfileController as profile',
 			})
 			.state('passwordreset', {
-				url: '/passwordreset',
+				url: '/passwordreset?token',
 				templateUrl: '../views/passwordResetView.html',
 				controller: 'AuthController as auth',
 			})

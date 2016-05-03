@@ -165,7 +165,7 @@ div#upload-progress, div#import-progress
 	}
 }
 
-@media only screen and (max-width: 768px)
+@media only screen and (max-width: 767px)
 {
 	.dropdown-profile .dropdown-toggle
 	{
@@ -184,6 +184,12 @@ div#upload-progress, div#import-progress
 		width: 100%;
 	}
 
+	.navbar-nav .open .dropdown-profile .dropdown-menu .dropdown-header,
+	.navbar-nav .open .dropdown-profile .dropdown-menu > li > a
+	{
+		padding: 0px;
+	}
+
 	.navbar-nav .dropdown-profile .dropdown-menu > li > a, 
 	.navbar-nav .dropdown-menu .dropdown-header
 	{
@@ -194,7 +200,7 @@ div#upload-progress, div#import-progress
 
 	.navbar-nav .dropdown-profile .dropdown-menu > li > a
 	{
-		line-height :20px;
+		line-height: 20px;
 	}
 
 	.navbar-default .navbar-nav .dropdown-profile .dropdown-menu > li > a
@@ -204,6 +210,12 @@ div#upload-progress, div#import-progress
 }
 
 p.password-reset
+{
+	margin-bottom: 0px;
+	margin-top: 10px;
+}
+
+div.alert.message-general
 {
 	margin-top: 10px;
 }

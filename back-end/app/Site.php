@@ -13,7 +13,6 @@ class Site extends Model
 	protected $title;
 	protected $created_by;
 	protected $private;
-	protected $base_url;
 
 	protected $guarded = ['id'];
 
@@ -33,6 +32,16 @@ class Site extends Model
 	{
 		// Check that the site has the following roles defined: guest, user, and admin.
 		Role::where('site_id', $this->id)->first();
+	}
+
+	public static function url()
+	{
+		$site = Site::current();
+		$url = 'https://';
+		if ($site->subdomain && $site->subdomain != '')
+			$url .= $site->subdomain . '.';
+		$url .= $site->domain;
+		return $url;
 	}
 
 	/**

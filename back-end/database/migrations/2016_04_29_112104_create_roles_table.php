@@ -35,8 +35,6 @@ class CreateRolesTable extends Migration
 			$table->boolean('create_roles')->default(false);		// Allow custom roles.
 			$table->boolean('manage_users')->default(0);			// Allow user management.
 			$table->timestamps();
- 
- 			
         });
     }
 

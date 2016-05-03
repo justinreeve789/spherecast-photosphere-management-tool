@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-namespace Site;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,8 +16,9 @@ class PasswordReset extends Model
 	{
 		$site = Site::current();
 
-		return $this->belongsTo('User', 'email', 'email')
+		return $this->belongsTo('App\User', 'email', 'email')
 					->where('site_id', $site->id)
-					->where('auth_provider', 'local');
+					->where('auth_provider', 'local')
+					->first();
 	}
 }

@@ -34,7 +34,10 @@
 			<p class="form-error">{{ profile.error.error_general }}</p>
 
 		  	<button class="btn btn-primary" ng-click="profile.save()">Save</button>
-		  	<span ng-if="profile.message.message_general">{{ profile.message.message_general }}</span>
+
+			<div class="alert alert-success message-general" ng-if="profile.message.message_general">
+				<i class="fa fa-check"></i> {{ profile.message.message_general }}
+			</div>
 		</form>
 	</div>
 </div>

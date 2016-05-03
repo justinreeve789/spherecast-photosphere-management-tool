@@ -179,12 +179,15 @@ class AuthenticateController extends Controller
             'grant_type' => 'authorization_code',
         ];
 
-        $client = new GuzzleHttp\Client();
+		$client = new GuzzleHttp\Client();
 
         // Exchange authorization code for access token.
-		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/token', [
-            'form_params' => $params
+//		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/token', [
+		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/v2/auth', [
+			'form_params' => $params
 		]);
+		error_log(print_r($params, true));
+
         $accessToken = json_decode($accessTokenResponse->getBody(), true);
 
         // Retrieve profile information about the current user.

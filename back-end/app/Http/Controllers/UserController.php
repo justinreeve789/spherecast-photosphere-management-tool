@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Auth;
-use App\Access;
+use App\PasswordReset;
 use App\Site;
 use App\User;
+use Input;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Hash;
@@ -19,7 +20,7 @@ class UserController extends Controller
     public function __construct()
     {
         // Apply the jwt.auth middleware to the methods in this controller.
-        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth', ['except' => ['confirmResetPassword', 'processResetPassword']]);
     }
 
 	/**
@@ -29,12 +30,15 @@ class UserController extends Controller
 	{
 		$site = Site::current();
 		if (!$site)
-			return null;
+				return response()->json(['error_general' => 'Could not retrieve user.'], 401);
 
 		$user = Auth::user();
+		if (!$user)
+			return null;
 
 		// TODO: Retrieve the access with the Auth::user() command.
-		$user = User::with('access')->where('id', $user->id)->first();
+//		$user = User::with('access')->where('id', $user->id)->first();
+		$user = User::where('id', $user->id)->first();
 		return $user;
 	}
 
@@ -62,8 +66,6 @@ class UserController extends Controller
 		else
 			$fields = $request->only('name');
 
-		$name = $fields['name'];
-
 		$site = Site::current();
 		if (!$site)
 			return response()->json(['error_general' => 'Invalid site.'], 401);
@@ -71,10 +73,13 @@ class UserController extends Controller
 		if ($user)
 		{
 			// Validate the data.
-			if (isset($name) && trim($name) == '')
+			$name = $fields['name'];
+
+			if ($name != null && trim($name) == '')
 				return response()->json(['error_name' => 'Please enter your name.'], 401);
 
-			$user->name = trim($name);
+			if ($name != null)
+				$user->name = trim($name);
 
 			if ($user->auth_provider == 'local')
 			{
@@ -137,28 +142,48 @@ class UserController extends Controller
 		return response()->json(['error_general' => 'User account could not be retrieved.'], 401);
 	}
 
-	public function confirmResetPassword($email)
+	public function confirmResetPassword()
 	{
 		$site = Site::current();
 		if (!$site)
 			return response()->json(['error_general' => 'Could not determine site.'], 401);
+
+		// Make sure we have a user with the email.
+		$email = Input::get('email');
+		$email = trim(strtolower($email));
+		if ($email == '')
+			return response()->json(['error_email' => 'Please enter an email address.'], 401);
+
+		$password_reset = PasswordReset::where('email', $email)->orderBy('created_at', 'desc')->first();
+//		if ($password_reset)
+//			$password_reset->delete('email', $email);
+
+		$password_reset = new PasswordReset;
+		$password_reset->email = $email;
+
+		$user = $password_reset->user();
+
+		if (!$user)
+			return response()->json(['error_email' => 'This email does not belong to a registered account.'], 401);
+
+		$password_reset->token = $this->generateToken();
+		$password_reset->created_at = date('Y-m-d H:i:s');
+		$password_reset->timestamps = false;
+		if (!$password_reset->save())
+			return response()->json(['error_email' => 'An error occurred in sending the confirmation email. Please try again.'], 401);
 	}
 
 	/**
 	 * Generate a random password and send it to the specific email.
 	 */
-	public function resetPassword($email)
+	public function processResetPassword()
 	{
 		$site = Site::current();
 		if (!$site)
 			return response()->json(['error_general' => 'Could not determine site.'], 401);
 
-		$user = User::where('email', trim(strtolower($email)))
-					->where('site_id', $site->id)
-					->where('auth_provider', 'local')
-					->first();
-		if (!$user)
-			return response()->json(['error_email' => 'This email does not belong to a registered account.'], 401);
+		// Get the user for the token.
+		
 
 		// Generate new password.
 		$password = $this->generatePassword();
@@ -171,9 +196,14 @@ class UserController extends Controller
 		}
 	}
 
+	protected function generateToken()
+	{
+		return hash('sha256', $this->generatePassword());
+	}
+
 	protected function generatePassword($chars = 8)
 	{
-		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()!@#$%^&*()!@#$%^&*()';
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@$!@$!@$!@$!@$';
 		$pass = array();
 		$alpha_length = strlen($alphabet) - 1;
 		for ($i = 0; $i < $chars; $i++)

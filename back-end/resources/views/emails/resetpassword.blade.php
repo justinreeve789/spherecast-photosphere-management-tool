@@ -4,8 +4,3 @@
 	following URL to receive a new password:
 	<a href="{{ $reset_url }}"></a>
 </p>
-
-<p>
-	Email: <b>{{ $email }}</b><br />
-	Password: <b>{{ $password }}</b>
-</p>

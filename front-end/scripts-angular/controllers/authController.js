@@ -28,6 +28,7 @@
 			{
 				// Authentication successful, so redirect to /spheres.
 				$rootScope.authToken = $auth.getToken();
+				AuthenticatedUser.get();
 				$state.go('spheres');
 			}, function(error)
 			{
@@ -41,6 +42,7 @@
 			{
 				// Authentication successful, so redirect to /spheres.
 				$rootScope.authToken = $auth.getToken();
+				AuthenticatedUser.get();
 				$state.go('spheres');
 			}).catch(function(error)
 			{
@@ -64,6 +66,7 @@
 					$auth.login(credentials).then(function(data)
 					{
 						// If login is successful, retrieve the user object, and redirect to the /spheres state.
+						AuthenticatedUser.get();
 						$state.go('spheres');
 					}, function(error)
 					{
@@ -96,7 +99,7 @@
 				vm.message = data;
 			}).error(function(error)
 			{
-				vm.error = error';
+				vm.error = error;
 			});
 		}
 	}

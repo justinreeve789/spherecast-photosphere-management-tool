@@ -2,19 +2,30 @@ angular
 	.module('spherecastApp')
 	.service('AuthenticatedUser', ['$rootScope', '$http', '$auth', '$state', '$location', function($rootScope, $http, $auth, $state, $location)
 {
-	this.get = function()
+	var vm = this;
+	vm.authenticatedUser = {};
+	vm.displayName = '';
+
+	this.get = function(forceRetrieve = false)
 	{
-		if (localStorage.getItem('authenticated_user') == null)
+		if (localStorage.getItem('authenticated_user') == null || localStorage.getItem('authenticated_user') == "" || forceRetrieve == true)
 		{
-			console.log('WHAT!?');
 			$http.get('api/user').success(function(data)
 			{
-				localStorage.setItem('authenticated_user', JSON.stringify(data));
-				$rootScope.authenticatedUser = data;
-				return data;
+				if (data)
+				{
+					console.log(data);
+					localStorage.setItem('authenticated_user', JSON.stringify(data));
+					$rootScope.authenticatedUser = data;
+					$rootScope.displayName = data.name;
+					vm.authenticatedUser = data;
+					vm.displayName = data.name;
+					return data;
+				}
+				return;
 			}).error(function(error)
 			{
-				console.log(error);
+//				console.log(error);
 			})
 		}
 		else
@@ -25,8 +36,7 @@ angular
 
 	this.refresh = function()
 	{
-		localStorage.removeItem('authenticated_user');
-		$rootScope.authenticatedUser = this.get();
+		$rootScope.authenticatedUser = this.get(true);
 	}
 
 	this.can = function(permission)
@@ -42,7 +52,7 @@ angular
 
 		// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
 		// TODO: Retrieve the valid "public" states based on the site settings.
-		if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'passwordreset' && currentState.name != 'upload' && currentState.name != 'viewer')
+		if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'passwordreset' && currentState.name != 'sendpasswordreset' && currentState.name != 'upload' && currentState.name != 'viewer')
 		{
 			window.location = '/logout';
 		}

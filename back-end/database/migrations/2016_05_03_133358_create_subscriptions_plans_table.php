@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionTable extends Migration
+class CreateSubscriptionsPlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,7 @@ class CreateSubscriptionTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table)
-        {
+        Schema::create('subscriptions_plans', function (Blueprint $table) {
 			$table->integer('subscription_id')->unsigned();
 			$table->string('name')->unique();						// A name to describe this access level.
 			$table->string('viewers')->default('spherecast,vrview');	// The photosphere viewers allowed.
@@ -49,6 +48,6 @@ class CreateSubscriptionTable extends Migration
      */
     public function down()
     {
-       	Schema::drop('subscriptions');
+        Schema::drop('subscriptions_plans');
     }
 }

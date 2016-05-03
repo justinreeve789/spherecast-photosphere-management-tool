@@ -9,9 +9,13 @@
 	function ProfileController($scope, $rootScope, $http, $location, AuthenticatedUser) {
 		var vm = this;
 
+		vm.name = $rootScope.authenticatedUser.name;
+		vm.email = $rootScope.authenticatedUser.email;
+
 		vm.save = function()
 		{
 			vm.error = {};
+			vm.message = {};
 
 			if (vm.name != null && vm.name.trim() == '')
 			{
@@ -19,7 +23,7 @@
 				return;
 			}
 
-			if (vm.email == null || vm.email.trim() == '')
+			if (vm.email != null && vm.email.trim() == '')
 			{
 				vm.error.error_email = 'Please enter an email address.';
 				return;
