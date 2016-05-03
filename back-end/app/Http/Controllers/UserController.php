@@ -94,7 +94,7 @@ class UserController extends Controller
 						return response()->json(['error_email' => 'Please enter your email address.'], 401);
 
 					// Make sure the email address is valid.
-					if (!filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
+					if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 						return response()->json(['error_email' => 'Please enter a valid email address. ' . $email], 401);
 				
 					// If a new email is specified, make sure it's not already being used on the site with the
@@ -108,8 +108,10 @@ class UserController extends Controller
 					}
 					$user->email = $email;
 				}
+				else
+					return response()->json(['error_email' => 'Please enter a valid email address. ' . $email], 401);
 
-				if ($oldpassword || $newpassword || $verifypassword)
+				if (($oldpassword || $newpassword || $verifypassword) && ($oldpassword != '' || $newpassword != '' || $verifypassword != ''))
 				{
 					if (!isset($oldpassword) || $oldpassword == '')
 						return response()->json(['error_oldpassword' => 'Please enter your current password.'], 401);
@@ -134,6 +136,7 @@ class UserController extends Controller
 					$user->password = Hash::make($newpassword);
 				}
 			}
+
 			if ($user->save())
 				return response()->json(['message_general' => 'Your profile changes have been saved.'], 201);
 			else

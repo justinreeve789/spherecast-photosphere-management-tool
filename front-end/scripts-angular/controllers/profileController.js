@@ -28,7 +28,7 @@
 				vm.error.error_email = 'Please enter an email address.';
 				return;
 			}
-
+/*
 			if (vm.oldpassword != null || vm.newpassword != null || vm.verifypassword != null)
 			{
 				if (vm.oldpassword == null || vm.oldpassword == '')
@@ -50,7 +50,7 @@
 				}
 				return;
 			}
-
+*/
 			$http.post('api/user/edit', { name: vm.name, email: vm.email, oldpassword: vm.oldpassword, newpassword: vm.newpassword, verifypassword: vm.verifypassword }).success(function(data)
 			{
 				vm.message = data;
