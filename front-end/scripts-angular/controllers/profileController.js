@@ -55,10 +55,13 @@
 			{
 				vm.message = data;
 				AuthenticatedUser.refresh();
+				vm.oldpassword = '';
+				vm.newpassword = '';
+				vm.verifypassword = '';
 			}).error(function(error)
 			{
 				vm.error = error;
-				console.log(error);
+//				console.log(error);
 			})			
 		}
 	}

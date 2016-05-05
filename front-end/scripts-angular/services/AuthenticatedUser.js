@@ -14,7 +14,6 @@ angular
 			{
 				if (data)
 				{
-					console.log(data);
 					localStorage.setItem('authenticated_user', JSON.stringify(data));
 					$rootScope.authenticatedUser = data;
 					$rootScope.displayName = data.name;

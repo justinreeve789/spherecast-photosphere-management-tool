@@ -30,11 +30,11 @@ class UserController extends Controller
 	{
 		$site = Site::current();
 		if (!$site)
-				return response()->json(['error_general' => 'Could not retrieve user.'], 401);
+			return response()->json(['error_general' => 'Could not retrieve site.'], 401);
 
 		$user = Auth::user();
 		if (!$user)
-			return null;
+			return response()->json(['error_general' => 'User not authenticated.'], 401);
 
 		// TODO: Retrieve the access with the Auth::user() command.
 //		$user = User::with('access')->where('id', $user->id)->first();
@@ -202,7 +202,7 @@ class UserController extends Controller
 			return response()->json(['error_general' => 'Could not determine site.'], 401);
 
 		// Get the user for the password token.
-		PasswordReset::where('token' => )
+//		PasswordReset::where('token' => )
 
 		// Generate new password.
 		$password = $this->generatePassword();

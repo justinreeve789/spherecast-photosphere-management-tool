@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('spherecastApp')
-  .directive('spherecast-viewer', function() {
+  .directive('spherecastViewer', function() {
     return {
-      restrict: 'EA',
+      restrict: '',
       scope: false,
       link: function(scope, element, attrs) {
 
@@ -77,10 +77,10 @@ angular.module('spherecastApp')
 		var newSceneAfterPreload = null;
 		var showLoadingScreen = false;
 
-		var preloadAssetsQueue = new createjs.LoadQueue(true);
-		preloadAssetsQueue.installPlugin(createjs.Image);
-		preloadAssetsQueue.installPlugin(createjs.Sound);
-		preloadAssetsQueue.installPlugin(createjs.Video);
+//		var preloadAssetsQueue = new createjs.LoadQueue(true);
+//		preloadAssetsQueue.installPlugin(createjs.Image);
+//		preloadAssetsQueue.installPlugin(createjs.Sound);
+//		preloadAssetsQueue.installPlugin(createjs.Video);
 
 		// The following variables track the coordinates set in the touchstart and touchend events.
 		var touchScreenStartX;
@@ -471,6 +471,7 @@ angular.module('spherecastApp')
 		{
 			scope.showLoadingScreen = false;
 			showLoadingScreen = false;
+			console.log(activeProject);
 
 			// Make sure the new scene's assets are loaded. While the user is in the previous scene, they should have
 			// spent some time loading, but we'll need to show the loading screen just in case they aren't.

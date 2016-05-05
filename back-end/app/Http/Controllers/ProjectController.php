@@ -74,6 +74,8 @@ class ProjectController extends Controller
 		$backgroundMedia->fileIdUltra = $file->id;
 		$backgroundMedia->fileIdUltra = $file->id;
 
+		$scene->backgroundMediaId = $media->id;
+
 		$file_item = new \stdClass;
 		$file_item->id = $file->id;
 		$file_item->contenthash = '';
@@ -83,10 +85,12 @@ class ProjectController extends Controller
 		$file_item->mimetype = $file->mimetype;
 		$file_item->filesize = $file->filesize;
 		$file_item->extension = $file->stored_extension;
-		$backgroundMedia->files = [$file_item];
+		$backgroundMedia->files = [$file_item->id => $file_item];
 
-		$scene->backgroundMedia = $backgroundMedia;
-		$project->scenes = [$scene];
+		$project->assets = new \stdClass;
+		$project->assets->priorities = [];
+		$project->assets->media = [$backgroundMedia->id => $backgroundMedia];
+		$project->scenes = [$scene->id => $scene];
 
 		$project->startEvents = [];
 		$project->endEvents = [];
