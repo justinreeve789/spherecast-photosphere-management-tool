@@ -5,6 +5,7 @@ angular
 	.controller('ViewerController', ['$scope', '$rootScope', '$http', '$state', '$stateParams', '$location', 'Project', function($scope, $rootScope, $http, $state, $stateParams, $location, Project)
 {
 	var vm = this;
+	$rootScope.fullscreenViewer = true;
 
 	$scope.toggleShareBlock = function()
 	{
@@ -21,6 +22,21 @@ angular
 	{
 		$scope.goFullscreen = $scope.goFullscreen === false ? true : false;
 	}
+
+	// TODO: Determine the best file to deliver depending on device, bandwidth, connection speed, current cache,
+	// and user preferences.
+	$scope.getFileByMediaId = function(mediaId)
+	{
+		if (typeof $scope.activeProject.assets.media[mediaId] !== 'undefined')
+		{
+			var media = $scope.activeProject.assets.media[mediaId];
+			var fileIdHigh = media.fileIdHigh;
+			var mediaFile = media.files[fileIdHigh];
+			console.log(mediaFile);
+			return mediaFile;
+		}
+		return null;
+	};
 
 //	if (Modernizr.hasEvent('deviceOrientation'))
 //	if (window.DeviceOrientationEvent || window.OrientationEvent || typeof window.onorientationchange != 'undefined')
@@ -66,7 +82,6 @@ angular
 					$scope.requireTapToContinue = false;
 					$scope.windowWidth = window.innerWidth;
 					$scope.windowHeight = window.innerHeight;
-					console.log($scope.activeProject);
 				}
 			});
 

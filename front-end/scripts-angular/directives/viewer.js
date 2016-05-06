@@ -29,9 +29,14 @@ angular.module('spherecastApp')
 		        renderer.setSize( window.innerWidth, window.innerHeight );
 		        element[0].appendChild( domElement );
 
+				window.addEventListener('resize', scope.resizeCanvas, false);
+
 		        activeProject = scope.activeProject;
+		        console.log(activeProject);
 		        scope.loadNewScene(activeProject.startScene);
 		    };
+
+
 
 		    scope.animate = function()
 		    {
@@ -49,6 +54,8 @@ angular.module('spherecastApp')
 		        renderer.render( scene, camera );
 		    };
 
+
+
 			scope.setControls = function()
 			{
 				window.addEventListener('deviceorientation', scope.setOrientationControls, true);
@@ -62,6 +69,8 @@ angular.module('spherecastApp')
 				orbitControls.update();
 			};
 
+
+
 			scope.setOrientationControls = function(e)
 			{
 				if (!e.alpha) 
@@ -74,20 +83,7 @@ angular.module('spherecastApp')
 				}
 			}
 
-			// TODO: Determine the best file to deliver depending on device, bandwidth, connection speed, current cache,
-			// and user preferences.
-			scope.getFileByMediaId = function(mediaId)
-			{
-				if (typeof activeProject.assets.media[mediaId] !== 'undefined')
-				{
-					var media = activeProject.assets.media[mediaId];
-					var fileIdHigh = media.fileIdHigh;
-					var mediaFile = media.files[fileIdHigh];
-					console.log(mediaFile);
-					return mediaFile;
-				}
-				return null;
-			};
+
 
 			// This is intended to replace jumpToScene().
 			scope.loadNewScene = function(sceneId)
@@ -108,8 +104,8 @@ angular.module('spherecastApp')
 						activeScene.background.geometry.dispose();
 						activeScene.background.material.dispose();
 
-						if (typeof activeScene.backgroundTexture !== 'undefined')
-							activeScene.backgroundTexture.dispose();
+						if (typeof activeScene.assets.backgroundTexture !== 'undefined')
+							activeScene.assets.backgroundTexture.dispose();
 					}
 
 					activeScene = activeProject.scenes[sceneId];
@@ -136,6 +132,7 @@ angular.module('spherecastApp')
 					else
 					{
 						// Retrieve the media object.
+						console.log(activeProject);
 						if (activeProject.assets.media[activeScene.backgroundMediaId].type == 'backgroundimage')
 						{
 							var backgroundFile = scope.getFileByMediaId(activeScene.backgroundMediaId);
@@ -152,33 +149,58 @@ angular.module('spherecastApp')
 							console.log('test');
 							if (backgroundFile)
 							{
-								var backgroundTexture = THREE.ImageUtils.loadTexture(backgroundFile.filepath);
-								backgroundTexture.generateMipmaps = false;
-								backgroundTexture.minFilter = THREE.LinearFilter;
-								backgroundTexture.magFilter = THREE.LinearFilter;
-
-								// TODO: Do we need to make sure the sphere is only created once when the viewer loads?
-								var backgroundGeometry = new THREE.SphereGeometry(100, 32, 32);
-								var backgroundMaterial = new THREE.MeshBasicMaterial({
-										map: backgroundTexture,
-										side: THREE.DoubleSide,
-								});
-								activeScene.assets.backgroundGeometry = backgroundGeometry;
-								activeScene.assets.backgroundMaterial = backgroundMaterial;
-
-								activeScene.assets.background = new THREE.Mesh(
-									backgroundGeometry, backgroundMaterial
+								var backgroundTextureLoader = new THREE.TextureLoader();
+								backgroundTextureLoader.load(
+									backgroundFile.filepath,
+									function (backgroundTexture)
+									{
+										console.log(backgroundTexture);
+										backgroundTexture.generateMipmaps = false;
+										backgroundTexture.minFilter = THREE.LinearFilter;
+										backgroundTexture.magFilter = THREE.LinearFilter;
+		
+										// TODO: Do we need to make sure the sphere is only created once when the viewer loads?
+										var backgroundGeometry = new THREE.SphereGeometry(100, 32, 32);
+										var backgroundMaterial = new THREE.MeshBasicMaterial({
+												map: backgroundTexture,
+												side: THREE.DoubleSide,
+										});
+										activeScene.assets.backgroundGeometry = backgroundGeometry;
+										activeScene.assets.backgroundMaterial = backgroundMaterial;
+		
+										activeScene.assets.background = new THREE.Mesh(
+											backgroundGeometry, backgroundMaterial
+										);
+										activeScene.assets.background.material.side = THREE.DoubleSide;
+										activeScene.assets.background.scale.x = -1;
+										scene.add(activeScene.assets.background);
+										activeScene.assets.backgroundTexture = backgroundTexture;
+									}
 								);
-								activeScene.assets.background.material.side = THREE.DoubleSide;
-								activeScene.assets.background.scale.x = -1;
-								scene.add(activeScene.assets.background);
-								activeScene.assets.backgroundTexture = backgroundTexture;
 							}
 						}
 					}
 				}
 			};
 
+			scope.resizeCanvas = function()
+			{
+				var contW = window.innerWidth;
+				var contH = window.innerHeight;
+	
+				camera.aspect = contW / contH;
+				camera.updateProjectionMatrix();
+
+		        if (scope.vrMode == true)
+		        {
+//			        stereoEffect.setSize(contW, contH);
+					renderer.setSize(contW, contH);
+		        }
+		        else
+		        {
+					renderer.setSize(contW, contH);
+		        }
+			};
 		    scope.init();
 		    scope.animate();
 		}

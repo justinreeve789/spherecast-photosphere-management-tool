@@ -1,3 +1,13 @@
+.overflow-hidden
+{
+	overflow: hidden;
+}
+
+.display-none
+{
+	display: none;
+}
+
 #login, #media-grid
 {
 	margin-top: 20px;
@@ -208,6 +218,17 @@ div#upload-progress, div#import-progress
 		color: #777;
 	}	
 }
+
+.navbar-header .header-buttons
+{
+	margin-top: 7px;
+}
+
+	.navbar-header .header-buttons .btn
+	{
+		padding-left: 12px;
+		padding-right: 12px;
+	}
 
 p.password-reset
 {
