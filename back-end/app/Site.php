@@ -37,7 +37,8 @@ class Site extends Model
 	public static function url()
 	{
 		$site = Site::current();
-		$url = 'https://';
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+		$url = $protocol;
 		if ($site->subdomain && $site->subdomain != '')
 			$url .= $site->subdomain . '.';
 		$url .= $site->domain;
@@ -57,11 +58,15 @@ class Site extends Model
 		$site_url = parse_url(\URL::to('/'));
 		$site_host = $site_url['host'];	// Will either be sphcst.com or {subdomain}.sphcst.com.
 
+		$full_domain = $site_url['scheme'] . '://' . $site_url['host'];
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
 		if ($app_host == $site_host)
 		{
 			// Retrieve the base sphcst.com site.
 			// A subdomain should still have "sphcst.com" as the domain.
 			$site = Site::with('providers')->where('subdomain', '')->where('domain', $site_host)->first();
+			$site->url = $full_domain;
 			return $site;
 		}
 		else
@@ -83,6 +88,7 @@ class Site extends Model
 				$subdomain = $match[1];
 				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $app_host)->first();
 			}
+			$site->url = $full_domain;
 			return $site;
 		}
 		return null;

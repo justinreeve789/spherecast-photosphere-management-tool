@@ -201,6 +201,37 @@ angular.module('spherecastApp')
 					renderer.setSize(contW, contH);
 		        }
 			};
+
+			scope.toggleFullscreen = function()
+			{
+				// Check if we're already in fullscreen mode.
+				if (element[0].fullscreenElement)
+				{
+					if (element[0].exitFullscreen) {
+						element[0].exitFullscreen();
+					} else if (element[0].msExitFullscreen) {
+						element[0].msExitFullscreen();
+					} else if (element[0].mozCancelFullScreen) {
+						element[0].mozCancelFullScreen();
+					} else if (element[0].webkitExitFullscreen) {
+						element[0].webkitExitFullscreen();
+					}
+				}
+				else
+				{
+					if (element[0].requestFullscreen) {
+						element[0].requestFullscreen();
+					} else if (element[0].msRequestFullScreen) {
+						element[0].msRequestFullscreen();
+					} else if (element[0].mozRequestFullScreen) {
+						element[0].mozRequestFullScreen();
+					} else if (element[0].webkitRequestFullscreen) {
+						element[0].webkitRequestFullscreen();
+					}
+				}
+				scope.resizeCanvas();
+			};
+
 		    scope.init();
 		    scope.animate();
 		}

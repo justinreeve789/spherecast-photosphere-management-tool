@@ -7,36 +7,7 @@ angular
 	var vm = this;
 	$rootScope.fullscreenViewer = true;
 
-	$scope.toggleShareBlock = function()
-	{
-		$scope.showShareBlock = $scope.showShareBlock === false ? true : false;
-	};
-
-	$scope.selectShareText = function($event)
-	{
-		$event.target.select();
-	};
-
-	// TODO: Use a hidden button as the trigger for fullscreen, and process it in a $scope.watch().
-	$scope.toggleFullscreen = function()
-	{
-		$scope.goFullscreen = $scope.goFullscreen === false ? true : false;
-	}
-
-	// TODO: Determine the best file to deliver depending on device, bandwidth, connection speed, current cache,
-	// and user preferences.
-	$scope.getFileByMediaId = function(mediaId)
-	{
-		if (typeof $scope.activeProject.assets.media[mediaId] !== 'undefined')
-		{
-			var media = $scope.activeProject.assets.media[mediaId];
-			var fileIdHigh = media.fileIdHigh;
-			var mediaFile = media.files[fileIdHigh];
-			console.log(mediaFile);
-			return mediaFile;
-		}
-		return null;
-	};
+	$scope.showShareBlock = false;
 
 //	if (Modernizr.hasEvent('deviceOrientation'))
 //	if (window.DeviceOrientationEvent || window.OrientationEvent || typeof window.onorientationchange != 'undefined')
@@ -97,4 +68,30 @@ angular
 			$state.go('upload');
 		}
 	}
+
+	$scope.selectShareText = function($event)
+	{
+		$event.target.select();
+	};
+
+	// TODO: Use a hidden button as the trigger for fullscreen, and process it in a $scope.watch().
+	$scope.toggleFullscreen = function()
+	{
+		$scope.goFullscreen = $scope.goFullscreen === false ? true : false;
+	}
+
+	// TODO: Determine the best file to deliver depending on device, bandwidth, connection speed, current cache,
+	// and user preferences.
+	$scope.getFileByMediaId = function(mediaId)
+	{
+		if (typeof $scope.activeProject.assets.media[mediaId] !== 'undefined')
+		{
+			var media = $scope.activeProject.assets.media[mediaId];
+			var fileIdHigh = media.fileIdHigh;
+			var mediaFile = media.files[fileIdHigh];
+			console.log(mediaFile);
+			return mediaFile;
+		}
+		return null;
+	};
 }]);

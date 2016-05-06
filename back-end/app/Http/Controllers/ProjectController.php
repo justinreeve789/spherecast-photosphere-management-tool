@@ -35,7 +35,7 @@ class ProjectController extends Controller
 
 		$project = new Project;
 		$project->id = 1;
-		$project->shortname = 'project_' . $media->code;
+		$project->shortname = $media->code;
 		$project->title = 'VR Photo Sphere Viewer - ' . $media->code;
 		$project->startScene = 1;
 		$project->defaultViewerMode = 'auto';

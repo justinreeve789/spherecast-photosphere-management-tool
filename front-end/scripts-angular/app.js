@@ -85,6 +85,7 @@ var app = angular
 		// TODO: Move this into a service, and call from here.
 		$http.get('api/site').success(function(site)
 		{
+			$rootScope.site = site;
 			for (var s = 0; s < site.providers.length; s++)
 			{
 				var provider = site.providers[s];

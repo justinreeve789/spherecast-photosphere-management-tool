@@ -4,7 +4,7 @@
 </div>
 
 <div
-  id="webglContainer"
+  id="viewer"
   class="embedded-viewer" 
   ng-if="projectLoaded"
   spherecast-viewer
@@ -17,18 +17,20 @@
 		    </label>
 		</div>
 
-		<a id="viewer-share" ng-click="toggleShareBlock()"></a>
+		<a id="viewer-share" ng-click="showShareBlock = !showShareBlock"></a>
 
 		<a id="viewer-fullscreen" ng-click="toggleFullscreen()"></a>
 
-		<div id="share" ng-hide="showShareBlock">
-			<a class="close" ng-click="toggleShareBlock()"></a>
+		<a id="viewer-upload" class="upload" ui-sref="upload"></a>
+
+		<div id="share" ng-show="showShareBlock">
+			<a class="close" ng-click="showShareBlock = !showShareBlock"></a>
 
 			<label for="url">URL</label>
-			<input id="share-url" name="share-url" type="text" value="http://demo.spherecast.org/{{ activeProject.shortname }}" readonly="readonly" ng-click="selectShareText($event)" />
+			<input id="share-url" name="share-url" type="text" value="{{ site.url }}/{{ activeProject.shortname }}" readonly="readonly" ng-click="selectShareText($event)" />
 
 			<label for="embed">Embed</label>
-			<textarea id="share-embed" name="share-embed" readonly="readonly" ng-click="selectShareText($event)" >&lt;iframe src="http://demo.spherecast.org/{{ activeProject.shortname }}" width="640" height="320" frameborder="0" allowfullscreen /&gt;</textarea>
+			<textarea id="share-embed" name="share-embed" readonly="readonly" ng-click="selectShareText($event)" >&lt;iframe src="{{ site.url }}/{{ activeProject.shortname }}" width="640" height="320" frameborder="0" allowfullscreen /&gt;</textarea>
 		</div>
 	</div>
 </div>
