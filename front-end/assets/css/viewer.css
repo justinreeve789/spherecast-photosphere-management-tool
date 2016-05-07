@@ -138,11 +138,50 @@
 	top: 0px;
 	height: 300px;
 	margin: auto;
-	max-width: 400px;
+	max-width: 640px;
 	opacity: 0.95;
 	padding: 25px;
 	width: 90%;
 }
+
+	#share .qr-code
+	{
+		padding-top: 30px;
+	}
+
+	#share .qr-code img
+	{
+		max-width: 160px;
+		width: 100%;
+	}
+
+	@media (max-width: 767px) and (orientation: portrait)
+	{
+		#share
+		{
+			height: 360px;
+		}
+
+		.col-xs-8.share-text
+		{
+			float: none;
+			width: 100%;
+		}
+	
+		.col-xs-4.qr-code
+		{
+			float: none;
+			margin: 0px auto;
+			padding-top: 20px;
+			width: 120px;
+		}
+
+		#share .qr-code img
+		{
+			height: 100px;
+			width: 100px;
+		}
+	}
 
 	#share.show
 	{

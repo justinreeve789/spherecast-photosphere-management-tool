@@ -26,11 +26,19 @@
 		<div id="share" ng-show="showShareBlock">
 			<a class="close" ng-click="showShareBlock = !showShareBlock"></a>
 
-			<label for="url">URL</label>
-			<input id="share-url" name="share-url" type="text" value="{{ site.url }}/{{ activeProject.shortname }}" readonly="readonly" ng-click="selectShareText($event)" />
+			<div class="container-fluid">
+				<div class="col-xs-8 share-text">
+					<label for="url">URL</label>
+					<input id="share-url" name="share-url" type="text" value="{{ site.url }}/{{ activeProject.shortname }}" readonly="readonly" ng-click="selectShareText($event)" />
+		
+					<label for="embed">Embed</label>
+					<textarea id="share-embed" name="share-embed" readonly="readonly" ng-click="selectShareText($event)" >&lt;iframe src="{{ site.url }}/{{ activeProject.shortname }}" width="640" height="320" frameborder="0" allowfullscreen /&gt;</textarea>
+				</div>
 
-			<label for="embed">Embed</label>
-			<textarea id="share-embed" name="share-embed" readonly="readonly" ng-click="selectShareText($event)" >&lt;iframe src="{{ site.url }}/{{ activeProject.shortname }}" width="640" height="320" frameborder="0" allowfullscreen /&gt;</textarea>
+				<div class="col-xs-4 qr-code">
+					<img src="/api/qrcode/{{ activeProject.shortname }}" alt="" />
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

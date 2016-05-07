@@ -12,6 +12,7 @@ use App\Media;
 use App\MediaFile;
 use App\Site;
 use App\Thumb;
+use QrCode;
 
 class MediaController extends Controller
 {
@@ -20,8 +21,34 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
+        $this->middleware('jwt.auth', ['except' => ['getQRCode', 'getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
     }
+
+	/**
+	 * Generate a QR code for a media URL.
+	 */
+
+	public function getQRCode($media_code)
+	{
+		// Make sure we're on the right site, and the media code is legitimate.
+		$site = Site::current();
+		if (!$site)
+			return;
+
+		$media = Media::where('code', $media_code)
+						->where('site_id', $site->id)
+						->first();
+		if (!$media)
+			return;
+
+		$url = $site->url . '/' . $media->code;
+		$qrcode = QrCode::format('png')->size(160)->margin(0)->generate($url);
+		$headers = [
+			'Content-Type' => 'image/png',
+			'Content-Disposition' => 'attachment; filename="qr_' . $media_code . '.png"'
+		];
+		return \Response::make($qrcode, '200', $headers);
+	}
 
 	/**
 	 * Retrive the authenticated user.

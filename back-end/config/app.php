@@ -146,6 +146,7 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 		Laravel\Socialite\SocialiteServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+		SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ],
 
     /*
@@ -198,6 +199,7 @@ return [
 		'Socialite'	=> Laravel\Socialite\Facades\Socialite::class,
 		'Form' => Collective\Html\FormFacade::class,
 		'Html' => Collective\Html\HtmlFacade::class,
+		'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];
