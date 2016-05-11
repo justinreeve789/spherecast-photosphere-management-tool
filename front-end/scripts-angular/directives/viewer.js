@@ -8,7 +8,7 @@ angular.module('spherecastApp')
 		scope: false,
 		link: function(scope, element, attrs)
 		{
-		    var scene, camera, renderer, domElement
+		    var scene, camera, renderer, stereoEffect, domElement
 		    var activeProject, activeScene;
 			var controls, orbitControls, deviceOrientationControls;
 			var clock;
@@ -230,6 +230,40 @@ angular.module('spherecastApp')
 				}
 				scope.resizeCanvas();
 			};
+
+		// We don't actually get rid of the stereoEffect (not sure it can be done), but we just
+		// render the view differently in render(). We have to make sure to reset the renderer
+		// size when we toggle back to standard mode, since StereoEffect changes that.
+		scope.toggleMode = function()
+		{
+			alert('test');
+			if (scope.vrMode == true)
+			{
+				if (typeof stereoEffect === 'undefined')
+				{
+					// Stereoscopic effect
+					stereoEffect = new THREE.StereoEffect(renderer);
+					stereoEffect.separation = -6.2;
+					stereoEffect.setSize(contW, contH);
+				}
+				camera.fov = 90;
+				camera.updateProjectionMatrix();
+
+				// Active the DeviceOrientation controls.
+				window.addEventListener('deviceorientation', scope.setOrientationControls, true);
+			}
+			else
+			{
+				renderer.setSize(contW, contH);
+				camera.fov = 70;
+				camera.updateProjectionMatrix();
+
+				// Deactivate the DeviceOrientation controls.
+				if (typeof deviceOrientationControls !== 'undefined' && deviceOrientationControls)
+					deviceOrientationControls.enabled = false;
+				orbitControls.enabled = true;
+				orbitControls.update();
+			}
 
 		    scope.init();
 		    scope.animate();
