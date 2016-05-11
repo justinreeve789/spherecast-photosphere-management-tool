@@ -146,7 +146,6 @@ angular.module('spherecastApp')
 							// this in the creation utility itself so it has the proper amount of blank space around it for
 							// a 2:1 aspect ratio.
 
-							console.log('test');
 							if (backgroundFile)
 							{
 								var backgroundTextureLoader = new THREE.TextureLoader();

@@ -252,7 +252,6 @@ class MediaController extends Controller
 
 			try
 			{
-//				set_time_limit(0);
 				$fp = fopen($temp_file, 'w+');
 				$ch = curl_init(str_replace(' ', '%20', $url));
 				curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -261,7 +260,6 @@ class MediaController extends Controller
 				curl_exec($ch);
 				curl_close($ch);
 				fclose($fp);
-//				file_put_contents($temp_file, fopen($url, 'r'));
 			}
 			catch (Exception $e)
 			{
