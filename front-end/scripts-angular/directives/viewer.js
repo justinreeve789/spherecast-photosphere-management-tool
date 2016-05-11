@@ -21,13 +21,13 @@ angular.module('spherecastApp')
 		        camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 10000 );
 		        camera.position.set(0, 0, 0);
 
-				// Controls
-				scope.setControls();
-
 		        renderer = new THREE.WebGLRenderer();
 		        domElement = renderer.domElement;
 		        renderer.setSize( window.innerWidth, window.innerHeight );
 		        element[0].appendChild( domElement );
+
+				// Controls
+				scope.setControls();
 
 				window.addEventListener('resize', scope.resizeCanvas, false);
 
