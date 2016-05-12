@@ -78,8 +78,8 @@
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
 	<script src="assets/js/bootstrap-switch.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
-	<script src="assets/js/detect-mobile-browser.js"></script>
 <!--
+	<script src="assets/js/detect-mobile-browser.js"></script>
 	<script src="assets/js/StereoEffect.js"></script>
 	<script src="assets/js/DeviceOrientationControlsVR.js"></script>
 	<script src="assets/js/OrbitControls.js"></script>
