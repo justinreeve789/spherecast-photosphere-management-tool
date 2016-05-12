@@ -12,6 +12,8 @@ use App\Media;
 use App\MediaFile;
 use App\Site;
 use App\Thumb;
+use Config;
+use DB;
 use QrCode;
 
 class MediaController extends Controller
@@ -21,13 +23,108 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['getQRCode', 'getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
+        $this->middleware('jwt.auth', ['except' => ['systemImport', 'getQRCode', 'getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
     }
+
+	/**
+	 * Run this only after running "php artisan migrate:refresh --seed" -- import all old content to the new system.
+	 */
+	public function systemImport()
+	{
+		$old_media = DB::select('select * from spherecast_viewer.photospheres');
+		$root_import_path = '/var/www/photospheres.org/imported_files';
+		$site_id = 1;
+		$omit_ips = ['90.77.232.224'];
+
+		foreach ($old_media as $m)
+		{
+			if (in_array($m->ip, $omit_ips))
+				continue;
+
+			// If the code is already in the system, just skip it.
+			$check_media = Media::where('code', $m->code)->first();
+			if ($check_media)
+				continue;
+
+			$filepath = $root_import_path . '/' . $m->filepath;
+
+			if (file_exists($filepath))
+				$filesize = filesize($filepath);
+
+			if ($filesize < 5000)
+				continue;
+
+			$hash = hash_file('sha256', $filepath);
+			$copy_filename = $hash . '_' . $filesize;
+			$copy_file = Config::get('custom.upload_path') . '/' . $copy_filename . '.jpg';
+
+			// If the file already exists, retrieve the file record.
+			$do_copy_file = true;
+			if (file_exists($copy_file))
+			{
+				$do_copy_file = false;
+
+				$file_item = FileItem::where('stored_filename', $copy_filename)->first();
+				if (!$file_item)
+				{
+					// No file record? Weird, but whatever. let's just move the file normally.
+					$do_copy_file = true;
+				}
+			}
+
+			// Copy the file, and create the file record.
+			if ($do_copy_file == true)
+			{
+				copy($filepath, $copy_file);
+
+				// Create a new file record.
+				$file_item = new FileItem;
+				$file_item->stored_filename = $copy_filename;
+				$file_item->stored_extension = 'jpg';
+				$file_item->mimetype = 'image/jpeg';
+				$file_item->filesize = $filesize;
+				$file_item->ip = $m->ip;
+				$file_item->save();
+			}
+
+			// Create the media record, and link it to the file.
+			$exif_data = json_decode($m->exif_data);
+			if (isset($exif_data->FileName))
+				$original_filename = $exif_data->FileName;
+			else
+				$original_filename = str_replace('/files/', '', $m->filepath);
+
+			$media = new Media;
+			$media->code = $m->code;
+			$media->site_id = $site_id;
+			$media->user_id = 0;
+			$media->original_filename = $original_filename;
+			$media->original_extension = 'jpg';
+			$media->ip = $m->ip;
+			$media->save();
+
+			$media_file = new MediaFile;
+			$media_file->media_id = $media->id;
+			$media_file->file_id = $file_item->id;
+			$media_file->position = 0;
+			$media_file->save();
+
+//			$media = Media::where('media.id', $media->id)->first();
+		}
+	}
+
+	/**
+	 * Retrieve a list of old uploads based on IP address.
+	 */
+	public function getOldMedia($limit = 50)
+	{
+		$old_media = DB::connection('old_sphcst')
+					->select();
+	}
 
 	/**
 	 * Generate a QR code for a media URL.
 	 */
-
 	public function getQRCode($media_code)
 	{
 		// Make sure we're on the right site, and the media code is legitimate.

@@ -107,5 +107,11 @@ var app = angular
 				$rootScope.displayName = $rootScope.authenticatedUser.name;
 
 			$rootScope.pageLoaded = true;
+
+			// The viewer must have "fullscreenViewer" set to true, so we know to add the "overflow-hidden"
+			// class to the body. This is set to "true" in the controller. For everything else, just make
+			// sure it's false.'
+			if (toState.name != 'viewer')
+				$rootScope.fullscreenViewer = false;
 		});
 	}]);

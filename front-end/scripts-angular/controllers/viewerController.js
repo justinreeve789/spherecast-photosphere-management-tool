@@ -89,7 +89,7 @@ angular
 			var media = $scope.activeProject.assets.media[mediaId];
 			var fileIdHigh = media.fileIdHigh;
 			var mediaFile = media.files[fileIdHigh];
-			console.log(mediaFile);
+//			console.log(mediaFile);
 			return mediaFile;
 		}
 		return null;

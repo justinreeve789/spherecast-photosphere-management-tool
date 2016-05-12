@@ -13,6 +13,7 @@
 
 Route::get('/', ['uses' => 'MediaController@showMediaGrid']);
 
+Route::get('/systemimport', ['uses' => 'MediaController@systemImport']);
 Route::get('/user', ['uses' => 'UserController@getCurrentUser']);
 Route::post('/user', ['uses' => 'AuthenticateController@createLocalUser']);
 Route::post('/user/edit', ['uses' => 'UserController@saveUser']);

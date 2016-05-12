@@ -6,8 +6,11 @@ angular
 	vm.authenticatedUser = {};
 	vm.displayName = '';
 
-	this.get = function(forceRetrieve = false)
+	this.get = function(forceRetrieve)
 	{
+		if (typeof forceRetrieve === 'undefined' || forceRetrieve == null)
+			forceRetrieve = false;
+
 		if (localStorage.getItem('authenticated_user') == null || localStorage.getItem('authenticated_user') == "" || forceRetrieve == true)
 		{
 			$http.get('api/user').success(function(data)
