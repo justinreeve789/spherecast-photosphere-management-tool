@@ -82,16 +82,35 @@ var app = angular
 		AuthenticatedUser.logoutIfInvalidState($state.current);
 
 		// Retrieve the app ids for social logins and assign them to the Satellizer providers.
+		// This is stored in localStorage so we only need to call it once.
 		// TODO: Move this into a service, and call from here.
-		$http.get('api/site').success(function(site)
+		// TODO: Make this time out every 5 minutes or so, since the authentication ids might change. For
+		// the administrator user, make sure the localStorage "site" is cleared out whenever it does
+		// change, but for end users, this can change at pre-defined intervals.
+		// TODO: Alternatively, we could use a token to make sure we're using the "latest" version of
+		// the site data.
+		if (localStorage.getItem('site') == null || localStorage.getItem('site') == "")
 		{
-			$rootScope.site = site;
-			for (var s = 0; s < site.providers.length; s++)
+			$http.get('api/site').success(function(site)
 			{
-				var provider = site.providers[s];
+				$rootScope.site = site;
+				localStorage.setItem('site', JSON.stringify(site));
+				for (var s = 0; s < site.providers.length; s++)
+				{
+					var provider = site.providers[s];
+					SatellizerConfig.providers[provider.auth_provider].clientId = provider.app_id;
+				}
+			});
+		}
+		else
+		{
+			$rootScope.site = JSON.parse(localStorage.getItem('site'));
+			for (var s = 0; s < $rootScope.site.providers.length; s++)
+			{
+				var provider = $rootScope.site.providers[s];
 				SatellizerConfig.providers[provider.auth_provider].clientId = provider.app_id;
 			}
-		});
+		}
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
