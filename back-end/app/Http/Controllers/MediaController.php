@@ -12,6 +12,7 @@ use App\Media;
 use App\MediaFile;
 use App\Site;
 use App\Thumb;
+use App\User;
 use Config;
 use DB;
 use QrCode;
@@ -23,7 +24,7 @@ class MediaController extends Controller
         // Apply the jwt.auth middleware to all methods in this controller
         // except for the authenticate method. We don't want to prevent
         // the user from retrieving their token if they don't already have it
-        $this->middleware('jwt.auth', ['except' => ['systemImport', 'getQRCode', 'getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
+        $this->middleware('jwt.auth', ['except' => ['systemImport', 'assignSystemImportedMediaToUser', 'getQRCode', 'getMedia', 'downloadMedia', 'downloadThumbnail', 'showUpload', 'processUpload', 'importFile']]);
     }
 
 	/**
@@ -101,6 +102,9 @@ class MediaController extends Controller
 			$media->original_filename = $original_filename;
 			$media->original_extension = 'jpg';
 			$media->ip = $m->ip;
+			$media->source = 'systemimport';
+			$media->created_at = date('Y-m-d H:i:s', $m->timeuploaded);
+			$media->updated_at = date('Y-m-d H:i:s', $m->timeuploaded);
 			$media->save();
 
 			$media_file = new MediaFile;
@@ -114,12 +118,63 @@ class MediaController extends Controller
 	}
 
 	/**
-	 * Retrieve a list of old uploads based on IP address.
+	 * Retrieve a list of uploads based on IP address.
 	 */
-	public function getOldMedia($limit = 50)
+	public function getSystemImportedMedia($limit = 24)
 	{
-		$old_media = DB::connection('old_sphcst')
-					->select();
+		$site = Site::current();
+		if ($site->id != 1)
+			return response()->json(['error_general' => 'No uploads associated with this site.'], 401);
+
+		$ip = \Request::getClientIp(true);
+		$media = Media::where('site_id', $site->id)
+						->where('source', 'systemimport')
+						->where('user_id', 0)
+						->where('ip', $ip)
+						->limit($limit)
+						->orderBy('created_at', 'desc')
+						->get();
+		$media_count = Media::where('site_id', $site->id)
+						->where('source', 'systemimport')
+						->where('user_id', 0)
+						->where('ip', $ip)
+						->limit($limit)
+						->orderBy('created_at', 'desc')
+						->count();
+		return ['media' => $media, 'media_shown' => $limit, 'media_count' => $media_count];
+	}
+
+	/**
+	 * Assign all media associated with a user's IP address to them.
+	 */
+	public function assignSystemImportedMediaToUser($media_id = null)
+	{
+		$site = Site::current();
+		if ($site->id != 1)
+			return response()->json(['error_general' => 'Could not retrieve site.'], 401);
+
+		$user = $this->getUser();
+		$user = new User;
+		$user->id = 5;
+		if (!$user || !is_numeric($user->id) || $user->id <= 0)
+			return response()->json(['error_general' => 'Could not retrieve user.'], 401);
+
+		$ip = \Request::getClientIp(true);
+		$media = Media::where('site_id', $site->id)
+						->where('source', 'systemimport')
+						->where('user_id', 0)
+						->where('ip', $ip)
+						->get();
+
+		$assign_count = 0;
+		foreach ($media as $m)
+		{
+			$m->user_id = $user->id;
+			if ($m->save())
+				$assign_count++;
+		}
+
+		return ['message_general' => $assign_count . ' images were imported into your account.'];
 	}
 
 	/**
@@ -130,7 +185,7 @@ class MediaController extends Controller
 		// Make sure we're on the right site, and the media code is legitimate.
 		$site = Site::current();
 		if (!$site)
-			return;
+			return response()->json(['error_general' => 'Could not retrieve site.'], 401);
 
 		$media = Media::where('code', $media_code)
 						->where('site_id', $site->id)

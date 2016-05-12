@@ -19,6 +19,11 @@
 	}
 }
 
+#import-grid .media-item
+{
+	margin-bottom: 20px;
+}
+
 .media-item
 {
 	position: relative;

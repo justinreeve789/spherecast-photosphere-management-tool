@@ -24,6 +24,7 @@ class CreateMediaTable extends Migration
             $table->string('original_extension', 8);
             $table->string('ip', 64)->nullable();
 			$table->string('viewer')->default('spherecast');	// This can be "spherecast" for the Spherecast viewer, or "vrview" for the viewer at https://github.com/google/vrview
+			$table->string('source')->nullable();				// This can be "upload," "import," or "systemimport."
             $table->boolean('visible')->default(true);
 			$table->boolean('deleted')->default(false);
             $table->timestamps();

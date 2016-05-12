@@ -1,0 +1,68 @@
+<ng-include src="'/partials/header.html'"></ng-include>
+
+<div id="import" class="row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<div class="well">
+			<h3>Import Photospheres from Old Site</h3>
+
+			<div class="alert alert-danger" ng-if="import.error">
+				<i class="fa fa-exclamation-triangle"></i>
+				{{ import.error.error_general }}
+			</div>
+				
+			<div ng-if="!import.items">
+				<p>
+					We don't have any records of you uploading photospheres to the old site. Please
+					<a class="btn btn-sm btn-primary" ui-sref="upload">Upload</a> some new images.
+				</p>
+			</div>
+
+			<div ng-if="import.items">
+				<p>
+					It seems you've already uploaded some photospheres to this site. Would you like to
+					import the following images into your account?
+				</p>
+				<p>
+					Don't worry, if you choose not to, you can always do
+					it later from the <a ui-sref="profile">Profile</a> page.
+				</p>
+				<p class="text-center" ng-hide="import.importProcessed">
+					<a class="btn btn-primary" ng-click="import.import()">Import all images</a>
+					<a class="btn btn-danger" ng-click="import.forget()">Don't ask me again</a>
+				</p>
+
+				<div id="upload-progress" ng-if="import.importProcessing" class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" ng-style="{ 'width': '100%' }">
+						Processing... please be patient...
+					</div>
+				</div>
+
+				<div class="alert alert-success message-general animated fadeIn" ng-if="import.message.message_general">
+					<i class="fa fa-check"></i>
+					{{ import.message.message_general }}
+				</div>
+
+				<div ng-if="import.importProcessed" class="animated fadeIn">
+					<p class="text-center">
+						<a class="btn btn-warning" ui-sref="spheres">View your images now</a>
+					</p>
+				</div>				
+	
+				<div ng-if="import.items" class="animated fadeIn">
+					<div id="import-grid" class="container-fluid">
+						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-4" ng-repeat="item in import.items">
+							<div class="media-item">
+								<div class="media-item-image">
+									<a href="{{ item.code }}" target="_blank">
+										<img src="/api/thumb/{{ item.code }}" alt="" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

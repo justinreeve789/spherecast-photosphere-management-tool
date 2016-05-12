@@ -33,6 +33,11 @@ var app = angular
 				templateUrl: '../views/signupView.html',
 				controller: 'AuthController as auth',
 			})
+			.state('import', {
+				url: '/import',
+				templateUrl: '../views/importView.html',
+				controller: 'ImportController as import',
+			})
 			.state('logout', {
 				url: '/logout',
 				controller: function($scope, $rootScope, $auth, $location)
