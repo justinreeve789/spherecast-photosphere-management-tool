@@ -393,7 +393,6 @@ function ImportController($scope, $rootScope, $http)
 		vm.importProcessing = true;
 		$http.get('api/media/assign/system').success(function(data) {
 			vm.importProcessing = false;
-			console.log(data);
 			vm.message = data;
 			vm.items = [];
 			vm.importProcessed = true;
