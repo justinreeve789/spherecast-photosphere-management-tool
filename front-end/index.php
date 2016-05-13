@@ -76,7 +76,6 @@
 	<script src="node_modules/satellizer/satellizer.min.js"></script>
 	<script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
-	<script src="assets/js/bootstrap-switch.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
 <!--
 	<script src="assets/js/detect-mobile-browser.js"></script>
@@ -104,6 +103,6 @@
 	<script src="scripts-angular/services/AuthenticatedUser.js"></script>
 	<script src="scripts-angular/services/Project.js"></script>
 -->
-	<script src="main.min.js"></script>
-	<script src="viewer.min.js"></script>
+	<script src="scripts/main.min.js"></script>
+	<script src="scripts/viewer.min.js"></script>
 </html>

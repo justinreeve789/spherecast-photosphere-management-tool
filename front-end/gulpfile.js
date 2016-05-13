@@ -21,11 +21,12 @@ gulp.task('scripts-angular', function() {
     		'scripts-angular/controllers/*.js',
     		'scripts-angular/directives/*.js',
     		'scripts-angular/services/*.js',
-    		'!scripts-angular/services/viewer.js'
+    		'!scripts-angular/services/viewer.js',
+    		'assets/js/bootstrap-switch.min.js',
     	])
-        .pipe(concat('main.js'))
+        .pipe(concat('scripts/main.js'))
         .pipe(gulp.dest(''))
-        .pipe(rename('main.min.js'))
+        .pipe(rename('scripts/main.min.js'))
         .pipe(uglify({
         	mangle: false, compress: false
         }))
@@ -34,15 +35,14 @@ gulp.task('scripts-angular', function() {
 
 gulp.task('scripts-viewer', function() {
     return gulp.src([
-    		'scripts-angular/services/viewer.js',
     		'assets/js/DeviceOrientationControls.js',
     		'assets/js/OrbitControls.js',
     		'assets/js/StereoEffect.js',
     		'assets/js/detect-mobile-browser.js',
     	])
-        .pipe(concat('viewer.js'))
+        .pipe(concat('scripts/viewer.js'))
         .pipe(gulp.dest(''))
-        .pipe(rename('viewer.min.js'))
+        .pipe(rename('scripts/viewer.min.js'))
         .pipe(uglify({
         	mangle: {
         		except: ['$', 'scope', 'element', 'attrs']
