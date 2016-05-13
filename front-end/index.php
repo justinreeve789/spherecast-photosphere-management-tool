@@ -77,32 +77,8 @@
 	<script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
-<!--
-	<script src="assets/js/detect-mobile-browser.js"></script>
-	<script src="assets/js/StereoEffect.js"></script>
-	<script src="assets/js/DeviceOrientationControlsVR.js"></script>
-	<script src="assets/js/OrbitControls.js"></script>
--->
 
 	<!-- Application Scripts -->
-<!--
-	<script src="scripts-angular/app.js"></script>
-
-	<script src="scripts-angular/controllers/authController.js"></script>
-	<script src="scripts-angular/controllers/userController.js"></script>
-	<script src="scripts-angular/controllers/profileController.js"></script>
-	<script src="scripts-angular/controllers/mediaController.js"></script>
-	<script src="scripts-angular/controllers/fileController.js"></script>
-	<script src="scripts-angular/controllers/viewerController.js"></script>
-
-	<script src="scripts-angular/directives/bootstrapSwitchDirective.js"></script>
-	<script src="scripts-angular/directives/fileDirective.js"></script>
-	<script src="scripts-angular/directives/editDirective.js"></script>
-	<script src="scripts-angular/directives/viewerDirective.js"></script>
-
-	<script src="scripts-angular/services/AuthenticatedUser.js"></script>
-	<script src="scripts-angular/services/Project.js"></script>
--->
 	<script src="scripts/main.min.js"></script>
 	<script src="scripts/viewer.min.js"></script>
 </html>
