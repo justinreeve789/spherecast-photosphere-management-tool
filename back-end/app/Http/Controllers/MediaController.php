@@ -33,7 +33,7 @@ class MediaController extends Controller
 	public function systemImport()
 	{
 		$old_media = DB::select('select * from spherecast_viewer.photospheres');
-		$root_import_path = '/var/www/photospheres.org/imported_files';
+		$root_import_path = \Config::get('custom.imported_path');
 		$site_id = 1;
 		$omit_ips = ['90.77.232.224'];
 
