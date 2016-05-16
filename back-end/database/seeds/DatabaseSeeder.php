@@ -37,6 +37,9 @@ class DatabaseSeeder extends Seeder
 
 		$sites_providers  = array(
 			['site_id' => 1, 'auth_provider' => 'facebook', 'app_id' => '990909701004112', 'secret' => '9cb31c7ea4595338197e5b0dd7a0fbfb'],
+			['site_id' => 2, 'auth_provider' => 'facebook', 'app_id' => '447635065516276', 'secret' => '3f4f90f64731a3ad65568e57f780526a'],
+			['site_id' => 1, 'auth_provider' => 'google', 'app_id' => '829633846470-krlc118s6ul18u8s9vovrn6h4pt2iuum.apps.googleusercontent.com', 'secret' => 'pjQXGzOqAYsoNt4oCfmjNWnM'],
+		);
 			['site_id' => 1, 'auth_provider' => 'google', 'app_id' => '829633846470-krlc118s6ul18u8s9vovrn6h4pt2iuum.apps.googleusercontent.com', 'secret' => 'pjQXGzOqAYsoNt4oCfmjNWnM'],
 		);
 
