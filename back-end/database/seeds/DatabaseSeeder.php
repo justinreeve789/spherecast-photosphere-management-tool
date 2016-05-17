@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 		DB::table('subscriptions_plans')->delete();
 
 		$sites = array(
-			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 1, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
+			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 			['subdomain' => 'vrdemo', 'domain' => 'sphcst.com', 'title' => 'VR Demo', 'shared' => 1],
 			['subdomain' => '', 'domain' => 'avms.us', 'title' => 'AVMS', 'shared' => 1],
