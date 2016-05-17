@@ -11,6 +11,7 @@
 
 		vm.name = $rootScope.authenticatedUser.name;
 		vm.email = $rootScope.authenticatedUser.email;
+		vm.check_imports = $rootScope.authenticatedUser.check_imports;
 
 		vm.save = function()
 		{

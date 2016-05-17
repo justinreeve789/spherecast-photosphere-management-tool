@@ -21,6 +21,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $name;
 	protected $auth_provider;
 	protected $auth_provider_id;
+	protected $check_imports;
 	protected $remember_token;
 
     protected $guarded = ['id'];

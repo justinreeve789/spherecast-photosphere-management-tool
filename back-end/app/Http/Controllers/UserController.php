@@ -232,4 +232,35 @@ class UserController extends Controller
 		}
 		return implode($pass);
 	}
+
+	/**
+	 * Set the check_imports flag.
+	 * If the flag is 1, imports are checked at login.
+	 * If the flag is 0, imports are not checked at login, but the "Import previous uploads" button is still present in the Profile.
+	 * If the flag is -1, imports are not checked at login, and the "Import previous uploads" button is not present in the Profile.
+	 */
+	public function disableCheckImports()
+	{
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Could not determine site.'], 401);
+
+		// Get the logged-in user.
+		$user = \Auth::user();
+		if (!$user)
+			return response()->json(['error_general' => 'Could not retrieve user.'], 401);		
+
+		$flag = \Input::get('flag');
+		if (!isset($flag) || !$flag)
+			$flag = 0;
+		if ($flag != 0 && $flag != -1)
+			$flag = 0;
+
+		$user->check_imports = $flag;
+
+		if ($user->save())
+			return response()->json(['nessage_general' => 'Import checking disabled.'], 201);
+		else
+			return response()->json(['error_general' => 'Could not disable import checking.'], 401);
+	}
 }

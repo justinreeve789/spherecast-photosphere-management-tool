@@ -1,6 +1,6 @@
 angular
 	.module('spherecastApp')
-	.service('AuthenticatedUser', ['$rootScope', '$http', '$auth', '$state', '$location', function($rootScope, $http, $auth, $state, $location)
+	.service('AuthenticatedUser', ['$rootScope', '$http', '$q', '$auth', '$state', '$location', function($rootScope, $http, $q, $auth, $state, $location)
 {
 	var vm = this;
 	vm.authenticatedUser = {};
@@ -8,6 +8,8 @@ angular
 
 	this.get = function(forceRetrieve)
 	{
+		var deferred = $q.defer();
+
 		if (typeof forceRetrieve === 'undefined' || forceRetrieve == null)
 			forceRetrieve = false;
 
@@ -22,23 +24,26 @@ angular
 					$rootScope.displayName = data.name;
 					vm.authenticatedUser = data;
 					vm.displayName = data.name;
-					return data;
+//					return data;
 				}
-				return;
+				deferred.resolve(data);
 			}).error(function(error)
 			{
+				deferred.reject(error);
 //				console.log(error);
 			})
 		}
 		else
 		{
-			return JSON.parse(localStorage.getItem('authenticated_user'));
+//			return JSON.parse(localStorage.getItem('authenticated_user'));
+			deferred.resolve(JSON.parse(localStorage.getItem('authenticated_user')));
 		}
+		return deferred.promise;
 	};
 
 	this.refresh = function()
 	{
-		$rootScope.authenticatedUser = this.get(true);
+		this.get(true);
 	}
 
 	this.can = function(permission)

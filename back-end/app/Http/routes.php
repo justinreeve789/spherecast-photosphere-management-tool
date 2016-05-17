@@ -19,6 +19,7 @@ Route::post('/user', ['uses' => 'AuthenticateController@createLocalUser']);
 Route::post('/user/edit', ['uses' => 'UserController@saveUser']);
 Route::get('/user/resetpassword', ['uses' => 'UserController@processResetPassword']);
 Route::post('/user/resetpassword', ['uses' => 'UserController@confirmResetPassword']);
+Route::post('/user/disablecheckimports', ['uses' => 'UserController@disableCheckImports']);
 Route::get('/site', ['uses' => 'SiteController@getCurrentSite']);
 Route::get('/list', ['uses' => 'MediaController@showMediaGrid']);
 Route::get('/upload', ['uses' => 'MediaController@showUpload']);

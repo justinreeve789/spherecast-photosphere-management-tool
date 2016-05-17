@@ -4,7 +4,7 @@ angular
 	.module('spherecastApp')
 	.controller('ImportController', ImportController);
 
-function ImportController($scope, $rootScope, $http)
+function ImportController($scope, $rootScope, $http, $state, AuthenticatedUser)
 {
 	var vm = this;
 
@@ -23,7 +23,21 @@ function ImportController($scope, $rootScope, $http)
 			vm.items = data.media;
 			vm.items_shown = data.media_shown;
 			vm.items_count = data.media_count;
-			$rootScope.pageLoaded = true;
+
+			// If there's no items, turn off the check_imports_at_login flag and redirect to /spheres.
+			if (vm.items_count == 0)
+			{
+				$http.post('api/user/disablecheckimports', { flag: '-1' }).success(function(data)
+				{
+					AuthenticatedUser.refresh();
+					$state.go('spheres');
+				}).error(function(error)
+				{
+					$state.go('spheres');
+				});
+			}
+			else
+				$rootScope.pageLoaded = true;
 		}).error(function(error) {
 			vm.error = error;
 			$rootScope.pageLoaded = true;

@@ -28,12 +28,17 @@
 			{
 				// Authentication successful, so redirect to /spheres.
 				$rootScope.authToken = $auth.getToken();
-				AuthenticatedUser.get();
-				$state.go('spheres');
+				var authUserGet = AuthenticatedUser.get();
+				authUserGet.then(function(authUser)
+				{
+					if (authUser.check_imports == 1)
+						$state.go('import');
+					else
+						$state.go('spheres');
+				});
 			}, function(error)
 			{
-				vm.error = error;
-//				console.log(vm.error);
+				vm.error = error.data;
 			});
 		}
 
@@ -42,8 +47,14 @@
 			{
 				// Authentication successful, so redirect to /spheres.
 				$rootScope.authToken = $auth.getToken();
-				AuthenticatedUser.get();
-				$state.go('spheres');
+				var authUserGet = AuthenticatedUser.get();
+				authUserGet.then(function(authUser)
+				{
+					if (authUser.check_imports == 1)
+						$state.go('import');
+					else
+						$state.go('spheres');
+				});
 			}).catch(function(error)
 			{
 //				console.log(error);
@@ -66,8 +77,15 @@
 					$auth.login(credentials).then(function(data)
 					{
 						// If login is successful, retrieve the user object, and redirect to the /spheres state.
-						AuthenticatedUser.get();
-						$state.go('spheres');
+						var authUserGet = AuthenticatedUser.get();
+						authUserGet.then(function(authUser)
+						{
+							if (authUser.check_imports_at_login == 1)
+								$state.go('import');
+							else
+								$state.go('spheres');
+						});
+
 					}, function(error)
 					{
 						vm.error = error;
@@ -94,14 +112,13 @@
 
 		vm.resetPassword = function()
 		{
-			console.log('test');
 			$http.post('api/user/resetpassword', { email: vm.email }).success(function(data)
 			{
 				vm.message = data;
 			}).error(function(error)
 			{
-//				console.log(error);
 				vm.error = error;
+//				console.log(error);
 			});
 		}
 	}

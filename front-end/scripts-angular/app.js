@@ -126,11 +126,13 @@ var app = angular
 			$rootScope.authToken = $auth.getToken();
 
 			// If we don't already have a user object, retrieve the user.
-			$rootScope.authenticatedUser = AuthenticatedUser.get();
-			if ($rootScope.authenticatedUser)
-				$rootScope.displayName = $rootScope.authenticatedUser.name;
-
-			$rootScope.pageLoaded = true;
+			var authUserGet = AuthenticatedUser.get();
+			authUserGet.then(function(authUser)
+			{
+				$rootScope.authenticatedUser = authUser;
+				$rootScope.displayName = authUser.name;
+				$rootScope.pageLoaded = true;
+			});
 
 			// The viewer must have "fullscreenViewer" set to true, so we know to add the "overflow-hidden"
 			// class to the body. This is set to "true" in the controller. For everything else, just make

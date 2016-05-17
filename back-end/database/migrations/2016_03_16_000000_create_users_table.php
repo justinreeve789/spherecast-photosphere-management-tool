@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('auth_provider', 32)->default('local');
             $table->text('auth_provider_id')->nullable();
+            $table->tinyInteger('check_imports')->default(1);
             $table->rememberToken();
             $table->timestamps();
 

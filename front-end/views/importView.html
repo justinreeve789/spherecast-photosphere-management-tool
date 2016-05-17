@@ -1,9 +1,9 @@
 <ng-include src="'/partials/header.html'"></ng-include>
 
-<div id="import" class="row">
+<div id="import" class="row" ng-show="pageLoaded">
 	<div class="col-sm-10 col-sm-offset-1">
-		<div class="well" ng-cloak>
-			<h3>Import Photospheres from Old Site</h3>
+		<div class="well">
+			<h3 ng-cloak>Import Photospheres from Old Site</h3>
 
 			<div class="alert alert-danger" ng-if="import.error">
 				<i class="fa fa-exclamation-triangle"></i>
@@ -28,7 +28,7 @@
 				</p>
 				<p class="text-center" ng-hide="import.importProcessed">
 					<a class="btn btn-primary" ng-click="import.import()">Import all images</a>
-					<a class="btn btn-danger" ng-click="import.forget()">Don't ask me again</a>
+					<a class="btn btn-danger" ng-click="import.forget()" ng-if="AuthenticatedUser.checkImportsAtLogin == true">Don't ask me again</a>
 				</p>
 
 				<div id="upload-progress" ng-if="import.importProcessing" class="progress">
