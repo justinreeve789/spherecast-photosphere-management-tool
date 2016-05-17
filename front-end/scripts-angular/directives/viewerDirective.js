@@ -29,10 +29,12 @@ angular.module('spherecastApp')
 				// Controls
 				scope.setControls();
 
+				// Activate renderer mode
+				scope.toggleMode();
+
 				window.addEventListener('resize', scope.resizeCanvas, false);
 
 		        activeProject = scope.activeProject;
-		        console.log(activeProject);
 		        scope.loadNewScene(activeProject.startScene);
 		    };
 
@@ -51,7 +53,8 @@ angular.module('spherecastApp')
 					deviceOrientationControls.update(clock.getDelta());
 				}
 
-		        renderer.render( scene, camera );
+//		        renderer.render( scene, camera );
+				scope.render();
 		    };
 
 
@@ -243,7 +246,7 @@ angular.module('spherecastApp')
 						// Stereoscopic effect
 						stereoEffect = new THREE.StereoEffect(renderer);
 						stereoEffect.separation = -6.2;
-						stereoEffect.setSize(window.innerWidth, window.innerHeight);
+						stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
 					}
 					camera.fov = 90;
 					camera.updateProjectionMatrix();
@@ -263,7 +266,8 @@ angular.module('spherecastApp')
 					orbitControls.enabled = true;
 					orbitControls.update();
 				}
-			}
+				scope.resizeCanvas();
+			};
 
 			scope.render = function()
 			{
@@ -275,8 +279,11 @@ angular.module('spherecastApp')
 				// Render the view.
 				if (scope.vrMode == true)
 				{
-					stereoEffect.render(scene, camera);
-					stereoEffect.clearDepth();
+					if (typeof stereoEffect !== 'undefined')
+					{
+						stereoEffect.render(scene, camera);
+						stereoEffect.clearDepth();
+					}
 				}
 				else
 				{
