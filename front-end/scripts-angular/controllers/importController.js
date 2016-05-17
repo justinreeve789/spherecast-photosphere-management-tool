@@ -10,6 +10,7 @@ function ImportController($scope, $rootScope, $http, $state, AuthenticatedUser)
 
 	vm.items;
 	vm.error;
+	vm.authenticatedUser = $rootScope.authenticatedUser;
 
 	vm.importProcessed = false;
 
@@ -52,6 +53,7 @@ function ImportController($scope, $rootScope, $http, $state, AuthenticatedUser)
 			vm.message = data;
 			vm.items = [];
 			vm.importProcessed = true;
+			AuthenticatedUser.refresh();
 		}).error(function(error) {
 			vm.error = error;
 			$rootScope.pageLoaded = true;
@@ -60,6 +62,14 @@ function ImportController($scope, $rootScope, $http, $state, AuthenticatedUser)
 
 	vm.forget = function()
 	{
+		$http.post('api/user/disablecheckimports', { flag: '0' }).success(function(data)
+		{
+			AuthenticatedUser.refresh();
+			$state.go('spheres');
+		}).error(function(error)
+		{
+			$state.go('spheres');
+		});
 	}
 
 	vm.getSystemImportedMedia();

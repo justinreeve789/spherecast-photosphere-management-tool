@@ -28,7 +28,7 @@
 				</p>
 				<p class="text-center" ng-hide="import.importProcessed">
 					<a class="btn btn-primary" ng-click="import.import()">Import all images</a>
-					<a class="btn btn-danger" ng-click="import.forget()" ng-if="AuthenticatedUser.checkImportsAtLogin == true">Don't ask me again</a>
+					<a class="btn btn-danger" ng-click="import.forget()" ng-show="import.authenticatedUser.check_imports == 1">Don't ask me again</a>
 				</p>
 
 				<div id="upload-progress" ng-if="import.importProcessing" class="progress">
