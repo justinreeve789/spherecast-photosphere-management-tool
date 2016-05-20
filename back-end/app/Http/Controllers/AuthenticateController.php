@@ -182,11 +182,11 @@ class AuthenticateController extends Controller
 		$client = new GuzzleHttp\Client();
 
         // Exchange authorization code for access token.
-//		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/token', [
-		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/v2/auth', [
+		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/token', [
+//		$accessTokenResponse = $client->request('POST', 'https://accounts.google.com/o/oauth2/v2/auth', [
 			'form_params' => $params
 		]);
-		error_log(print_r($params, true));
+//		error_log(print_r($params, true));
 
         $accessToken = json_decode($accessTokenResponse->getBody(), true);
 
@@ -205,7 +205,7 @@ class AuthenticateController extends Controller
 			// No user found, create account.
 			$new = new \App\User;
 			$new->site_id = Site::current()->id;
-			$new->name= $profile['name'];
+			$new->name = $profile['name'];
 			$new->email = $profile['email'];
 			$new->password = '{}';
 			$new->auth_provider = $provider;

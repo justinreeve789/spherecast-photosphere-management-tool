@@ -18,16 +18,30 @@ angular.module('spherecastApp')
 		        scene = new THREE.Scene();
 				clock = new THREE.Clock();		// TODO: Use the clock to count hotspot durations.
 
-		        camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 10000 );
+		        camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
 		        camera.position.set(0, 0, 0);
 
+				// Normal renderer
 		        renderer = new THREE.WebGLRenderer();
 		        domElement = renderer.domElement;
-		        renderer.setSize( window.innerWidth, window.innerHeight );
-		        element[0].appendChild( domElement );
+		        renderer.setSize(window.innerWidth, window.innerHeight);
+		        element[0].appendChild(domElement);
+
+				// Stereoscopic effect
+				stereoEffect = new THREE.StereoEffect(renderer);
+				stereoEffect.separation = -6.2;
+				stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
 
 				// Controls
 				scope.setControls();
+
+				orbitControls = new THREE.OrbitControls(camera, domElement);
+				orbitControls.target.set(
+					camera.position.x + 0.1,
+					camera.position.y,
+					camera.position.z
+				);
+				orbitControls.update(clock.getDelta());
 
 				// Activate renderer mode
 				scope.toggleMode();
@@ -42,34 +56,35 @@ angular.module('spherecastApp')
 
 		    scope.animate = function()
 		    {
-		        requestAnimationFrame( scope.animate );
+		        requestAnimationFrame(scope.animate);
 
 				if (orbitControls.enabled == true)
 				{
 					orbitControls.update(clock.getDelta());
 				}
-				else
+
+				if (typeof deviceOrientationControls !== 'undefined' && typeof deviceOrientationControls.enabled !== 'undefined')
 				{
-					deviceOrientationControls.update(clock.getDelta());
+					if (deviceOrientationControls.enabled == true)
+					{
+						deviceOrientationControls.update(clock.getDelta());
+					}
 				}
 
-//		        renderer.render( scene, camera );
 				scope.render();
 		    };
+
+
+
+			scope.update = function()
+			{
+			};
 
 
 
 			scope.setControls = function()
 			{
 				window.addEventListener('deviceorientation', scope.setOrientationControls, true);
-
-				orbitControls = new THREE.OrbitControls(camera, domElement);
-				orbitControls.target.set(
-					camera.position.x + 0.1,
-					camera.position.y,
-					camera.position.z
-				);
-				orbitControls.update();
 			};
 
 
@@ -84,7 +99,52 @@ angular.module('spherecastApp')
 					deviceOrientationControls = new THREE.DeviceOrientationControls(camera);
 					deviceOrientationControls.connect(clock.getDelta());
 				}
+				deviceOrientationControls.update();
+				deviceOrientationControls.enabled = true;
+//				orbitControls.enabled = false;
+				window.removeEventListener('deviceorientation', scope.setOrientationControls, true);
 			}
+
+
+
+
+			// We don't actually get rid of the stereoEffect (not sure it can be done), but we just
+			// render the view differently in render(). We have to make sure to reset the renderer
+			// size when we toggle back to standard mode, since StereoEffect changes that.
+			scope.toggleMode = function()
+			{
+//				scope.setControls();
+
+				if (scope.vrMode == true)
+				{
+//					if (typeof stereoEffect === 'undefined')
+//					{
+//						// Stereoscopic effect
+//						stereoEffect = new THREE.StereoEffect(renderer);
+//						stereoEffect.separation = -6.2;
+//						stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
+//					}
+					camera.fov = 90;
+					camera.updateProjectionMatrix();
+
+					// Active the DeviceOrientation controls.
+					window.addEventListener('deviceorientation', scope.setOrientationControls, true);
+				}
+				else
+				{
+					renderer.setSize(window.innerWidth, window.innerHeight);
+					camera.fov = 70;
+					camera.updateProjectionMatrix();
+
+					// Deactivate the DeviceOrientation controls.
+					if (typeof deviceOrientationControls !== 'undefined' && deviceOrientationControls)
+						deviceOrientationControls.enabled = false;
+				}
+
+				orbitControls.enabled = true;
+				orbitControls.update(clock.getDelta());
+				scope.resizeCanvas();
+			};
 
 
 
@@ -135,7 +195,7 @@ angular.module('spherecastApp')
 					else
 					{
 						// Retrieve the media object.
-						console.log(activeProject);
+//						console.log(activeProject);
 						if (activeProject.assets.media[activeScene.backgroundMediaId].type == 'backgroundimage')
 						{
 							var backgroundFile = scope.getFileByMediaId(activeScene.backgroundMediaId);
@@ -230,41 +290,6 @@ angular.module('spherecastApp')
 					} else if (element[0].webkitRequestFullscreen) {
 						element[0].webkitRequestFullscreen();
 					}
-				}
-				scope.resizeCanvas();
-			};
-
-			// We don't actually get rid of the stereoEffect (not sure it can be done), but we just
-			// render the view differently in render(). We have to make sure to reset the renderer
-			// size when we toggle back to standard mode, since StereoEffect changes that.
-			scope.toggleMode = function()
-			{
-				if (scope.vrMode == true)
-				{
-					if (typeof stereoEffect === 'undefined')
-					{
-						// Stereoscopic effect
-						stereoEffect = new THREE.StereoEffect(renderer);
-						stereoEffect.separation = -6.2;
-						stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
-					}
-					camera.fov = 90;
-					camera.updateProjectionMatrix();
-
-					// Active the DeviceOrientation controls.
-					window.addEventListener('deviceorientation', scope.setOrientationControls, true);
-				}
-				else
-				{
-					renderer.setSize(window.innerWidth, window.innerHeight);
-					camera.fov = 70;
-					camera.updateProjectionMatrix();
-
-					// Deactivate the DeviceOrientation controls.
-					if (typeof deviceOrientationControls !== 'undefined' && deviceOrientationControls)
-						deviceOrientationControls.enabled = false;
-					orbitControls.enabled = true;
-					orbitControls.update();
 				}
 				scope.resizeCanvas();
 			};

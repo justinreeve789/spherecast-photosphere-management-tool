@@ -27,28 +27,28 @@ gulp.task('scripts-angular', function() {
         .pipe(concat('scripts/main.js'))
         .pipe(gulp.dest(''))
         .pipe(rename('scripts/main.min.js'))
-        .pipe(uglify({
-        	mangle: false, compress: false
-        }))
+//        .pipe(uglify({
+//        	mangle: false, compress: false
+//        }))
         .pipe(gulp.dest(''));
 });
 
 gulp.task('scripts-viewer', function() {
     return gulp.src([
-    		'assets/js/DeviceOrientationControls.js',
-    		'assets/js/OrbitControls.js',
-    		'assets/js/StereoEffect.js',
-    		'assets/js/detect-mobile-browser.js',
+			'assets/js/DeviceOrientationControls.js',
+			'assets/js/OrbitControls.js',
+			'assets/js/StereoEffect.js',
+			'assets/js/detect-mobile-browser.js',
     	])
         .pipe(concat('scripts/viewer.js'))
         .pipe(gulp.dest(''))
         .pipe(rename('scripts/viewer.min.js'))
-        .pipe(uglify({
-        	mangle: {
-        		except: ['$', 'scope', 'element', 'attrs']
-        	}
-        }))
-        .pipe(gulp.dest(''));
+		.pipe(uglify({
+			mangle: {
+				except: ['$', 'scope', 'element', 'attrs']
+			}
+		})).on('error', handleError)
+		.pipe(gulp.dest(''));
 });
 
 // Watch Files For Changes
@@ -58,8 +58,8 @@ gulp.task('watch', function() {
 		'scripts-angular/controllers/*.js',
 		'scripts-angular/directives/*.js',
 		'scripts-angular/services/*.js',
-		'assets/js/DeviceOrientationControls.js',
-		'assets/js/OrbitControls.js',
+//		'assets/js/DeviceOrientationControls.js',
+//		'assets/js/OrbitControls.js',
 		'assets/js/StereoEffect.js',
 		'assets/js/detect-mobile-browser.js'
 	],
@@ -68,3 +68,5 @@ gulp.task('watch', function() {
 
 // Default Task
 gulp.task('default', ['lint', 'scripts-angular', 'scripts-viewer', 'watch']);
+
+function handleError(error) {};

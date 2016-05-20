@@ -119,6 +119,10 @@ var app = angular
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
+			// Don't allow access to the signup page if signups are disabled.
+			if (toState.name == 'signup' && !$rootScope.site.allow_signups)
+				$location.path('/logout');
+
 			// Log out if user is accessing a state they shouldn't.
 			AuthenticatedUser.logoutIfInvalidState(toState);
 
