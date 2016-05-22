@@ -32,9 +32,10 @@ angular.module('spherecastApp')
 				stereoEffect.separation = -6.2;
 				stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
 
-				// Controls
+				// Check for DeviceOrientationControls.
 				scope.setControls();
 
+				// Orbit controls are enabled no matter which mode we're using.
 				orbitControls = new THREE.OrbitControls(camera, domElement);
 				orbitControls.target.set(
 					camera.position.x + 0.1,
@@ -47,6 +48,7 @@ angular.module('spherecastApp')
 				scope.toggleMode();
 
 				window.addEventListener('resize', scope.resizeCanvas, false);
+				window.addEventListener('orientationchange', scope.resizeCanvas, false);
 
 		        activeProject = scope.activeProject;
 		        scope.loadNewScene(activeProject.startScene);
@@ -92,7 +94,12 @@ angular.module('spherecastApp')
 			scope.setOrientationControls = function(e)
 			{
 				if (!e.alpha)
+				{
+					// Let's set the VR mode to false since we know we can't use DeviceOrientationControls.
+					console.log('Viewer: ' + scope.vrMode);
+//					viewer.vrMode = false;
 					return;
+				}
 
 				if (typeof deviceOrientationControls === 'undefined' || !deviceOrientationControls)
 				{
@@ -101,7 +108,6 @@ angular.module('spherecastApp')
 				}
 				deviceOrientationControls.update();
 				deviceOrientationControls.enabled = true;
-//				orbitControls.enabled = false;
 				window.removeEventListener('deviceorientation', scope.setOrientationControls, true);
 			}
 
@@ -128,7 +134,7 @@ angular.module('spherecastApp')
 					camera.updateProjectionMatrix();
 
 					// Active the DeviceOrientation controls.
-					window.addEventListener('deviceorientation', scope.setOrientationControls, true);
+//					window.addEventListener('deviceorientation', scope.setOrientationControls, true);
 				}
 				else
 				{
@@ -141,8 +147,8 @@ angular.module('spherecastApp')
 						deviceOrientationControls.enabled = false;
 				}
 
-				orbitControls.enabled = true;
-				orbitControls.update(clock.getDelta());
+//				orbitControls.enabled = true;
+//				orbitControls.update(clock.getDelta());
 				scope.resizeCanvas();
 			};
 

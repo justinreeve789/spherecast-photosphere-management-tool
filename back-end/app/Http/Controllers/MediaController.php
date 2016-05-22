@@ -154,8 +154,6 @@ class MediaController extends Controller
 			return response()->json(['error_general' => 'Could not retrieve site.'], 401);
 
 		$user = $this->getUser();
-		$user = new User;
-		$user->id = 5;
 		if (!$user || !is_numeric($user->id) || $user->id <= 0)
 			return response()->json(['error_general' => 'Could not retrieve user.'], 401);
 
@@ -173,7 +171,6 @@ class MediaController extends Controller
 			if ($m->save())
 				$assign_count++;
 		}
-
 		return ['message_general' => $assign_count . ' images were imported into your account.'];
 	}
 

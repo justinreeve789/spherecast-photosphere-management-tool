@@ -27,9 +27,9 @@ gulp.task('scripts-angular', function() {
         .pipe(concat('scripts/main.js'))
         .pipe(gulp.dest(''))
         .pipe(rename('scripts/main.min.js'))
-//        .pipe(uglify({
-//        	mangle: false, compress: false
-//        }))
+        .pipe(uglify({
+        	mangle: false, compress: false
+        }))
         .pipe(gulp.dest(''));
 });
 

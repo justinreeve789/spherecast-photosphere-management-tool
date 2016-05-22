@@ -4,6 +4,12 @@ angular
 {
 	var vm = this;
 
+	// Check for URL parameters.
+	var urlParams = $location.search();
+	if (urlParams.url)
+	{
+	}
+
 	$scope.upload = function(file)
 	{
 		$scope.fileUploading = true;
