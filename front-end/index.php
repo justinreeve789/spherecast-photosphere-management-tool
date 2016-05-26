@@ -77,6 +77,9 @@
 	<script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
+	<script src="assets/js/DeviceOrientationControls.js"></script>
+	<script src="assets/js/OrbitControls.js"></script>
+	<script src="assets/js/StereoEffect.js"></script>
 
 	<!-- Application Scripts -->
 	<script src="scripts/main.min.js"></script>

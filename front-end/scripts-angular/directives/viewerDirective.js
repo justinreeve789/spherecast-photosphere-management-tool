@@ -23,14 +23,16 @@ angular.module('spherecastApp')
 
 				// Normal renderer
 		        renderer = new THREE.WebGLRenderer();
-		        domElement = renderer.domElement;
-		        renderer.setSize(window.innerWidth, window.innerHeight);
-		        element[0].appendChild(domElement);
 
 				// Stereoscopic effect
 				stereoEffect = new THREE.StereoEffect(renderer);
 				stereoEffect.separation = -6.2;
 				stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
+
+				// Size renderer.
+		        domElement = renderer.domElement;
+		        renderer.setSize(window.innerWidth, window.innerHeight);
+		        element[0].appendChild(domElement);
 
 				// Check for DeviceOrientationControls.
 				scope.setControls();
@@ -43,6 +45,7 @@ angular.module('spherecastApp')
 					camera.position.z
 				);
 				orbitControls.update(clock.getDelta());
+				camera.updateProjectionMatrix();
 
 				// Activate renderer mode
 				scope.toggleMode();
@@ -60,10 +63,11 @@ angular.module('spherecastApp')
 		    {
 		        requestAnimationFrame(scope.animate);
 
-				if (orbitControls.enabled == true)
-				{
-					orbitControls.update(clock.getDelta());
-				}
+//				if (orbitControls.enabled == true)
+//				{
+//					orbitControls.update(clock.getDelta());
+//				}
+				orbitControls.update(clock.getDelta());
 
 				if (typeof deviceOrientationControls !== 'undefined' && typeof deviceOrientationControls.enabled !== 'undefined')
 				{
@@ -96,7 +100,7 @@ angular.module('spherecastApp')
 				if (!e.alpha)
 				{
 					// Let's set the VR mode to false since we know we can't use DeviceOrientationControls.
-					console.log('Viewer: ' + scope.vrMode);
+//					console.log('Viewer: ' + scope.vrMode);
 //					viewer.vrMode = false;
 					return;
 				}
@@ -119,17 +123,8 @@ angular.module('spherecastApp')
 			// size when we toggle back to standard mode, since StereoEffect changes that.
 			scope.toggleMode = function()
 			{
-//				scope.setControls();
-
 				if (scope.vrMode == true)
 				{
-//					if (typeof stereoEffect === 'undefined')
-//					{
-//						// Stereoscopic effect
-//						stereoEffect = new THREE.StereoEffect(renderer);
-//						stereoEffect.separation = -6.2;
-//						stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
-//					}
 					camera.fov = 90;
 					camera.updateProjectionMatrix();
 
@@ -146,9 +141,6 @@ angular.module('spherecastApp')
 					if (typeof deviceOrientationControls !== 'undefined' && deviceOrientationControls)
 						deviceOrientationControls.enabled = false;
 				}
-
-//				orbitControls.enabled = true;
-//				orbitControls.update(clock.getDelta());
 				scope.resizeCanvas();
 			};
 
@@ -262,7 +254,6 @@ angular.module('spherecastApp')
 		        if (scope.vrMode == true)
 		        {
 			        stereoEffect.setSize(contW, contH);
-//					renderer.setSize(contW, contH);
 		        }
 		        else
 		        {

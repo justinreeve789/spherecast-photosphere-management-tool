@@ -35,9 +35,9 @@ gulp.task('scripts-angular', function() {
 
 gulp.task('scripts-viewer', function() {
     return gulp.src([
-			'assets/js/DeviceOrientationControls.js',
-			'assets/js/OrbitControls.js',
-			'assets/js/StereoEffect.js',
+//			'assets/js/DeviceOrientationControls.js',
+//			'assets/js/OrbitControls.js',
+//			'assets/js/StereoEffect.js',
 			'assets/js/detect-mobile-browser.js',
     	])
         .pipe(concat('scripts/viewer.js'))
@@ -60,7 +60,7 @@ gulp.task('watch', function() {
 		'scripts-angular/services/*.js',
 //		'assets/js/DeviceOrientationControls.js',
 //		'assets/js/OrbitControls.js',
-		'assets/js/StereoEffect.js',
+//		'assets/js/StereoEffect.js',
 		'assets/js/detect-mobile-browser.js'
 	],
     ['lint', 'scripts-angular', 'scripts-viewer']);
