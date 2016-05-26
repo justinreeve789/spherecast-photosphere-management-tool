@@ -8,48 +8,47 @@ angular.module('spherecastApp')
 		scope: false,
 		link: function(scope, element, attrs)
 		{
-		    var scene, camera, renderer, stereoEffect, domElement
+		    var scene, camera, renderer, stereoEffect, domElement, container;
 		    var activeProject, activeScene;
 			var controls, orbitControls, deviceOrientationControls;
-			var clock;
+			var clock = new THREE.Clock();	// TODO: Use the clock to count hotspot durations.
 
 		    scope.init = function()
 		    {
-		        scene = new THREE.Scene();
-				clock = new THREE.Clock();		// TODO: Use the clock to count hotspot durations.
-
-		        camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
-		        camera.position.set(0, 0, 0);
-
-				// Normal renderer
 		        renderer = new THREE.WebGLRenderer();
+		        domElement = renderer.domElement;
+		        container = document.getElementById('viewer');
+		        container.appendChild(domElement);
 
 				// Stereoscopic effect
 				stereoEffect = new THREE.StereoEffect(renderer);
 				stereoEffect.separation = -6.2;
 				stereoEffect.setSize(window.innerWidth / 2, window.innerHeight);
 
-				// Size renderer.
-		        domElement = renderer.domElement;
-		        renderer.setSize(window.innerWidth, window.innerHeight);
-		        element[0].appendChild(domElement);
+		        scene = new THREE.Scene();
+
+		        camera = new THREE.PerspectiveCamera(90, (window.innerWidth / 2) / window.innerHeight, 0.001, 10000);
+		        camera.position.set(0, 0, 0);
+		        scene.add(camera);
 
 				// Check for DeviceOrientationControls.
-				scope.setControls();
+//				scope.setControls();
 
 				// Orbit controls are enabled no matter which mode we're using.
-				orbitControls = new THREE.OrbitControls(camera, domElement);
-				orbitControls.target.set(
+				controls = new THREE.OrbitControls(camera, domElement);
+				controls.target.set(
 					camera.position.x + 0.1,
 					camera.position.y,
 					camera.position.z
 				);
-				orbitControls.update(clock.getDelta());
-				camera.updateProjectionMatrix();
+				controls.update(clock.getDelta());
+				controls.noZoom = true;
+				controls.noPan = true;
 
 				// Activate renderer mode
-				scope.toggleMode();
+//				scope.toggleMode();
 
+				window.addEventListener('deviceorientation', scope.setOrientationControls, true);
 				window.addEventListener('resize', scope.resizeCanvas, false);
 				window.addEventListener('orientationchange', scope.resizeCanvas, false);
 
@@ -63,19 +62,9 @@ angular.module('spherecastApp')
 		    {
 		        requestAnimationFrame(scope.animate);
 
-//				if (orbitControls.enabled == true)
-//				{
-//					orbitControls.update(clock.getDelta());
-//				}
-				orbitControls.update(clock.getDelta());
-
-				if (typeof deviceOrientationControls !== 'undefined' && typeof deviceOrientationControls.enabled !== 'undefined')
-				{
-					if (deviceOrientationControls.enabled == true)
-					{
-						deviceOrientationControls.update(clock.getDelta());
-					}
-				}
+				scope.resizeCanvas();
+				camera.updateProjectionMatrix();
+				controls.update(clock.getDelta());
 
 				scope.render();
 		    };
@@ -105,13 +94,10 @@ angular.module('spherecastApp')
 					return;
 				}
 
-				if (typeof deviceOrientationControls === 'undefined' || !deviceOrientationControls)
-				{
-					deviceOrientationControls = new THREE.DeviceOrientationControls(camera);
-					deviceOrientationControls.connect(clock.getDelta());
-				}
-				deviceOrientationControls.update();
-				deviceOrientationControls.enabled = true;
+				controls = new THREE.DeviceOrientationControls(camera);
+				controls.connect(clock.getDelta());
+				controls.update();
+//				deviceOrientationControls.enabled = true;
 				window.removeEventListener('deviceorientation', scope.setOrientationControls, true);
 			}
 
@@ -245,20 +231,14 @@ angular.module('spherecastApp')
 
 			scope.resizeCanvas = function()
 			{
-				var contW = window.innerWidth;
-				var contH = window.innerHeight;
-	
-				camera.aspect = contW / contH;
+				var width = container.offsetWidth;
+				var height = container.offsetHeight;
+
+				camera.aspect = width / height;
 				camera.updateProjectionMatrix();
 
-		        if (scope.vrMode == true)
-		        {
-			        stereoEffect.setSize(contW, contH);
-		        }
-		        else
-		        {
-					renderer.setSize(contW, contH);
-		        }
+				renderer.setSize(width, height);
+				stereoEffect.setSize(width, height);
 			};
 
 			scope.toggleFullscreen = function()
@@ -301,16 +281,13 @@ angular.module('spherecastApp')
 				// Render the view.
 				if (scope.vrMode == true)
 				{
-					if (typeof stereoEffect !== 'undefined')
-					{
-						stereoEffect.render(scene, camera);
-						stereoEffect.clearDepth();
-					}
+					stereoEffect.render(scene, camera);
+//					stereoEffect.clearDepth();
 				}
 				else
 				{
 					renderer.render(scene, camera);
-					renderer.clearDepth();
+//					renderer.clearDepth();
 				}
 			}
 
