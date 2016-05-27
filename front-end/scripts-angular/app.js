@@ -55,9 +55,13 @@ var app = angular
 				controller: 'ProfileController as profile',
 			})
 			.state('passwordreset', {
-				url: '/passwordreset?token',
+				url: '/passwordreset',
 				templateUrl: '../views/passwordResetView.html',
 				controller: 'AuthController as auth',
+			})
+			.state('passwordresetprocess', {
+				url: '/password?token',
+				controller: 'PasswordResetController as password',
 			})
 			.state('spheres', {
 				url: '/spheres',

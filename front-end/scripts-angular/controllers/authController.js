@@ -15,6 +15,11 @@
 		}
 */
 		var vm = this;
+		var params = $location.search();
+		if (typeof params.token !== undefined)
+		{
+			
+		}
 
 		vm.login = function() {
 
@@ -114,12 +119,12 @@
 		{
 			$http.post('api/user/resetpassword', { email: vm.email }).success(function(data)
 			{
+				vm.error = null;
 				vm.message = data;
-				console.log(data);
 			}).error(function(error)
 			{
+				vm.message = null;
 				vm.error = error;
-				console.log(error);
 			});
 		}
 	}
