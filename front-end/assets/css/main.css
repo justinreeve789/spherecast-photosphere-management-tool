@@ -231,6 +231,7 @@ div#upload-progress, div#import-progress
 
 	.navbar-header .header-buttons .btn
 	{
+		margin-right: 12px;
 		padding-left: 12px;
 		padding-right: 12px;
 	}

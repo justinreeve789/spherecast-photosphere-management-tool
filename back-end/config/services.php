@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => '',
-        'secret' => '',
+        'domain' => 'sphcst.com',
+        'secret' => 'key-bf1dcf005a09207364aeb3bb03b17bb0',
     ],
 
     'mandrill' => [

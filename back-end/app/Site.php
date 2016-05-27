@@ -34,6 +34,9 @@ class Site extends Model
 		Role::where('site_id', $this->id)->first();
 	}
 
+	/**
+	 * TODO: Fix so Site::current() doesn't return as a JSON string. Eager-load $url.
+	 */
 	public static function url()
 	{
 		$site = Site::current();
@@ -49,6 +52,8 @@ class Site extends Model
 	 * Return the current site the user is on.
 	 * Note that /Config::get('app.url') is considered the "root" site, and subdomains
 	 * are checked against this when determining the current site.
+	 *
+	 * TODO: Use a global variable to store the current site for repeated calls?
 	 */
 	public static function current()
 	{

@@ -145,6 +145,10 @@ class UserController extends Controller
 		return response()->json(['error_general' => 'User account could not be retrieved.'], 401);
 	}
 
+	/**
+	 * Send an email asking the user to confirm the password reset, and give them a link to process
+	 * the reset.
+	 */
 	public function confirmResetPassword()
 	{
 		$site = Site::current();
@@ -157,9 +161,8 @@ class UserController extends Controller
 		if ($email == null || $email == '')
 			return response()->json(['error_email' => 'Please enter a valid email address.'], 401);
 
-		$password_reset = PasswordReset::where('email', $email)->orderBy('created_at', 'desc')->first();
-//		if ($password_reset)
-//			$password_reset->delete('email', $email);
+		// Delete any existing password reset records for this user.
+		PasswordReset::where('email', $email)->delete();
 
 		$password_reset = new PasswordReset;
 		$password_reset->email = $email;
@@ -176,20 +179,29 @@ class UserController extends Controller
 			return response()->json(['error_email' => 'An error occurred while generating the verification code. Please try again.'], 401);
 
 		// Email the confirmation URL.
-		$site_host = $site->url();
+		$site_host = $site->url;
+		if (!$site_host)
+			return response()->json(['error_general' => 'Could not determine site host.'], 401);
+
 		$params = [
+			'site_domain' => $site->domain,
 			'site_host' => $site_host,
 			'reset_url' => $site_host . '/passwordreset?token=' . $password_reset->token,
 		];
 
-		$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user)
+		$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user, $site, $site_host)
 		{
-			$m->from('donotreply@' . $site_host, 'Do Not Reply');
+//			$m->from('donotreply@' . $site->domain, 'Do Not Reply');
+			$m->from('donotreply@sphcst.com', 'Do Not Reply');
 			$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
 		});
 
+		error_log($site->url);
+
 		if (!$mail)
 			return response()->json(['error_email' => 'An error occurred in sending the confirmation email. Please try again.'], 401);
+
+		return response()->json(['message_general' => 'You should receive an email with a link to reset your password within the next 15 minutes. This link will expire in 24 hours.'], 201);
 	}
 
 	/**
@@ -259,7 +271,7 @@ class UserController extends Controller
 		$user->check_imports = $flag;
 
 		if ($user->save())
-			return response()->json(['nessage_general' => 'Import checking disabled.'], 201);
+			return response()->json(['message_general' => 'Import checking disabled.'], 201);
 		else
 			return response()->json(['error_general' => 'Could not disable import checking.'], 401);
 	}

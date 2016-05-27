@@ -115,10 +115,11 @@
 			$http.post('api/user/resetpassword', { email: vm.email }).success(function(data)
 			{
 				vm.message = data;
+				console.log(data);
 			}).error(function(error)
 			{
 				vm.error = error;
-//				console.log(error);
+				console.log(error);
 			});
 		}
 	}

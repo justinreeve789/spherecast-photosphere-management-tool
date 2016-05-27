@@ -9,17 +9,13 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="/">
-				<span class="site-title hidden-xs">Logo</span>
+				<span class="site-title hidden-xs"></span>
 			</a>
 			<div class="header-buttons visible-xs">
-				<button class="btn btn-xs btn-primary pull-left" ui-sref="upload" style="margin-right: 10px;"><i class="icon ion-upload" style="font-size: 22px;"></i></button> 
-				<button ng-if="authToken" class="btn btn-xs btn-warning pull-left" ui-sref="spheres"><i class="icon ion-images" style="font-size: 22px;"></i></button> 
-<!--
-				<button ng-if="!authToken" class="btn btn-xs btn-danger pull-left" ui-sref="auth"><i class="icon ion-android-exit" style="font-size: 22px;"></i></button> 
--->
+				<button ng-if="authToken" class="btn btn-xs btn-warning pull-right" ui-sref="spheres"><i class="icon ion-images" style="font-size: 22px;"></i></button> 
+				<button class="btn btn-xs btn-primary pull-right" ui-sref="upload" style="margin-right: 10px;"><i class="icon ion-upload" style="font-size: 22px;"></i></button> 
 			</div>
 		</div>
-
 
 		<div class="navbar-collapse collapse" id="navbar" ng-class="!mainMenuCollapsed && 'in'" ng-click="mainMenuCollapse = true">
 			<ul class="nav navbar-nav navbar-right text-center">
