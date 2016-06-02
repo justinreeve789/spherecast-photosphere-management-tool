@@ -191,10 +191,9 @@ class UserController extends Controller
 
 		$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user, $site, $site_host)
 		{
-			$m->subject('You have requested a new password on ' . $site_host);
 //			$m->from('donotreply@' . $site->domain, 'Do Not Reply');
 			$m->from('donotreply@sphcst.com', 'Do Not Reply');
-			$m->to($user->email, $user->name);
+			$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
 		});
 
 		if (!$mail)
@@ -221,6 +220,14 @@ class UserController extends Controller
 		if (!$password_reset)
 			return response()->json(['error_general' => 'Invalid token.'], 401);
 
+		$user = User::where('email', $password_reset->email)->where('site_id', $site->id)->where('auth_provider', 'local')->first();
+		if (!$user)
+			return response()->json(['error_general' => 'User account could not be found.'], 401);
+
+		$site_host = $site->url;
+		if (!$site_host)
+			return response()->json(['error_general' => 'Could not determine site host.'], 401);
+
 		// Generate new password.
 		$password = $this->generatePassword();
 
@@ -229,20 +236,32 @@ class UserController extends Controller
 			return response()->json(['error_general' => 'Could not reset password.'], 401);
 		else
 		{
+			$params = [
+				'site_domain' => $site->domain,
+				'site_host' => $site_host,
+				'email' => $user->email,
+				'password' => $password,
+			];
+
 			// Send an email with the new password.
-			$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user, $site, $site_host)
+			$mail = Mail::send('emails.confirmresetpassword', $params, function($m) use ($user, $site, $site_host)
 			{
-				$m->subject('You have requested a new password on ' . $site_host);
 //				$m->from('donotreply@' . $site->domain, 'Do Not Reply');
 				$m->from('donotreply@sphcst.com', 'Do Not Reply');
-				$m->to($user->email, $user->name);
+				$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
 			});
-	
-			if (!$mail)
-			
-			return response()->json(['message_general' => 'Your password was reset. You should receive an email with your new password.'], 201);
-		}
 
+			if (!$mail)
+				return response()->json(['error_general' => 'The email was not sent. Please try again.'], 401);
+	
+			if ($mail)
+			{
+				// Delete all password reset records for this user.
+				PasswordReset::where('email', $user->email)->delete();
+
+				return response()->json(['message_general' => 'Your password was reset. You should receive an email with your new password.'], 201);
+			}
+		}
 		return response()->json(['error_general' => 'An unknown error occurred.'], 401);
 	}
 

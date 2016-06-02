@@ -117,12 +117,15 @@
 
 		vm.resetPassword = function()
 		{
+			$rootScope.pageLoaded = false;
 			$http.post('api/user/resetpassword', { email: vm.email }).success(function(data)
 			{
+				$rootScope.pageLoaded = true;
 				vm.error = null;
 				vm.message = data;
 			}).error(function(error)
 			{
+				$rootScope.pageLoaded = true;
 				vm.message = null;
 				vm.error = error;
 			});

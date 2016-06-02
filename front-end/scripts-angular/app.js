@@ -61,6 +61,7 @@ var app = angular
 			})
 			.state('passwordresetprocess', {
 				url: '/password?token',
+				templateUrl: '../views/passwordResetProcessedView.html',
 				controller: 'PasswordResetController as password',
 			})
 			.state('spheres', {
