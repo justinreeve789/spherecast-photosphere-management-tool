@@ -217,7 +217,7 @@ class UserController extends Controller
 		if (!$token)
 			return response()->json(['error_general' => 'No token found.'], 401);
 
-		$password_reset = PasswordReset::where('token' => $token)->first();
+		$password_reset = PasswordReset::where('token', $token)->first();
 		if (!$password_reset)
 			return response()->json(['error_general' => 'Invalid token.'], 401);
 

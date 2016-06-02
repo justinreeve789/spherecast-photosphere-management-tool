@@ -70,6 +70,7 @@
    </body>
 
 	<!-- Application Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="node_modules/angular/angular.min.js"></script>
 	<script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script src="node_modules/angular-animate/angular-animate.min.js"></script>

@@ -2,7 +2,7 @@
 
 angular
 	.module('spherecastApp')
-	.controller('ViewerController', ['$scope', '$rootScope', '$http', '$state', '$stateParams', '$location', 'Project', function($scope, $rootScope, $http, $state, $stateParams, $location, Project)
+	.controller('ViewerController', ['$scope', '$rootScope', '$http', '$state', '$stateParams', '$location', 'Preloader', 'Project', function($scope, $rootScope, $http, $state, $stateParams, $location, Preloader, Project)
 {
 	var vm = this;
 	$rootScope.fullscreenViewer = true;
@@ -33,34 +33,65 @@ angular
 		var code = $stateParams.code;
 		if (code !== null && code != '')
 		{
-//			$rootScope.pageLoaded = false;
+			$rootScope.pageLoaded = false;
 			var project = Project.getMediaProject(code);
 			project.then(function(activeProject)
 			{
-				$rootScope.pageLoaded = true;
 				if (activeProject)
 				{
-					// View the directive.
-					$scope.activeProject = activeProject;
-					$scope.projectLoaded = true;
-					$scope.showLoadingScreen = false;
-					$scope.embedded = true;
-					$scope.canvasWidth = '100%';
-					$scope.canvasHeight = '100%';
-					$scope.dofillcontainer = true;
-					$scope.scale = 1;
-					$scope.vrMode = true;
-					$scope.requireTapToContinue = false;
-					$scope.windowWidth = window.innerWidth;
-					$scope.windowHeight = window.innerHeight;
+					// Preload the image(s).
+					var items = activeProject.assets.media;
+					var media_urls = [];
+					for (var mediaId in items)
+					{
+						if (items.hasOwnProperty(mediaId))
+						{
+							// TODO: Detect bandwidth to determine most efficient item to download.
+							var fileId = items[mediaId].fileIdHigh;
+							var filepath = items[mediaId].files[fileId].filepath;
+							media_urls.push(filepath);
+						}
+					}
+
+					Preloader.preloadImages(media_urls).then(
+						function handleResolve(imageLocations)
+						{
+							$rootScope.pageLoaded = true;
+
+							// View the directive.
+							$scope.activeProject = activeProject;
+							$scope.projectLoaded = true;
+							$scope.showLoadingScreen = false;
+							$scope.embedded = true;
+							$scope.canvasWidth = '100%';
+							$scope.canvasHeight = '100%';
+							$scope.dofillcontainer = true;
+							$scope.scale = 1;
+							$scope.vrMode = true;
+							$scope.requireTapToContinue = false;
+							$scope.windowWidth = window.innerWidth;
+							$scope.windowHeight = window.innerHeight;
+						},
+						function handleReject(imageLocation)
+						{
+//							console.log(imageLocation);
+							$rootScope.pageLoaded = true;
+							$state.go('upload');
+						},
+						function handleNotify(event)
+						{
+							console.log(event.percent);
+						}
+					);
 				}
 			});
 
 			project.catch(function(error)
 			{
+				$rootScope.pageLoaded = true;
 				vm.error = error.data;
 				$scope.error = true;
-				console.log($scope.error)
+//				console.log($scope.error)
 			});
 		}
 		else
