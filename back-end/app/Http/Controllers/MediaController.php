@@ -36,6 +36,7 @@ class MediaController extends Controller
 		$root_import_path = \Config::get('custom.imported_path');
 		$site_id = 1;
 //		$omit_ips = ['90.77.232.224'];
+		$omit_ips = [];
 
 		foreach ($old_media as $m)
 		{
