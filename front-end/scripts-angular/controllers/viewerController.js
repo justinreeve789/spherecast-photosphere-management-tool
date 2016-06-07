@@ -27,6 +27,11 @@ angular
 		$scope.vrMode = false;
 	}
 
+	// Check if this is embedded.
+	if ($stateParams.embed == true)
+	{
+		$scope.embedded = true;
+	}
 	// Check that the path passed corresponds to a shortname on the site.
 	if (typeof $stateParams.code !== undefined)
 	{

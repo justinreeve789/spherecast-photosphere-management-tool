@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
     <head>
     	<base href="/">
+    	<base target="_parent">
         <title></title>
         <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">

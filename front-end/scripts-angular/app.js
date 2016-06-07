@@ -73,9 +73,20 @@ var app = angular
 				url: '/upload',
 				templateUrl: '../views/uploadView.html',
 				controller: 'SingleFileController as file',
+				params: {
+					embed: false,
+				}
+			})
+			.state('viewerembed', {
+				url: '/:code/embed',
+				templateUrl: '../views/viewerView.html',
+				controller: 'ViewerController as viewer',
+				params: {
+					embed: true,
+				}
 			})
 			.state('viewer', {
-				url: '/{code}',
+				url: '/:code',
 				templateUrl: '../views/viewerView.html',
 				controller: 'ViewerController as viewer',
 			});

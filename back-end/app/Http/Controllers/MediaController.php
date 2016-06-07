@@ -35,7 +35,7 @@ class MediaController extends Controller
 		$old_media = DB::select('select * from spherecast_viewer.photospheres');
 		$root_import_path = \Config::get('custom.imported_path');
 		$site_id = 1;
-		$omit_ips = ['90.77.232.224'];
+//		$omit_ips = ['90.77.232.224'];
 
 		foreach ($old_media as $m)
 		{
