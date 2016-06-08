@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 		{
 			SiteProvider::create($sp);
 		}
-
+/*
         $users = array(
 	        ['name' => 'Ryan Chenkie', 'site_id' => 1, 'email' => 'ryanchenkie@gmail.com', 'password' => Hash::make('secret')],
 	        ['name' => 'Chris Sevilleja', 'site_id' => 1, 'email' => 'chris@scotch.io', 'password' => Hash::make('secret')],
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         {
             $user = User::create($user);
         }
-/*
+
 		$subscriptions = array(
 			['name' => 'free', 'view_limit' => 50, 'search' => 0, 'edit_title' => 0, 'edit_description' => 0, 'edit_tags' => 0, 'multi_file_upload' => 0],
 			['name' => 'consumer'],

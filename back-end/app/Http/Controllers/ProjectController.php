@@ -17,7 +17,7 @@ class ProjectController extends Controller
     public function __construct()
     {
         // Apply the jwt.auth middleware to the methods in this controller.
-        $this->middleware('jwt.auth', ['except' => ['getMediaProject']]);
+        $this->middleware('jwt.auth', ['except' => ['getMediaProject', 'getMediaProjectStatic']]);
     }
 
 	public function getMediaProject($media_code)
@@ -97,5 +97,16 @@ class ProjectController extends Controller
 		$project->hotspots = [];
 
 		return $project;
+	}
+
+	public function getMediaProjectStatic($media_code)
+	{
+		$site = Site::current();
+		if (!$site)
+			return response()->json(['error_general' => 'Could not determine site.'], 401);
+
+		$project = $this->getMediaProject($media_code);
+
+		return response()->view('static.media', ['site' => $site, 'project' => $project]);
 	}
 }

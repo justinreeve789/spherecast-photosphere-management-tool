@@ -2,11 +2,14 @@
 	RewriteEngine On
 	RewriteBase /
 
+	# Remove trailing slashes.
+	RewriteRule ^(.*)/$ /$1 [L,R=301]
+
 	# Redirect social media crawlers to a static version of the page.
-#	RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google.*snippet)
-#	RewriteRule album/(\d*)$ http://www.michaelbromley.co.uk/experiments/angular-social-demo/server/static-page.php?id=3 [P]
+	RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google.*snippet)
+	RewriteRule (.*) https://%{HTTP_HOST}/api/static/mediaproject/$1 [L]
 
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.*) /#/$1
+	RewriteRule ^(.*) /#/$1 [L]
 </IfModule>

@@ -53,7 +53,7 @@ class MediaController extends Controller
 			if (file_exists($filepath))
 				$filesize = filesize($filepath);
 
-			if ($filesize < 5000)
+			if ($filesize < 10000)
 				continue;
 
 			$hash = hash_file('sha256', $filepath);
@@ -746,6 +746,10 @@ class MediaController extends Controller
 	 */
 	public function downloadThumbnail($code, $width = null, $height = null)
 	{
+		// If the $code ends in ".jpg", remove it.
+		if (substr($code, -4) == '.jpg')
+			$code = substr($code, 0, -4);
+
 		// Make sure the media item exists.
 		$media = Media::where('code', $code)->first();
 		if ($media)

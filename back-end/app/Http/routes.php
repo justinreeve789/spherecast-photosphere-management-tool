@@ -35,9 +35,17 @@ Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/qrcode/{code}', ['uses' => 'MediaController@getQRCode']);
-Route::get('/{code}', ['uses' => 'MediaController@viewMedia']);
 
 Route::get('/mediaproject/{code}', ['uses' => 'ProjectController@getMediaProject']);
+
+Route::get('/static/mediaproject/{code}', ['uses' => 'ProjectController@getMediaProjectStatic']);
+Route::get('/static/upload', function()
+{
+	echo 'test';
+	return response()->view('upload');
+});
+
+Route::get('/{code}', ['uses' => 'MediaController@viewMedia']);
 
 Route::group(['prefix' => ''], function()
 {
