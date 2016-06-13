@@ -189,12 +189,19 @@ class UserController extends Controller
 			'reset_url' => $site_host . '/password?token=' . $password_reset->token,
 		];
 
-		$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user, $site, $site_host)
+		try
 		{
-//			$m->from('donotreply@' . $site->domain, 'Do Not Reply');
-			$m->from('donotreply@sphcst.com', 'Do Not Reply');
-			$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
-		});
+			$mail = Mail::send('emails.verifyresetpassword', $params, function($m) use ($user, $site, $site_host)
+			{
+//				$m->from('donotreply@' . $site->domain, 'Do Not Reply');
+				$m->from('donotreply@sphcst.com', 'Do Not Reply');
+				$m->to($user->email, $user->name)->subject('You have requested a new password on ' . $site_host);
+			});
+		}
+		catch (Exception $e)
+		{
+			return response()->json(['error_email' => 'An error occurred in sending the confirmation email. Please try again, or contact info@spherecast.org'], 401);
+		}
 
 		if (!$mail)
 			return response()->json(['error_email' => 'An error occurred in sending the confirmation email. Please try again.'], 401);
