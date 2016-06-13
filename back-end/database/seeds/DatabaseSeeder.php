@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
 		DB::table('subscriptions_plans')->delete();
 
 		$sites = array(
-			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
+			['subdomain' => '', 'domain' => 'sphcst.com', 'title' => 'Spherecast Viewer', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 			['subdomain' => 'manage', 'domain' => 'sphcst.com', 'title' => 'Spherecast', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
-			['subdomain' => 'vrdemo', 'domain' => 'sphcst.com', 'title' => 'VR Demo', 'shared' => 1],
+			['subdomain' => '', 'domain' => 'photospheres.org', 'title' => 'Photospheres', 'shared' => 0, 'force_login' => false, 'sso_google' => true, 'sso_facebook' => true],
 			['subdomain' => '', 'domain' => 'avms.us', 'title' => 'AVMS', 'shared' => 1],
 		);
 
@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
 		}
 
 		$sites_providers  = array(
-			['site_id' => 1, 'auth_provider' => 'facebook', 'app_id' => '990909701004112', 'secret' => '9cb31c7ea4595338197e5b0dd7a0fbfb'],
-			['site_id' => 2, 'auth_provider' => 'facebook', 'app_id' => '447635065516276', 'secret' => '3f4f90f64731a3ad65568e57f780526a'],
-			['site_id' => 1, 'auth_provider' => 'google', 'app_id' => '829633846470-krlc118s6ul18u8s9vovrn6h4pt2iuum.apps.googleusercontent.com', 'secret' => 'pjQXGzOqAYsoNt4oCfmjNWnM'],
+			['site_id' => 1, 'auth_provider' => 'facebook', 'app_id' => '447635065516276', 'secret' => '3f4f90f64731a3ad65568e57f780526a'],
+			['site_id' => 3, 'auth_provider' => 'facebook', 'app_id' => '990909701004112', 'secret' => '9cb31c7ea4595338197e5b0dd7a0fbfb'],
+			['site_id' => 3, 'auth_provider' => 'google', 'app_id' => '829633846470-krlc118s6ul18u8s9vovrn6h4pt2iuum.apps.googleusercontent.com', 'secret' => 'pjQXGzOqAYsoNt4oCfmjNWnM'],
 		);
 
 		foreach ($sites_providers as $sp)
