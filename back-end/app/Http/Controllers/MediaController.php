@@ -53,7 +53,7 @@ class MediaController extends Controller
 			if (file_exists($filepath))
 				$filesize = filesize($filepath);
 
-			if ($filesize < 10000)
+			if ($filesize < 15000)
 				continue;
 
 			$hash = hash_file('sha256', $filepath);
