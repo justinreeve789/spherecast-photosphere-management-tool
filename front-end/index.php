@@ -94,7 +94,7 @@
 		{
 			var notify = $.notify(
 			{
-				message: "<p>Sorry about the popup, but we happened to notice your Dr. Seuss drawings. Great job, and we're intrigued to know what kind of projects you're doing with these.</p><p>If you have time or interest in sharing, please contact us at <a href='mailto:info@spherecast.org'>info@spherecast.org</a>. And if not, that's fine. This message should disappear when you click the X.</p><p>Thank you for using the Photo Sphere Viewer!</p>",
+				message: "<p>Sorry about the popup, but we happened to notice your Dr. Seuss drawings. Great job, and we're intrigued to know what kind of projects you're doing with these. We've been doing some <a href='https://sphcst.com/07jts' target='_blank'><b>experiments with illustrated photo spheres</b></a>, too.</p><p>If you have time or interest in sharing, please contact us at <a href='mailto:info@spherecast.org'><b>info@spherecast.org</b></a>. And if not, that's fine. This message should disappear when you click the X.</p><p>Thank you for using the Photo Sphere Viewer!</p>",
 			},
 			{
 				delay: 0,
