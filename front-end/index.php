@@ -84,7 +84,7 @@
 	<script src="scripts/main.min.js"></script>
 	<script src="scripts/viewer.min.js"></script>
 <?php
-	if (in_array($_SERVER['REMOTE_ADDR'], ['205.122.50.108', '204.84.244.11', '204.84.244.12']) && trim($_SERVER['REQUEST_URI']) == '/upload')
+	if (in_array($_SERVER['REMOTE_ADDR'], ['205.122.50.108', '204.84.244.11', '204.84.244.12']) && ($_SERVER['REQUEST_URI'] == '/' || trim($_SERVER['REQUEST_URI']) == '/upload'))
 	{
 ?>
 		<script src="assets/js/bootstrap-notify.min.js"></script>
