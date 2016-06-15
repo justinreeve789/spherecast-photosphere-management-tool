@@ -107,7 +107,7 @@
 				},
 				onClose: function()
 				{
-					Cookies.set('viewedmessage', 1);
+					Cookies.set('viewedmessage', 1, { expires: 14 });
 				},
 			});
 		}
