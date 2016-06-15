@@ -200,7 +200,6 @@ angular.module('spherecastApp')
 									backgroundFile.filepath,
 									function (backgroundTexture)
 									{
-										console.log(backgroundTexture);
 										backgroundTexture.generateMipmaps = false;
 										backgroundTexture.minFilter = THREE.LinearFilter;
 										backgroundTexture.magFilter = THREE.LinearFilter;

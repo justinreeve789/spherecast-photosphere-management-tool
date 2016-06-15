@@ -83,4 +83,36 @@
 	<!-- Application Scripts -->
 	<script src="scripts/main.min.js"></script>
 	<script src="scripts/viewer.min.js"></script>
+<?php
+	if (in_array($_SERVER['REMOTE_ADDR'], ['205.122.50.108', '204.84.244.11', '204.84.244.12']) && trim($_SERVER['REQUEST_URI']) == '/upload')
+	{
+?>
+		<script src="assets/js/bootstrap-notify.min.js"></script>
+		<script src="assets/js/js.cookie.js"></script>
+		<script>
+		if (typeof Cookies.get('viewedmessage') == 'undefined')
+		{
+			var notify = $.notify(
+			{
+				message: "<p>Sorry about the popup, but we happened to notice your Dr. Seuss drawings. Great job, and we're intrigued to know what kind of projects you're doing with these.</p><p>If you have time or interest in sharing, please contact us at <a href='mailto:info@spherecast.org'>info@spherecast.org</a>. And if not, that's fine. This message should disappear when you click the X.</p><p>Thank you for using the Photo Sphere Viewer!</p>",
+			},
+			{
+				delay: 0,
+				timer: 0,
+				type: 'info',
+				placement:
+				{
+					from: 'bottom',
+					align: 'right',
+				},
+				onClose: function()
+				{
+					Cookies.set('viewedmessage', 1);
+				},
+			});
+		}
+		</script>
+<?php
+	}
+?>
 </html>
