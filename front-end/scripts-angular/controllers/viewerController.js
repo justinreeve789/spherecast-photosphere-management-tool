@@ -63,6 +63,7 @@ angular
 					// Add viewer logo for preloader, but check that we have one first.
 					if (typeof activeProject.assets.logos.viewer !== 'undefined')
 					{
+						activeProject.showLogo = true;
 						media_urls.push(activeProject.assets.logos.viewer.filepath);
 					}
 

@@ -136,17 +136,22 @@ angular.module('spherecastApp')
 			// Add a logo to the bottom of the scene.
 			scope.addLogo = function()
 			{
-				var logoMap = new THREE.TextureLoader().load('/api/logo/viewer');
-				var logoMaterial = new THREE.SpriteMaterial({
-					map: logoMap,
-					transparent: true,
-					fog: false
-				});
-				var logoSprite = new THREE.Sprite(logoMaterial);
-				logoSprite.position.set(0, -30, 0);
-				logoSprite.scale.set(20, 20, 20);
-//				console.log(logoSprite);
-				scene.add(logoSprite);
+				if (typeof activeProject.showLogo !== 'undefined')
+				{
+					if (activeProject.showLogo == true)
+					{
+						var logoMap = new THREE.TextureLoader().load('/api/logo/viewer');
+						var logoMaterial = new THREE.SpriteMaterial({
+							map: logoMap,
+							transparent: true,
+							fog: false
+						});
+						var logoSprite = new THREE.Sprite(logoMaterial);
+						logoSprite.position.set(0, -30, 0);
+						logoSprite.scale.set(20, 20, 20);
+						scene.add(logoSprite);
+					}
+				}
 			}
 
 
