@@ -2,7 +2,7 @@
 
 angular
 	.module('spherecastApp')
-	.controller('ViewerController', ['$scope', '$rootScope', '$http', '$state', '$stateParams', '$location', 'Preloader', 'Project', function($scope, $rootScope, $http, $state, $stateParams, $location, Preloader, Project)
+	.controller('ViewerController', ['$scope', '$rootScope', '$http', '$state', '$stateParams', '$location', 'AuthenticatedUser', 'Preloader', 'Project', function($scope, $rootScope, $http, $state, $stateParams, $location, AuthenticatedUser, Preloader, Project)
 {
 	var vm = this;
 	$rootScope.fullscreenViewer = true;
@@ -110,6 +110,10 @@ angular
 		}
 		else
 		{
+			// Check if logins are forced. The list of acceptable states differs from AuthenticatedUser.logoutIfInvalidState()
+			// in that uploads won't be available, nor will public galleries once they're implemented.
+//			AuthenticatedUser.checkForceLogin($state.current);
+
 			$state.go('upload');
 		}
 	}

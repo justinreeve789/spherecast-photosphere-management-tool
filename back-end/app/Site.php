@@ -86,10 +86,15 @@ class Site extends Model
 			// Retrieve the subdomain, if one is present. A subdomain can only exist for sphcst.com.
 			// If a subdomain is present (non-blank), but a different domain is included, the different
 			// domain is ignored and $app_host is used instead.
+
+			// If there's no subdomain, and "domain" is specified, it's a custom domain A custom "domain"
+			// can technically be a subdomain of someone's site, such as vr.eduonline.com For our purposes,
+			// we just place the whole thing under the "domain" field so we know they're not part of the
+			// sphcst.com site.
+
 			// TODO: Fix the preg_match() so it doesn't bother checking for http(s)://
 			preg_match('/(?:http[s]*\:\/\/)*(.*?)\.(?=[^\/]*\..{2,5})/i', $site_host, $match);
 
-			// If there's no subdomain, and "domain" is specified at this point, it's a custom domain.
 			if (!isset($match[1]))
 			{
 				$subdomain = '';
@@ -100,6 +105,14 @@ class Site extends Model
 				$subdomain = $match[1];
 				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $app_host)->with('logos')->first();
 			}
+
+			// If we still don't have a $site by this point, we're dealing with a custom domain, so use the $site_host
+			// and check directly for the custom domain.
+			if (!$site)
+			{
+				$site = Site::with('providers')->where('subdomain', '')->where('domain', $site_host)->with('logos')->first();
+			}
+
 			$site->url = $full_domain;
 			return $site;
 		}

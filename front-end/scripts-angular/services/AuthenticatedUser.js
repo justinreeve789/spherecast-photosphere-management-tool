@@ -64,4 +64,20 @@ angular
 			window.location = '/logout';
 		}
 	}
+
+	this.checkForceLogin = function(currentState, site)
+	{
+		if (typeof currentState === 'undefined')
+			$location.path('/logout');
+
+		if ($rootScope.site.force_login == 1)
+		{
+			// TODO: Do some checks to see if the token is present, but invalid. Log out in this case, too.
+			// TODO: Retrieve the valid "public" states based on the site settings.
+			if (!$auth.isAuthenticated() && currentState.name != '' && currentState.name != 'signup' && currentState.name != 'auth' && currentState.name != 'logout' && currentState.name != 'passwordresetprocess' && currentState.name != 'passwordreset' && currentState.name != 'sendpasswordreset' && currentState.name != 'viewer' && currentState.name != 'viewerembed')
+			{
+				window.location = '/logout';
+			}
+		}
+	}
 }]);

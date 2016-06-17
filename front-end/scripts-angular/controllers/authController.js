@@ -15,11 +15,10 @@
 		}
 */
 		var vm = this;
-		var params = $location.search();
-		if (typeof params.token !== undefined)
-		{
-			
-		}
+//		var params = $location.search();
+//		if (typeof params.token !== undefined)
+//		{
+//		}
 
 		vm.login = function() {
 

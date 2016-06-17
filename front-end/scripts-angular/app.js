@@ -135,6 +135,10 @@ var app = angular
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
+			// Check if logins are forced. The list of acceptable states differs from AuthenticatedUser.logoutIfInvalidState()
+			// in that uploads won't be available, nor will public galleries once they're implemented.
+//			AuthenticatedUser.checkForceLogin(toState);
+
 			// Don't allow access to the signup page if signups are disabled.
 			if (toState.name == 'signup' && !$rootScope.site.allow_signups)
 				$location.path('/logout');
