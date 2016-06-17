@@ -14,6 +14,12 @@ function ImportController($scope, $rootScope, $http, $state, AuthenticatedUser)
 
 	vm.importProcessed = false;
 
+	// Don't continue if we're not in the correct site.
+	if ($rootScope.site.id != 1)
+	{
+		console.log($rootScope.site.id);
+	}
+
 	vm.getSystemImportedMedia = function()
 	{
 		$rootScope.pageLoaded = false;

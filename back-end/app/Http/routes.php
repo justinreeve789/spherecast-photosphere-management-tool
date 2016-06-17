@@ -35,6 +35,7 @@ Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/qrcode/{code}', ['uses' => 'MediaController@getQRCode']);
+Route::get('/logo/{type}', ['uses' => 'LogoController@downloadLogo']);
 
 Route::get('/mediaproject/{code}', ['uses' => 'ProjectController@getMediaProject']);
 

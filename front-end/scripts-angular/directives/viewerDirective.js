@@ -9,9 +9,10 @@ angular.module('spherecastApp')
 		link: function(scope, element, attrs)
 		{
 		    var scene, camera, renderer, stereoEffect, domElement, container;
-		    var activeProject, activeScene;
+		    var activeProject, activeScene, activeEvents;
 			var controls, orbitControls, deviceOrientationControls;
 			var clock = new THREE.Clock();	// TODO: Use the clock to count hotspot durations.
+			var currentAnimationFrameId;
 
 		    scope.init = function()
 		    {
@@ -132,6 +133,24 @@ angular.module('spherecastApp')
 
 
 
+			// Add a logo to the bottom of the scene.
+			scope.addLogo = function()
+			{
+				var logoMap = new THREE.TextureLoader().load('/api/logo/viewer');
+				var logoMaterial = new THREE.SpriteMaterial({
+					map: logoMap,
+					transparent: true,
+					fog: false
+				});
+				var logoSprite = new THREE.Sprite(logoMaterial);
+				logoSprite.position.set(0, -30, 0);
+				logoSprite.scale.set(20, 20, 20);
+//				console.log(logoSprite);
+				scene.add(logoSprite);
+			}
+
+
+
 			// This is intended to replace jumpToScene().
 			scope.loadNewScene = function(sceneId)
 			{
@@ -225,8 +244,53 @@ angular.module('spherecastApp')
 							}
 						}
 					}
+
+					// Add start events to the queue.
+					if (activeScene.startEvents)
+					{
+						for (var e = 0; e < activeScene.startEvents.length; e++)
+						{
+							// TODO: Check for conditions before adding it to the queue.
+							activeEvents.push(activeScene.startEvents[e]);
+						}
+					}
 				}
+
+				scope.addLogo();
 			};
+
+			// Execute the events in the queue.
+			scope.executeActions = function()
+			{
+				if (activeEvents.length > 0)
+				{
+					for (var i = 0; i < activeEvents.length; i++)
+					{
+						var evt = activeEvents[i];
+
+						// When actions in the sequence are complete, they are flagged as "complete." While an action is in
+						// progress, add an "inProgress" variable to it and set it to "true."
+						// TODO: Remove actions from the array, so we're always just looking at the first item in the array?
+						if (evt.actions)
+						{
+							// TODO: Add conditions.
+
+							if (evt.actions[a].complete == true)
+							{
+								totalActionsCompleted++;
+							}
+							else if (typeof evt.actions[a].complete == 'undefined' || evt.actions[a].complete == false)
+							{
+							}
+						}
+					}
+				}
+
+				setTimeout(function()
+				{
+					currentAnimationFrameId = window.requestAnimationFrame(scope.executeActions);
+				}, 1);
+			}
 
 			scope.resizeCanvas = function()
 			{

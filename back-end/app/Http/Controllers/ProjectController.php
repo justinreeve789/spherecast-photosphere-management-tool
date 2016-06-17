@@ -11,6 +11,7 @@ use App\Media;
 use App\MediaFile;
 use App\FileItem;
 use App\Site;
+use App\Logo;
 
 class ProjectController extends Controller
 {
@@ -91,6 +92,15 @@ class ProjectController extends Controller
 		$project->assets->priorities = [];
 		$project->assets->media = [$backgroundMedia->id => $backgroundMedia];
 		$project->scenes = [$scene->id => $scene];
+
+		$logos = Logo::where('site_id', $site->id)->get();
+		$project->assets->logos = [];
+		foreach ($logos as $logo)
+		{
+			$logo->filepath = '/api/logo/' . $logo->type;
+			$logo->file = [$logo->file_id => $logo->file()];
+			$project->assets->logos[$logo->type] = $logo;
+		}
 
 		$project->startEvents = [];
 		$project->endEvents = [];

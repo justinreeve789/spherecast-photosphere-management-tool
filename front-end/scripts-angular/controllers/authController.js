@@ -36,7 +36,7 @@
 				var authUserGet = AuthenticatedUser.get();
 				authUserGet.then(function(authUser)
 				{
-					if (authUser.check_imports == 1)
+					if (authUser.check_imports == 1 && $rootScope.site.id == 1)
 						$state.go('import');
 					else
 						$state.go('spheres');

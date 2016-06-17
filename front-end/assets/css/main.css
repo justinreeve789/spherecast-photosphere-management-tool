@@ -3,6 +3,23 @@
 	overflow: hidden;
 }
 
+.navbar-brand
+{
+	padding: 0px 15px;
+}
+
+	.navbar-brand img.site-logo
+	{
+		float: left;
+		max-height: 50px;
+	}
+
+	.navbar-brand span.site-title
+	{
+		float: left;
+		padding: 15px 0px 15px 15px;
+	}
+
 .display-none
 {
 	display: none;

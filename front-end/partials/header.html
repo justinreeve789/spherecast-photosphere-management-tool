@@ -9,7 +9,8 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="/">
-				<span class="site-title hidden-xs">Cardboard VR Photo Sphere Viewer</span>
+				<img class="site-logo" src="/api/logo/site" alt="" />
+				<span class="site-title hidden-xs" ng-if="site.site_title">{{ site.site_title }}</span>
 			</a>
 			<div class="header-buttons visible-xs">
 				<button ng-if="authToken" class="btn btn-xs btn-warning pull-right" ui-sref="spheres"><i class="icon ion-images" style="font-size: 22px;"></i></button> 

@@ -12,7 +12,8 @@ class Site extends Model
 	protected $domain;
 	protected $title;
 	protected $created_by;
-	protected $private;
+	protected $shared;
+	protected $site_title;
 
 	protected $guarded = ['id'];
 
@@ -34,6 +35,11 @@ class Site extends Model
 		Role::where('site_id', $this->id)->first();
 	}
 
+	public function logos()
+	{
+		return $this->hasMany('App\Logo', 'site_id', 'id');
+	}
+
 	/**
 	 * TODO: Fix so Site::current() doesn't return as a JSON string. Eager-load $url.
 	 */
@@ -50,14 +56,15 @@ class Site extends Model
 
 	/**
 	 * Return the current site the user is on.
-	 * Note that /Config::get('app.url') is considered the "root" site, and subdomains
+	 * Note that env('APP_URL') is considered the "root" site, and subdomains
 	 * are checked against this when determining the current site.
 	 *
 	 * TODO: Use a global variable to store the current site for repeated calls?
 	 */
 	public static function current()
 	{
-		$app_url = parse_url(\Config::get('app.url'));
+//		$app_url = parse_url(\Config::get('app.url'));
+		$app_url = parse_url(env('APP_URL'));
 		$app_host = $app_url['host'];	// Should be sphcst.com.
 
 		$site_url = parse_url(\URL::to('/'));
@@ -70,7 +77,7 @@ class Site extends Model
 		{
 			// Retrieve the base sphcst.com site.
 			// A subdomain should still have "sphcst.com" as the domain.
-			$site = Site::with('providers')->where('subdomain', '')->where('domain', $site_host)->first();
+			$site = Site::with('providers')->with('logos')->where('subdomain', '')->where('domain', $site_host)->first();
 			$site->url = $full_domain;
 			return $site;
 		}
@@ -86,12 +93,12 @@ class Site extends Model
 			if (!isset($match[1]))
 			{
 				$subdomain = '';
-				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $site_host)->first();
+				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $site_host)->with('logos')->first();
 			}
 			else
 			{
 				$subdomain = $match[1];
-				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $app_host)->first();
+				$site = Site::with('providers')->where('subdomain', $subdomain)->where('domain', $app_host)->with('logos')->first();
 			}
 			$site->url = $full_domain;
 			return $site;

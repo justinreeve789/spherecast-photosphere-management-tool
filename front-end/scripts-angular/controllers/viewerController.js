@@ -47,6 +47,8 @@ angular
 					// Preload the image(s).
 					var items = activeProject.assets.media;
 					var media_urls = [];
+
+					// Add media for preloader.
 					for (var mediaId in items)
 					{
 						if (items.hasOwnProperty(mediaId))
@@ -56,6 +58,12 @@ angular
 							var filepath = items[mediaId].files[fileId].filepath;
 							media_urls.push(filepath);
 						}
+					}
+
+					// Add viewer logo for preloader, but check that we have one first.
+					if (typeof activeProject.assets.logos.viewer !== 'undefined')
+					{
+						media_urls.push(activeProject.assets.logos.viewer.filepath);
 					}
 
 					Preloader.preloadImages(media_urls).then(
@@ -85,7 +93,7 @@ angular
 						},
 						function handleNotify(event)
 						{
-							console.log(event.percent);
+//							console.log(event.percent);
 						}
 					);
 				}
