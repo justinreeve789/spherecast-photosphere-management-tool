@@ -27,6 +27,7 @@ function MediaController($scope, $rootScope, $http) {
 	}
 	
 	vm.getMedia();
+	console.log($rootScope.authenticatedUser);
 
 	$scope.edit = function(item) {
 		$scope.pageEditing = true;

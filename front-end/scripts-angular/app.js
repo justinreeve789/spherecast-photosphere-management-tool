@@ -153,6 +153,9 @@ var app = angular
 			var authUserGet = AuthenticatedUser.get();
 			authUserGet.then(function(authUser)
 			{
+				console.log('--')
+				console.log(authUser);
+				console.log('//')
 				$rootScope.authenticatedUser = authUser;
 				$rootScope.displayName = authUser.name;
 				$rootScope.pageLoaded = true;

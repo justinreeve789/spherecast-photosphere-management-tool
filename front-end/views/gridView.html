@@ -16,6 +16,10 @@
 				<div class="media-item-edit" ng-if="authenticatedUser.can('edit')">
 					<button ng-click="edit(item)" item="item" class="edit btn btn-md btn-default">Edit</button>
 				</div>
+				<div>
+					{{ authenticatedUser | json }}
+					{{ authenticatedUserCapability.can('edit') }}
+				</div>
 			</div>
 		</div>
 	</div>

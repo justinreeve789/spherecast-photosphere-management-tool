@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/media.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
-		<link rel="stylesheet" href="assets/css/viewer.css" type="text/css" />
+		<link rel="stylesheet" href="assets/css/style.css" type="text/css" />
 		<style type="text/css">
 		*
 		{

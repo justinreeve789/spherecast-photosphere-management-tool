@@ -2,10 +2,22 @@
 var gulp = require('gulp');
 
 // Include Our Plugins
+var less = require('gulp-less');
+var path = require('path');
+var cleancss = require('gulp-clean-css');
 var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+
+// Process LESS files into CSS and concatenate and minify.
+gulp.task('less', function() {
+	return gulp.src('./assets/less/*.less')
+	.pipe(less())
+	.pipe(cleancss())
+	.pipe(concat('style.css'))
+	.pipe(gulp.dest('./assets/css'));
+});
 
 // Lint Task
 gulp.task('lint', function() {
@@ -25,7 +37,6 @@ gulp.task('scripts-angular', function() {
     		'assets/js/bootstrap-switch.min.js',
     	])
         .pipe(concat('scripts/main.js'))
-        .pipe(gulp.dest(''))
         .pipe(rename('scripts/main.min.js'))
         .pipe(uglify({
         	mangle: false, compress: false
@@ -41,7 +52,6 @@ gulp.task('scripts-viewer', function() {
 			'assets/js/detect-mobile-browser.js',
     	])
         .pipe(concat('scripts/viewer.js'))
-        .pipe(gulp.dest(''))
         .pipe(rename('scripts/viewer.min.js'))
 		.pipe(uglify({
 			mangle: {
@@ -54,6 +64,7 @@ gulp.task('scripts-viewer', function() {
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch([
+	'assets/less/*.less',
     	'scripts-angular/app.js',
 		'scripts-angular/controllers/*.js',
 		'scripts-angular/directives/*.js',
@@ -63,10 +74,10 @@ gulp.task('watch', function() {
 		'assets/js/StereoEffect.js',
 		'assets/js/detect-mobile-browser.js'
 	],
-    ['lint', 'scripts-angular', 'scripts-viewer']);
+    ['less', 'lint', 'scripts-angular', 'scripts-viewer']);
 });
 
 // Default Task
-gulp.task('default', ['lint', 'scripts-angular', 'scripts-viewer', 'watch']);
+gulp.task('default', ['less', 'lint', 'scripts-angular', 'scripts-viewer', 'watch']);
 
 function handleError(error) {};

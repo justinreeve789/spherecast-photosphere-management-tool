@@ -8,6 +8,11 @@ angular
 
 	this.get = function(forceRetrieve)
 	{
+		function can(permission)
+		{
+			return true;
+		}
+
 		var deferred = $q.defer();
 
 		if (typeof forceRetrieve === 'undefined' || forceRetrieve == null)
@@ -22,6 +27,11 @@ angular
 					localStorage.setItem('authenticated_user', JSON.stringify(data));
 					$rootScope.authenticatedUser = data;
 					$rootScope.displayName = data.name;
+
+					// Add the capabilities/permissions function.
+					// TODO: Figure out if there's a better way to do this.
+					$rootScope.authenticatedUser['can'] = can;
+
 					vm.authenticatedUser = data;
 					vm.displayName = data.name;
 //					return data;
@@ -35,8 +45,10 @@ angular
 		}
 		else
 		{
-//			return JSON.parse(localStorage.getItem('authenticated_user'));
-			deferred.resolve(JSON.parse(localStorage.getItem('authenticated_user')));
+//			deferred.resolve(JSON.parse(localStorage.getItem('authenticated_user')));
+			vm.authenticatedUser = JSON.parse(localStorage.getItem('authenticated_user'));
+			vm.authenticatedUser['can'] = can;
+			deferred.resolve(vm.authenticatedUser);
 		}
 		return deferred.promise;
 	};
