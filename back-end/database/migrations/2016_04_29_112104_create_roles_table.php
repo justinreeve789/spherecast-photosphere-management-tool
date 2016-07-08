@@ -27,7 +27,7 @@ class CreateRolesTable extends Migration
 			$table->boolean('qr_codes')->default(true);				// Allow QR codes.
 			$table->boolean('edit_title')->default(true);			// Allow title editing.
 			$table->boolean('edit_description')->default(true);		// Allow description editing.
-			$table->boolean('edit_tags')->default(true);			// Allow tag editing..
+			$table->boolean('edit_tags')->default(true);			// Allow tag editing.
 			$table->boolean('multi_file_upload')->default(true);	// Allow multi-file upload.
 			$table->boolean('public_gallery')->default(false);		// Allow public gallery.
 			$table->boolean('brand_viewer')->default(false);		// Allow branding the viewer.
