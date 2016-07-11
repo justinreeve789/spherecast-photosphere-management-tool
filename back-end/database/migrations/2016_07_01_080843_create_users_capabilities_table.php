@@ -31,7 +31,7 @@ class CreateUsersCapabilitiesTable extends Migration
 			$table->boolean('manage_users')->default(false);		// Allow user management.
             $table->timestamps();
 
-			$table->primary(['user_id');
+			$table->primary(['user_id']);
 
 			$table->foreign('user_id')
 				->references('id')->on('users')

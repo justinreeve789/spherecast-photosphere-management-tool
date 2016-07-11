@@ -961,6 +961,5 @@ class MediaController extends Controller
 		// Make sure the user has permission to update this media item.
 		$user = \Auth::user();
 
-		$user->can
 	}
 }
