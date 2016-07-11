@@ -44,4 +44,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		return $this->hasOne('App\Access', 'id', 'access_id');
 	}
+
+	public function can($capability, $param = null)
+	{
+		
+	}
 }

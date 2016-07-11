@@ -1,7 +1,7 @@
 <ng-include src="'/partials/header.html'"></ng-include>
 
 <edit-sphere ng-if="pageEditing" item="currentItem"></edit-sphere>
-		
+
 <div id="media-grid" ng-if="media.items" class="animated fadeIn">
 	<div class="col-lg-2 col-md-3 col-sm-6 col-xs-6" ng-repeat="item in media.items">
 		<div class="media-item">
@@ -17,7 +17,6 @@
 					<button ng-click="edit(item)" item="item" class="edit btn btn-md btn-default">Edit</button>
 				</div>
 				<div>
-					{{ authenticatedUser | json }}
 					{{ authenticatedUserCapability.can('edit') }}
 				</div>
 			</div>

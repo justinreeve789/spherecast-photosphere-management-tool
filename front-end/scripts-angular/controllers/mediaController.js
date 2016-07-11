@@ -27,10 +27,30 @@ function MediaController($scope, $rootScope, $http) {
 	}
 	
 	vm.getMedia();
-	console.log($rootScope.authenticatedUser);
+//	console.log($rootScope.authenticatedUser);
 
 	$scope.edit = function(item) {
 		$scope.pageEditing = true;
 		$scope.currentItem = item;
+	}
+
+	$scope.cancel = function(item) {
+		$scope.pageEditing = false;
+		$scope.currentItem = null;
+	}
+
+	$scope.close = function(item) {
+		$scope.pageEditing = false;
+		$scope.currentItem = null;
+	}
+
+	$scope.save = function(item) {
+		var data = JSON.stringify({ id: item.id, title: item.title, code: item.code, tags: item.tags });
+		$http.post('api/media', data).success(function(item)
+		{
+		}).error(function(error) {
+			vm.error = error;
+//			console.log(vm.error);
+		});
 	}
 }

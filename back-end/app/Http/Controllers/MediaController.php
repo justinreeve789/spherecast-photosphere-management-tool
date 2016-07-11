@@ -16,6 +16,7 @@ use App\User;
 use Config;
 use DB;
 use QrCode;
+use Log;
 
 class MediaController extends Controller
 {
@@ -945,5 +946,21 @@ class MediaController extends Controller
 	 */
 	public function importMediaFromOld($old_media_id, $site_id, $user_id)
 	{
+	}
+
+	/**
+	 * Update a media item.
+	 */
+	public function saveMedia(Request $request)
+	{
+		$site = Site::current();
+
+		$input = $request->all();
+		Log::info('Media:' . print_r($input, true));
+
+		// Make sure the user has permission to update this media item.
+		$user = \Auth::user();
+
+		$user->can
 	}
 }

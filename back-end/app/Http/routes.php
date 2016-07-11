@@ -31,6 +31,7 @@ Route::get('/media/list/system', ['uses' => 'MediaController@getSystemImportedMe
 Route::get('/media/assign/system', ['uses' => 'MediaController@assignSystemImportedMediaToUser']);
 Route::get('/media/get/{code}', ['uses' => 'MediaController@getMedia']);
 Route::get('/media/{code}', ['uses' => 'MediaController@downloadMedia']);
+Route::post('/media', ['uses' => 'MediaController@saveMedia']);
 Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);
