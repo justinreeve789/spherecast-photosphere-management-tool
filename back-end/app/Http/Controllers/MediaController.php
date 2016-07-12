@@ -954,12 +954,37 @@ class MediaController extends Controller
 	public function saveMedia(Request $request)
 	{
 		$site = Site::current();
+		$user = User::get();
 
 		$input = $request->all();
-		Log::info('Media:' . print_r($input, true));
+		if (!isset($input['id']) || !is_numeric($input['id']))
+			return response()->json(['error_general' => 'Invalid media item.'], 401);
+		$media_id = $input['id'];
+		$title = isset($input['title']) ? trim($input['title']) : '';
+		$code = isset($input['code']) ? trim(strtolower($input['code'])) : '';
+		$tags = isset($input['tags']) ? $input['tags'] : '';
+
+		$media = Media::where('id', $media_id)->first();
 
 		// Make sure the user has permission to update this media item.
-		$user = \Auth::user();
+		if ($user->can('edit', $media_id))
+		{
+			if ($code == '')
+				return response()->json(['error_code' => 'Shortname cannot be blank.'], 401);
 
+			// Make sure the code isn't being used somewhere else.
+			$check_code = Media::where('code', $code)
+								->where('site_id', $site->id)
+								->where('id', '!=', $media_id)
+								->first();
+			if ($check_code)
+				return response()->json(['error_code' => 'This shortname is already in use.'], 401);
+
+			$media->title = $title;
+			$media->code = $code;
+//			$media->tags = $tags;
+			$media->save();
+				return response()->json(['message_general' => 'Media settings saved.'], 201);
+		}
 	}
 }

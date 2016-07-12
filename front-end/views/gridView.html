@@ -4,17 +4,15 @@
 
 <div id="media-grid" ng-if="media.items" class="animated fadeIn">
 	<div class="col-lg-2 col-md-3 col-sm-6 col-xs-6" ng-repeat="item in media.items">
-		<div class="media-item">
+		<div class="media-item" ng-click="view(item)">
 			<div class="media-item-image">
-				<a href="{{ item.code }}" target="_blank">
-					<img src="/api/thumb/{{ item.code }}" alt="" />
-				</a>
+				<img src="/api/thumb/{{ item.code }}" alt="" />
 			</div>
 			<div class="media-item-info">
 				<div class="media-item-code">{{ item.code }}</div>
 				<div class="media-item-title">{{ item.title }}</div>
 				<div class="media-item-edit" ng-if="authenticatedUser.can('edit')">
-					<button ng-click="edit(item)" item="item" class="edit btn btn-md btn-default">Edit</button>
+					<button ng-click="edit(item, $event)" item="item" class="edit btn btn-md btn-default">Edit</button>
 				</div>
 				<div>
 					{{ authenticatedUserCapability.can('edit') }}

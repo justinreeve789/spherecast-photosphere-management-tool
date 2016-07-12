@@ -17,7 +17,6 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/bootstrap-switch.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
-		<link rel="stylesheet" href="assets/css/media.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/style.css" type="text/css" />
 		<style type="text/css">

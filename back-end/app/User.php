@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Access;
 use App\Site;
+use Log;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -23,6 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $auth_provider_id;
 	protected $check_imports;
 	protected $remember_token;
+	protected $capabilities;
 
     protected $guarded = ['id'];
 
@@ -35,6 +39,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	protected $table = 'users';
 
+	public static function get()
+	{
+		$user = \Auth::user()->with('capabilities')->first();
+		return $user;
+	}
+
 	public function site()
 	{
 		return $this->belongsTo('App\Site', 'site_id', 'id');
@@ -45,8 +55,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasOne('App\Access', 'id', 'access_id');
 	}
 
+	public function capabilities()
+	{
+		return $this->hasOne('App\UserCapability', 'user_id', 'id');
+	}
+
+	// TODO: Consider using the native Laravel can().
 	public function can($capability, $param = null)
 	{
-		
+		$capabilities = $this->toArray()['capabilities'];
+
+		if (!$capabilities)
+			return false;
+
+		// Special case for view_limit, requires $param.
+		if ($capability == 'view_limit')
+		{
+			if (isset($param) && is_numeric($param))
+				return $capabilities['view_limit'] >= $param;
+			else
+				return false;
+		}
+
+		// Special case for edit, requires $param.
+		if ($capability == 'edit' && isset($param) && is_numeric($param))
+		{
+			// TODO: Check for admin users who can edit.
+			$media_id = $param;
+			$media = Media::where('user_id', $capabilities['user_id'])->where('id', $media_id)->first();
+			if ($media)
+				return true;
+			else
+				return false;
+		}
+
+		if (isset($capabilities[$capabilities]))
+			return $capabilities[$capability];
+		else
+			return false;
 	}
 }
