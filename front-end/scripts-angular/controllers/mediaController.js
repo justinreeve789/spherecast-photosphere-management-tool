@@ -50,13 +50,13 @@ function MediaController($scope, $rootScope, $http, $window) {
 		$scope.pageEditing = false;
 		$scope.formItem = null;
 	}
-
+/*
 	$scope.close = function(item) {
 		$scope.pageEditing = false;
 		$scope.formItem = null;
 	}
-
-	$scope.save = function(item, $index) {
+*/
+	$scope.save = function(item) {
 		var data = JSON.stringify({ id: item.id, title: item.title, code: item.code, tags: item.tags });
 		$scope.formSaving = true;
 		$http.post('api/media', data).success(function(response)
@@ -66,12 +66,32 @@ function MediaController($scope, $rootScope, $http, $window) {
 			vm.error = null;
 			vm.items[$scope.itemIndex] = $scope.formItem;
 			$scope.formSaving = false;
-			$scope.close();
+			$scope.cancel();
+//			vm.message = response;		// No need for this since we're closing the panel.
 		}).error(function(error) {
 			$scope.formSaving = false;
-			
 			vm.error = error;
-			console.log(vm.error);
+		});
+	}
+
+	$scope.delete = function(item) {
+		$scope.showDeleteConfirmation = true;
+	}
+
+	$scope.confirmDelete = function(item) {
+//		var data = JSON.stringify({ id: item.id });
+		$scope.formDeleting = true;
+		$http.delete('api/media/' + item.id).success(function(response)
+		{
+			// Update the items on $scope.currentItem, which references the item in the grid.
+			// Don't update the image, however.
+			vm.error = null;
+			$scope.formDeleting = false;
+			$scope.cancel();
+//			vm.message = response;		// No need for this since we're closing the panel.
+		}).error(function(error) {
+			$scope.formSaving = false;
+			vm.error = error;
 		});
 	}
 }

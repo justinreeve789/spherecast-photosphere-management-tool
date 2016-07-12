@@ -32,6 +32,7 @@ Route::get('/media/assign/system', ['uses' => 'MediaController@assignSystemImpor
 Route::get('/media/get/{code}', ['uses' => 'MediaController@getMedia']);
 Route::get('/media/{code}', ['uses' => 'MediaController@downloadMedia']);
 Route::post('/media', ['uses' => 'MediaController@saveMedia']);
+Route::delete('/media/{id}', ['uses' => 'MediaController@deleteMedia']);
 Route::get('/thumb/{code}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}', ['uses' => 'MediaController@downloadThumbnail']);
 Route::get('/thumb/{code}/{width}/{height}', ['uses' => 'MediaController@downloadThumbnail']);

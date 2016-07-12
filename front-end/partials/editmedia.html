@@ -45,6 +45,22 @@
 
 			<button class="btn btn-danger pull-right" ng-click="delete(formItem)"><i class="fa fa-trash-o"></i></button>
 		</div>
-    	<span class="form-error">{{ media.error.error_general }}</span>
+
+		<div class="alert alert-warning" ng-if="showDeleteConfirmation">
+			<p>Are you sure you wish to delete this media? This operation is irreversible.</p>
+
+			<div class="form-group">
+				<button class="btn btn-danger" ng-click="confirmDelete(formItem)">Yes</button>
+				<button class="btn btn-primary" ng-click="showDeleteConfirmation = false">No</button>
+			</div>
+		</div>
+
+		<div class="alert alert-danger error-general" ng-if="media.error.error_general">
+			<i class="fa fa-check"></i> {{ media.error.error_general }}
+		</div>
+
+		<div class="alert alert-success message-general" ng-if="media.message.message_general">
+			<i class="fa fa-check"></i> {{ media.message.message_general }}
+		</div>
 	</form>
 </div>

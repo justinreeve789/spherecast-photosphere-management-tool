@@ -36,4 +36,30 @@ class FileItem extends Model
 		else
 			return null;
 	}
+
+	// TODO: Create a shouldDelete() function to check 
+	public function shouldDelete()
+	{
+		// We'll do one check to make sure that absolutely no media items are pointing to this
+		// file before deleting it.
+		$media_files_count = MediaFile::where('file_id', $this->id)->count();
+		if ($media_files_count != 0)
+			return false;
+
+		$file_path = \Config::get('custom.upload_path') . '/' . $this->stored_filename . '.' . $this->stored_extension;
+		if (is_file($file_path))
+		{
+			if (unlink($file_path))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function delete()
+	{
+		if ($this->shouldDelete())
+			parent::delete();
+	}
 }
