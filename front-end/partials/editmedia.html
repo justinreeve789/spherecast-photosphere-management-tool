@@ -6,16 +6,19 @@
 		<div class="form-group">
 			<label for="title">Title:</label>
 			<input type="text" id="title" class="form-control" ng-model="formItem.title" value="{{ formItem.title }}">
+	    	<span class="form-error">{{ media.error.error_title }}</span>
 		</div>
 
 		<div class="form-group">
 			<label for="code">Short name:</label>
 			<input type="text" id="code" class="form-control" ng-model="formItem.code" value="{{ formItem.code }}">
+	    	<span class="form-error">{{ media.error.error_code }}</span>
 		</div>
 
 		<div class="form-group">
 			<label for="tags">Tags:</label>
 			<input type="text" id="tags" class="form-control" ng-model="formItem.tags" value="{{ formItem.tags }}">
+	    	<span class="form-error">{{ media.error.error_tags }}</span>
 		</div>
 <!--
 		<div class="form-group">
@@ -42,5 +45,6 @@
 
 			<button class="btn btn-danger pull-right" ng-click="delete(formItem)"><i class="fa fa-trash-o"></i></button>
 		</div>
+    	<span class="form-error">{{ media.error.error_general }}</span>
 	</form>
 </div>

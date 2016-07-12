@@ -11,6 +11,7 @@ function MediaController($scope, $rootScope, $http, $window) {
 	vm.items;
 	vm.error;
 	vm.currentItem;
+	vm.currentItemIndex;
 	vm.originalItem;
 
 	$scope.formSaving = false;
@@ -37,11 +38,12 @@ function MediaController($scope, $rootScope, $http, $window) {
 		$window.open('/' + item.code, '_blank');
 	}
 
-	$scope.edit = function(item, $event) {
+	$scope.edit = function(item, $index, $event) {
 		$event.stopPropagation();					// Don't allow $scope.view() to run, since it's on the parent.
 		$scope.pageEditing = true;
-		vm.originalItem = angular.copy(item);
-		$scope.formItem = item;
+		vm.currentItem = item;
+		$scope.formItem = angular.copy(item);
+		$scope.itemIndex = $index;
 	}
 
 	$scope.cancel = function(item) {
@@ -54,20 +56,22 @@ function MediaController($scope, $rootScope, $http, $window) {
 		$scope.formItem = null;
 	}
 
-	$scope.save = function(item) {
+	$scope.save = function(item, $index) {
 		var data = JSON.stringify({ id: item.id, title: item.title, code: item.code, tags: item.tags });
 		$scope.formSaving = true;
 		$http.post('api/media', data).success(function(response)
 		{
 			// Update the items on $scope.currentItem, which references the item in the grid.
 			// Don't update the image, however.
+			vm.error = null;
+			vm.items[$scope.itemIndex] = $scope.formItem;
 			$scope.formSaving = false;
 			$scope.close();
 		}).error(function(error) {
 			$scope.formSaving = false;
-			item = vm.originalItem;
+			
 			vm.error = error;
-//			console.log(vm.error);
+			console.log(vm.error);
 		});
 	}
 }
