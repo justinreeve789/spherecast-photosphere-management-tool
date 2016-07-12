@@ -980,11 +980,20 @@ class MediaController extends Controller
 			if ($check_code)
 				return response()->json(['error_code' => 'This shortname is already in use.'], 401);
 
-			$media->title = $title;
-			$media->code = $code;
-//			$media->tags = $tags;
+			// Make sure the user can edit titles.
+			if ($user->can('edit_title', $media_id))
+				$media->title = $title;
+
+			if ($user->can('edit_code', $media_id))
+				$media->code = $code;
+
+			if ($user->can('edit_tags', $media_id))
+//				$media->tags = $tags;
+
 			$media->save();
 				return response()->json(['message_general' => 'Media settings saved.'], 201);
 		}
+		else
+			return response()->json(['error_save' => 'You are not allowed to save this media item.'], 401);
 	}
 }

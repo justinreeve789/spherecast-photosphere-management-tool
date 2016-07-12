@@ -6,7 +6,7 @@
 	<div class="col-lg-2 col-md-3 col-sm-6 col-xs-6" ng-repeat="item in media.items">
 		<div class="media-item" ng-click="view(item)">
 			<div class="media-item-image">
-				<img src="/api/thumb/{{ item.code }}" alt="" />
+				<img src="/api/thumb/{{ ::item.code }}" alt="" />
 			</div>
 			<div class="media-item-info">
 				<div class="media-item-code">{{ item.code }}</div>

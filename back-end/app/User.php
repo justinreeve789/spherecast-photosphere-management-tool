@@ -78,18 +78,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		}
 
 		// Special case for edit, requires $param.
-		if ($capability == 'edit' && isset($param) && is_numeric($param))
+		if (in_array($capability, ['edit', 'edit_title', 'edit_description', 'edit_code', 'edit_tags']) && isset($param) && is_numeric($param))
 		{
 			// TODO: Check for admin users who can edit.
+			// TODO: Cache the media object so we don't have to call it multiple times with multiple permission checks.
 			$media_id = $param;
 			$media = Media::where('user_id', $capabilities['user_id'])->where('id', $media_id)->first();
 			if ($media)
-				return true;
+			{
+				if ($capability == 'edit')
+					return true;
+
+				Log::info($capability . ': ' . $capabilities[$capability]);
+
+				return isset($capabilities[$capability]) && $capabilities[$capability] == true;
+			}
 			else
 				return false;
 		}
 
-		if (isset($capabilities[$capabilities]))
+		if (isset($capabilities[$capability]))
 			return $capabilities[$capability];
 		else
 			return false;

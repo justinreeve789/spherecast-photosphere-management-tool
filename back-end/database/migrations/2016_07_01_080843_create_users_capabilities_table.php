@@ -22,6 +22,7 @@ class CreateUsersCapabilitiesTable extends Migration
 			$table->boolean('qr_codes')->default(true);				// Allow QR codes.
 			$table->boolean('edit_title')->default(true);			// Allow title editing.
 			$table->boolean('edit_description')->default(true);		// Allow description editing.
+			$table->boolean('edit_code')->default(true);			// Allow shortname/code editing.
 			$table->boolean('edit_tags')->default(true);			// Allow tag editing.
 			$table->boolean('multi_file_upload')->default(false);	// Allow multi-file upload.
 			$table->boolean('public_gallery')->default(false);		// Allow turning the public gallery on/off.
