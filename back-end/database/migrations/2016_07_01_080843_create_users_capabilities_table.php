@@ -15,15 +15,16 @@ class CreateUsersCapabilitiesTable extends Migration
         Schema::create('users_capabilities', function (Blueprint $table)
         {
 			$table->integer('user_id')->unsigned()->index();
+			$table->boolean('site_admin')->default(false);			// User is a site administrator.
 			$table->integer('view_limit')->default(0)->unsigned();	// How many of the most recent photospheres they can view.
-			$table->boolean('search')->default(true);				// Allow searching.
+			$table->boolean('search')->default(false);				// Allow searching.
 			$table->boolean('embed')->default(true);				// Allow embedding.
 			$table->boolean('share')->default(true);				// Allow sharing.
 			$table->boolean('qr_codes')->default(true);				// Allow QR codes.
-			$table->boolean('edit_title')->default(true);			// Allow title editing.
-			$table->boolean('edit_description')->default(true);		// Allow description editing.
-			$table->boolean('edit_code')->default(true);			// Allow shortname/code editing.
-			$table->boolean('edit_tags')->default(true);			// Allow tag editing.
+			$table->boolean('edit_title')->default(false);			// Allow title editing.
+			$table->boolean('edit_description')->default(false);	// Allow description editing.
+			$table->boolean('edit_code')->default(false);			// Allow shortname/code editing.
+			$table->boolean('edit_tags')->default(false);			// Allow tag editing.
 			$table->boolean('multi_file_upload')->default(false);	// Allow multi-file upload.
 			$table->boolean('public_gallery')->default(false);		// Allow turning the public gallery on/off.
 			$table->boolean('brand_viewer')->default(false);		// Allow branding the viewer.

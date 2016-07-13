@@ -68,10 +68,8 @@ class FileItem extends Model
 		if ($this->shouldDelete())
 		{
 			$file_path = $this->file_path();
-			Log::info('file path: ' . $file_path);
 			if ($file_path)
 			{
-				Log::info('file path: ' . $file_path);
 				if (unlink($file_path))
 				{
 					return true;

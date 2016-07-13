@@ -53,7 +53,10 @@
 			</p>
 
 			<div class="form-group">
-				<button class="btn btn-danger" ng-click="deleteMedia(formItem)">Yes</button>
+				<button class="btn btn-danger" ng-click="deleteMedia(formItem)">
+					<i class="fa fa-spinner fa-pulse fa-fw" ng-if="formDeleting"></i>
+					Yes
+				</button>
 				<button class="btn btn-primary" ng-click="showDeleteConfirmation = false">No</button>
 			</div>
 		</div>

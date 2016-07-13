@@ -68,6 +68,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if (!$capabilities)
 			return false;
 
+		// Site administrators have access to everything. Check this first.
+		if (isset($capabilities['site_admin']) && $capabilities['site_admin'] == true)
+		{
+			Log::info('site admin');
+			return true;
+		}
+
 		// Special case for view_limit, requires $param.
 		if ($capability == 'view_limit')
 		{

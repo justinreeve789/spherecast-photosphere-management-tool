@@ -89,7 +89,6 @@ function MediaController($scope, $rootScope, $http, $window) {
 	$scope.deleteMedia = function(item) {
 //		var data = JSON.stringify({ id: item.id });
 		$scope.formDeleting = true;
-		$rootScope.pageLoaded = false;
 		$http.delete('api/media/' + item.id).success(function(response)
 		{
 			vm.error = null;
@@ -101,12 +100,10 @@ function MediaController($scope, $rootScope, $http, $window) {
 				vm.items.splice($scope.itemIndex, 1);
 			}
 
-			$rootScope.pageLoaded = true;
 			$scope.cancel();
 //			vm.message = response;		// No need for this since we're closing the panel.
 		}).error(function(error) {
-			$scope.formSaving = false;
-			$rootScope.pageLoaded = true;
+			$scope.formDeleting = false;
 			vm.error = error;
 		});
 	}

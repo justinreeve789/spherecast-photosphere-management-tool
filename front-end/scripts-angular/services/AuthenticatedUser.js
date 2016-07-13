@@ -16,6 +16,10 @@ angular
 			if (typeof cap === 'undefined' || cap === null)
 				return false;
 
+			// Site administrators have access to everything. Check this first.
+			if (cap['site_admin'] == true)
+				return true;
+
 			// Capabilities that require a parameter are handled here.
 			if (typeof param !== 'undefined')
 			{
