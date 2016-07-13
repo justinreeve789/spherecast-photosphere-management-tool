@@ -11,9 +11,9 @@
 			<div class="media-item-info">
 				<div class="media-item-code">{{ item.code }}</div>
 				<div class="media-item-title">{{ item.title }}</div>
-				<div class="media-item-edit" ng-if="authenticatedUser.can('edit', item)">
-					<button ng-click="edit(item, $index, $event)" item="item" class="edit btn btn-md btn-default">Edit</button>
-				</div>
+			</div>
+			<div class="media-item-edit" ng-if="authenticatedUser.can('edit', item)">
+				<button ng-click="edit(item, $index, $event)" item="item" class="edit btn btn-md btn-default">Edit</button>
 			</div>
 		</div>
 	</div>

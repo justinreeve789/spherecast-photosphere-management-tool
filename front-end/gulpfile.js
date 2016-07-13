@@ -12,7 +12,7 @@ var rename = require('gulp-rename');
 
 // Process LESS files into CSS and concatenate and minify.
 gulp.task('less', function() {
-	return gulp.src('./assets/less/*.less')
+    return gulp.src('./assets/less/*.less')
 	.pipe(less())
 	.pipe(cleancss())
 	.pipe(concat('style.css'))

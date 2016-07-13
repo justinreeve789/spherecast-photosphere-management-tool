@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en" class="no-js" xmlns:fb="http://ogp.me/ns/fb#">
     <head>
     	<base href="/">
     	<base target="_parent">
@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/style.css" type="text/css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 		<style type="text/css">
 		*
 		{

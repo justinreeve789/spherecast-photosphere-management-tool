@@ -133,6 +133,10 @@ var app = angular
 			}
 		}
 
+		// Save the Modernizr object.
+		// TODO: Make "Modernizr" a constant.
+		$rootScope.Modernizr = Modernizr;
+
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{
 			// Check if logins are forced. The list of acceptable states differs from AuthenticatedUser.logoutIfInvalidState()
