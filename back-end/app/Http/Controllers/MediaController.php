@@ -985,13 +985,19 @@ class MediaController extends Controller
 				$media->title = $title;
 
 			if ($user->can('edit_code', $media_id))
+			{
 				$media->code = $code;
+			}
 
-			if ($user->can('edit_tags', $media_id))
+//			if ($user->can('edit_tags', $media_id))
 //				$media->tags = $tags;
 
-			$media->save();
-			return response()->json(['message_general' => 'Media settings saved.'], 201);
+			if ($media->save())
+			{
+				return response()->json(['message_general' => 'Media settings saved.'], 201);
+			}
+			else
+				return response()->json(['error_general' => 'Could not save changes.'], 401);
 		}
 		else
 			return response()->json(['error_general' => 'You are not allowed to save this media item.'], 401);

@@ -49,6 +49,8 @@ function MediaController($scope, $rootScope, $http, $window) {
 	$scope.cancel = function(item) {
 		$scope.pageEditing = false;
 		$scope.formItem = null;
+		vm.message = null;
+		vm.error = null;
 	}
 /*
 	$scope.close = function(item) {
@@ -57,7 +59,17 @@ function MediaController($scope, $rootScope, $http, $window) {
 	}
 */
 	$scope.save = function(item) {
+		// Reformat shortcode.
+		item.code = item.code.toLowerCase().replace(' ', '-').replace(/[^a-z0-9-]+/gi, '').trim();
+		if (item.code == '')
+		{
+			vm.error = {};
+			vm.error.error_code = 'This is an invalid short name.';
+			return;
+		}
+
 		var data = JSON.stringify({ id: item.id, title: item.title, code: item.code, tags: item.tags });
+
 		$scope.formSaving = true;
 		$http.post('api/media', data).success(function(response)
 		{
