@@ -25,7 +25,7 @@
   }
 
   // Always show the "Edit" button on touchscreens.
-  &:hover .media-item-info, html.no-touch &:hover .media-item.info
+  &:hover .media-item-info
   {
     position: absolute;
     top: 0px;
@@ -83,6 +83,11 @@
   {
     display: block;
   }
+}
+
+html.touch .media-item .media-item-info
+{
+  display: none;
 }
 
 html.touch .media-item .media-item-edit
