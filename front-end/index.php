@@ -16,6 +16,8 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/bootstrap-switch.css" type="text/css" />
+		<link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.min.css" type="text/css" />
+		<link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.bootstrap.min.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/style.css" type="text/css" />
@@ -77,6 +79,7 @@
 	<script src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script src="node_modules/satellizer/satellizer.min.js"></script>
 	<script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
+	<script src="node_modules/ng-tags-input/build/ng-tags-input.min.js"></script>
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
 

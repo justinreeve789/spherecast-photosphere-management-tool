@@ -70,6 +70,8 @@ function MediaController($scope, $rootScope, $http, $window) {
 
 		var data = JSON.stringify({ id: item.id, title: item.title, code: item.code, tags: item.tags });
 
+		console.log(item.tags);
+
 		$scope.formSaving = true;
 		$http.post('api/media', data).success(function(response)
 		{

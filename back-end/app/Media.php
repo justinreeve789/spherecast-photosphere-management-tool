@@ -30,6 +30,11 @@ class Media extends Model
 		return $this->hasMany('App\MediaFile', 'media_id', 'id');
 	}
 
+	public function tags()
+	{
+		return $this->hasMany('App\MediaTag', 'media_id', 'id');
+	}
+
 	// TODO: Allow for multiple file records.
 	public function file()
 	{

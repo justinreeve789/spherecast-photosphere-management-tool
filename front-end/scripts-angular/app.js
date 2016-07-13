@@ -1,5 +1,5 @@
 var app = angular
-	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload', 'infinite-scroll'])
+	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload', 'ngTagsInput', 'infinite-scroll'])
 	.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
 		// Satellizer configuration that specifies which API
