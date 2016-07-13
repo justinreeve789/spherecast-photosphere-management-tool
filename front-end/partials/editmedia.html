@@ -43,14 +43,17 @@
 				Cancel
 			</button>
 
-			<button class="btn btn-danger pull-right" ng-click="delete(formItem)"><i class="fa fa-trash-o"></i></button>
+			<button class="btn btn-danger pull-right" ng-click="showDeleteConfirmation = !showDeleteConfirmation"><i class="fa fa-trash-o"></i></button>
 		</div>
 
-		<div class="alert alert-warning" ng-if="showDeleteConfirmation">
-			<p>Are you sure you wish to delete this media? This operation is irreversible.</p>
+		<div id="alert-delete" class="alert alert-warning" ng-if="showDeleteConfirmation">
+			<p>
+				<i class="fa fa-question-circle"></i>
+				Are you sure you wish to delete this media? This operation is irreversible.
+			</p>
 
 			<div class="form-group">
-				<button class="btn btn-danger" ng-click="confirmDelete(formItem)">Yes</button>
+				<button class="btn btn-danger" ng-click="deleteMedia(formItem)">Yes</button>
 				<button class="btn btn-primary" ng-click="showDeleteConfirmation = false">No</button>
 			</div>
 		</div>

@@ -1030,14 +1030,29 @@ class MediaController extends Controller
 			{
 				// Check if there are other media items on any site that refer to this file.
 				$media_file = MediaFile::where('media_id', $media_id)->first();
-				Log::info(print_r($media_file, true));
 				if ($media_file)
 				{
 					// Use DB::transaction().
-					$media->delete();
-					$media_file = MediaFile::where('media_id', $media_id)->delete();
-					$file = FileItem::where('id', $media_file->file_id)->first();
-					$file->delete();	// The model will check if the file actually should be deleted.
+					DB::transaction(function() use ($media, $media_file)
+					{
+//						Log::info('Media: ' . print_r($media->id, true));
+						$media->delete();
+
+						$media_file = DB::table('media_files')
+										->where('media_id', $media->id);
+//						Log::info('Media File: ' . $media_file->first()->media_id . ',' . $media_file->first()->file_id);
+
+						$file = FileItem::where('id', $media_file->first()->file_id)->first();
+						$media_file->delete();
+//						Log::info('File to Delete: ' . print_r($file, true));
+
+
+						// The model will check if the file actually should be deleted.
+						if (!$file->delete())
+						{
+							// TODO: Error-handle.
+						}
+					});
 				}
 			}
 		}

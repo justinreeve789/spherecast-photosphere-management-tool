@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class FileItem extends Model
 {
@@ -17,6 +18,11 @@ class FileItem extends Model
 
 	protected $table = 'files';
 
+	public function getId()
+	{
+		return $this->attributes['id'];
+	}
+
 	public function media()
 	{
 		return $this->belongsTo('App\MediaFile', 'file_id', 'id');
@@ -30,7 +36,7 @@ class FileItem extends Model
 
 	public function file_path()
 	{
-		$file_path = \Config::get('custom.upload_path') . '/' . $this->stored_filename . '.' . $this->stored_extension;
+		$file_path = \Config::get('custom.upload_path') . '/' . $this->attributes['stored_filename'] . '.' . $this->attributes['stored_extension'];
 		if (is_file($file_path))
 			return $file_path;
 		else
@@ -42,24 +48,36 @@ class FileItem extends Model
 	{
 		// We'll do one check to make sure that absolutely no media items are pointing to this
 		// file before deleting it.
-		$media_files_count = MediaFile::where('file_id', $this->id)->count();
+//		Log::info('File: ' . print_r($this, true));
+
+		$file_id = $this->getId();
+		if (!$file_id)
+		{
+			throw new \Exception('File id not set');
+		}
+
+		$media_files_count = MediaFile::where('file_id', $file_id)->count();
 		if ($media_files_count != 0)
 			return false;
 
-		$file_path = \Config::get('custom.upload_path') . '/' . $this->stored_filename . '.' . $this->stored_extension;
-		if (is_file($file_path))
-		{
-			if (unlink($file_path))
-			{
-				return true;
-			}
-		}
-		return false;
+		return true;
 	}
 
 	public function delete()
 	{
 		if ($this->shouldDelete())
+		{
+			$file_path = $this->file_path();
+			Log::info('file path: ' . $file_path);
+			if ($file_path)
+			{
+				Log::info('file path: ' . $file_path);
+				if (unlink($file_path))
+				{
+					return true;
+				}
+			}
 			parent::delete();
+		}
 	}
 }
