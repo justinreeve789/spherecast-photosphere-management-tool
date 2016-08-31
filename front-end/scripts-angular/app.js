@@ -1,5 +1,5 @@
 var app = angular
-	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload', 'infinite-scroll'])
+	.module('spherecastApp', ['ui.router', 'satellizer', 'ngAnimate', 'ngFileUpload', 'ngTagsInput', 'infinite-scroll'])
 	.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
 		// Satellizer configuration that specifies which API
@@ -132,6 +132,10 @@ var app = angular
 				SatellizerConfig.providers[provider.auth_provider].clientId = provider.app_id;
 			}
 		}
+
+		// Save the Modernizr object.
+		// TODO: Make "Modernizr" a constant.
+		$rootScope.Modernizr = Modernizr;
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams)
 		{

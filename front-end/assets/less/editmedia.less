@@ -1,0 +1,47 @@
+@import 'common.less';
+
+#edit-sphere-sidebar
+{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 1002;
+  background-color: #f0f0f0;
+  border-left: solid 2px #c0c0c0;
+  height: 100%;
+  padding: 15px 20px;
+  width: @sidebar-width;
+}
+
+  #edit-sphere-sidebar.animated.ng-enter
+  {
+    -webkit-animation: slideInRight @sidebar-slide-delay;
+    -moz-animation: slideInRight @sidebar-slide-delay;
+    -ms-animation: slideInRight @sidebar-slide-delay;
+    animation: slideInRight @sidebar-slide-delay;
+  }
+
+  #edit-sphere-sidebar.animated.ng-leave
+  {
+    -webkit-animation: slideOutRight @sidebar-slide-delay;
+    -moz-animation: slideOutRight @sidebar-slide-delay;
+    -ms-animation: slideOutRight @sidebar-slide-delay;
+    animation: slideOutRight @sidebar-slide-delay;
+  }
+
+@media @phone-portrait
+{
+  #edit-sphere-sidebar
+  {
+    min-width: 0px;
+    width: 100%;
+  }
+}
+
+#alert-delete
+{
+  .form-group
+  {
+    margin-top: 10px;
+  }
+}

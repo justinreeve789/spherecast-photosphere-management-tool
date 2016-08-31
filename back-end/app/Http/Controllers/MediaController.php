@@ -16,6 +16,7 @@ use App\User;
 use Config;
 use DB;
 use QrCode;
+use Log;
 
 class MediaController extends Controller
 {
@@ -945,5 +946,115 @@ class MediaController extends Controller
 	 */
 	public function importMediaFromOld($old_media_id, $site_id, $user_id)
 	{
+	}
+
+	/**
+	 * Update a media item.
+	 */
+	public function saveMedia(Request $request)
+	{
+		$site = Site::current();
+		$user = User::get();
+
+		$input = $request->all();
+		if (!isset($input['id']) || !is_numeric($input['id']))
+			return response()->json(['error_general' => 'Invalid media item.'], 401);
+		$media_id = $input['id'];
+		$title = isset($input['title']) ? trim($input['title']) : '';
+		$code = isset($input['code']) ? trim(strtolower($input['code'])) : '';
+		$tags = isset($input['tags']) ? $input['tags'] : '';
+
+		$media = Media::where('id', $media_id)->first();
+
+		// Make sure the user has permission to update this media item.
+		if ($user->can('edit', $media_id))
+		{
+			if ($code == '')
+				return response()->json(['error_code' => 'Shortname cannot be blank.'], 401);
+
+			// Make sure the code isn't being used somewhere else.
+			$check_code = Media::where('code', $code)
+								->where('site_id', $site->id)
+								->where('id', '!=', $media_id)
+								->first();
+			if ($check_code)
+				return response()->json(['error_code' => 'This shortname is already in use.'], 401);
+
+			// Make sure the user can edit titles.
+			if ($user->can('edit_title', $media_id))
+				$media->title = $title;
+
+			if ($user->can('edit_code', $media_id))
+			{
+				$media->code = $code;
+			}
+
+//			if ($user->can('edit_tags', $media_id))
+//				$media->tags = $tags;
+
+			if ($media->save())
+			{
+				return response()->json(['message_general' => 'Media settings saved.'], 201);
+			}
+			else
+				return response()->json(['error_general' => 'Could not save changes.'], 401);
+		}
+		else
+			return response()->json(['error_general' => 'You are not allowed to save this media item.'], 401);
+	}
+
+	/**
+	 * Delete a media item. Check if other media items point to it, so we don't remove the files record
+	 * if we don't have to.
+	 */
+	public function deleteMedia($id)
+	{
+		$site = Site::current();
+		$user = User::get();
+		$media_id = $id;
+//		$input = $request->only(['id']);
+//		$input = $request->all();
+		if (!isset($media_id) || !is_numeric($media_id))
+			return response()->json(['error_general' => 'Invalid media item.'], 401);
+
+		$title = isset($input['title']) ? trim($input['title']) : '';
+		$code = isset($input['code']) ? trim(strtolower($input['code'])) : '';
+		$tags = isset($input['tags']) ? $input['tags'] : '';
+
+		// Make sure the user has permission to delete this media item.
+		// Note that currently, those with "edit" permission also have "delete" permission.
+		if ($user->can('delete', $media_id))
+		{
+			$media = Media::where('id', $media_id)->first();
+			if ($media)
+			{
+				// Check if there are other media items on any site that refer to this file.
+				$media_file = MediaFile::where('media_id', $media_id)->first();
+				if ($media_file)
+				{
+					// Use DB::transaction().
+					DB::transaction(function() use ($media, $media_file)
+					{
+//						Log::info('Media: ' . print_r($media->id, true));
+						$media->delete();
+
+						$media_file = DB::table('media_files')
+										->where('media_id', $media->id);
+//						Log::info('Media File: ' . $media_file->first()->media_id . ',' . $media_file->first()->file_id);
+
+						$file = FileItem::where('id', $media_file->first()->file_id)->first();
+						$media_file->delete();
+//						Log::info('File to Delete: ' . print_r($file, true));
+
+
+						// The model will check if the file actually should be deleted.
+						if (!$file->delete())
+						{
+							// TODO: Error-handle.
+						}
+					});
+				}
+			}
+		}
 	}
 }

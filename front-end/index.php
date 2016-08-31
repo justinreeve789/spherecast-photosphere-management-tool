@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en" class="no-js" xmlns:fb="http://ogp.me/ns/fb#">
     <head>
     	<base href="/">
     	<base target="_parent">
@@ -16,10 +16,12 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/bootstrap-switch.css" type="text/css" />
+		<link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.min.css" type="text/css" />
+		<link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.bootstrap.min.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
-		<link rel="stylesheet" href="assets/css/media.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/uploader.css" type="text/css" />
 		<link rel="stylesheet" href="assets/css/style.css" type="text/css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 		<style type="text/css">
 		*
 		{
@@ -52,22 +54,6 @@
 			<i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
 			<span class="sr-only">Loading...</span>
 		</div>
-<!--
-		<media-edit-directive></media-edit-directive>
-
-	    <div modal="showModal" close="cancel()">
-	      <div class="modal-header">
-	          <h4>Modal Dialog</h4>
-	      </div>
-	      <div class="modal-body">
-	          <p>Example paragraph with some text.</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button class="btn btn-success" ng-click="ok()">Okay</button>
-	        <button class="btn" ng-click="cancel()">Cancel</button>
-	      </div>
-	    </div>
--->
    </body>
 
 	<!-- Application Dependencies -->
@@ -77,6 +63,7 @@
 	<script src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script src="node_modules/satellizer/satellizer.min.js"></script>
 	<script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
+	<script src="node_modules/ng-tags-input/build/ng-tags-input.min.js"></script>
 	<script src="assets/js/ng-infinite-scroll-1.2.1.min.js"></script>
 	<script src="assets/js/three.r76.min.js"></script>
 

@@ -8,7 +8,6 @@ angular
 		restrict: 'EA',
 		controller: function($scope)
 		{
-			console.log($scope.currentItem);
 		},
 		templateUrl: '/partials/editmedia.html',
 		replace: false,

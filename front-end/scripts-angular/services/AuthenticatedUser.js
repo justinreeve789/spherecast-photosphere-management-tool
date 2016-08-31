@@ -8,9 +8,47 @@ angular
 
 	this.get = function(forceRetrieve)
 	{
-		function can(permission)
+		// TODO: Accommodate admin users who can edit any media.
+		function can(capability, param)
 		{
-			return true;
+			var cap = this.capabilities;
+//			console.log(cap);
+//			console.log(capability + ' %o', param);
+
+			if (typeof cap === 'undefined' || cap === null)
+				return false;
+
+			// Site administrators have access to everything. Check this first.
+			if (cap['site_admin'] == true)
+				return true;
+
+			// Capabilities that require a parameter are handled here.
+			if (typeof param !== 'undefined')
+			{
+				// Capabilities that require the user id are handled here.
+				if (typeof param.user_id !== 'undefined')
+				{
+					if (param.user_id == this.id)
+					{
+						if (capability == 'edit' || capability == 'delete')
+						{
+							return cap['edit_title'] || cap['edit_code'] || cap['edit_tags'];
+						}
+
+						else if (capability == 'edit_title' || capability == 'edit_code' || capability == 'edit_tags')
+						{
+							if (typeof cap[capability] !== 'undefined')
+								return cap[capability];
+						}
+					}
+				}
+			}
+
+			// General capabilities are handled here.
+			if (typeof cap[capability] !== 'undefined')
+				return cap[capability];
+
+			return false;
 		}
 
 		var deferred = $q.defer();
@@ -56,11 +94,6 @@ angular
 	this.refresh = function()
 	{
 		this.get(true);
-	}
-
-	this.can = function(permission)
-	{
-		return true;
 	}
 
 	// Log out if the user is on a login-only state.

@@ -38,7 +38,9 @@ class UserController extends Controller
 
 		// TODO: Retrieve the access with the Auth::user() command.
 //		$user = User::with('access')->where('id', $user->id)->first();
-		$user = User::where('id', $user->id)->first();
+		$user = User::with('capabilities')
+					->where('id', $user->id)
+					->first();
 		return $user;
 	}
 
@@ -138,7 +140,10 @@ class UserController extends Controller
 			}
 
 			if ($user->save())
+			{
+				// TODO: Create users_capabilities record.
 				return response()->json(['message_general' => 'Your profile changes have been saved.'], 201);
+			}
 			else
 				return response()->json(['error_general' => 'Could not save changes.'], 401);
 		}
