@@ -12,8 +12,6 @@ angular
 		function can(capability, param)
 		{
 			var cap = this.capabilities;
-//			console.log(cap);
-//			console.log(capability + ' %o', param);
 
 			if (typeof cap === 'undefined' || cap === null)
 				return false;
