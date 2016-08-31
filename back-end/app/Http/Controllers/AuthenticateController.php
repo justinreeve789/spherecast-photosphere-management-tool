@@ -199,7 +199,7 @@ class AuthenticateController extends Controller
 		// TODO: If the user is already signed in, link accounts.
 
 		// Check if the account already exists.
-		$user = \App\User::where(['auth_provider' => $provider, 'email' => $profile['email']])->first();
+		$user = \App\User::where(['site_id' => $site->id, 'auth_provider' => $provider, 'email' => $profile['email']])->first();
 		if (!$user)
 		{
 			// No user found, create account.
