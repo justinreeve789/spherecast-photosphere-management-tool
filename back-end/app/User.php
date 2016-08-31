@@ -41,7 +41,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public static function get()
 	{
-		$user = \Auth::user()->with('capabilities')->first();
+		$auth_user_id = \Auth::user()->attributes['id'];
+		$user = User::where('id', $auth_user_id)->with('capabilities')->first();
 		return $user;
 	}
 
@@ -71,7 +72,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		// Site administrators have access to everything. Check this first.
 		if (isset($capabilities['site_admin']) && $capabilities['site_admin'] == true)
 		{
-			Log::info('site admin');
+//			Log::info('site admin');
 			return true;
 		}
 
