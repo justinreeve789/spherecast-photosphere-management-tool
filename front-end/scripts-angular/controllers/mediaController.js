@@ -109,4 +109,10 @@ function MediaController($scope, $rootScope, $http, $window) {
 			vm.error = error;
 		});
 	}
+
+	$scope.closeDeleteConfirmation = function()
+	{
+		alert('test');
+		$scope.showDeleteConfirmation = false;
+	}
 }
