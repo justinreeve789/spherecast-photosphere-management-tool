@@ -64,18 +64,6 @@ return [
             'strict'    => false,
         ],
 
-        'old_sphcst' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'mysql.justinreeve.com'),
-            'database'  => env('DB_DATABASE', 'spherecast_viewer'),
-            'username'  => env('DB_USERNAME', 'spherecast'),
-            'password'  => env('DB_PASSWORD', 'jU340$@mZ!'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
-
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),
